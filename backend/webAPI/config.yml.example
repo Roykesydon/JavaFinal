@@ -1,0 +1,5 @@
+db:
+    host : localhost
+    user : input_user_name
+    password : input_user_password
+    database : input_database_name
