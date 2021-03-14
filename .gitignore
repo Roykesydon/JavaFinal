@@ -1,5 +1,3 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+#database
+docker-compose.yml
+backend/database/mysql/
