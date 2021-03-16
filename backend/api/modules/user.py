@@ -4,6 +4,10 @@ import pymysql
 import yaml
 import re
 import traceback
+import hashlib
+import random
+import string
+import datetime
 
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
@@ -65,11 +69,9 @@ class CheckRepeat():
         self.__cursor = connection.cursor()
     def userid(self,str):
         self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
-        connection.commit()
         rows = self.__cursor.fetchall()
         if len(rows):
             self.__Errors.append('ID has been registered')
-        connection.commit()
 
     def email(self,str):
         self.__cursor.execute("SELECT * from Users WHERE email = %s",str)
@@ -123,7 +125,9 @@ def register():
     if len(info['errors'])==0:
         try:
             insertString = 'INSERT INTO Users(name,userid,password,email,bad,good)values(%s,%s,%s,%s,%s,%s)'
-            cursor.execute(insertString, (info['name'], info['userid'], info['passwd'],info['email'],0,0))
+            md5 = hashlib.md5()
+            md5.update(info['passwd'].encode("utf8"))
+            cursor.execute(insertString, (info['name'], info['userid'], md5.hexdigest(),info['email'],0,0))
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -131,4 +135,39 @@ def register():
             info['errors'] = 'register fail'
 
 
+    return jsonify(info)
+
+@user.route('/login',methods=['POST'])
+def login():
+    info = dict()
+    userid = request.values.get('userid')
+    passwd = request.values.get('passwd')
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+    rows = cursor.fetchone()
+    Errors = []
+    if not len(rows):
+        Errors.append('userID doesn\'t exist')
+    else:
+        cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+        rows = cursor.fetchall()
+        row = rows[0]
+        md5 = hashlib.md5()
+        md5.update(passwd.encode("utf8"))
+        # ! password current index is 4
+        if md5.hexdigest() == row[4]:
+            accessKey = ''.join(random.choices(string.ascii_letters + string.digits, k = 16))+'-'+userid
+            now = datetime.datetime.today()
+            now = now.strftime('%Y-%m-%d')
+
+            info['accessKey'] = accessKey
+            try:
+                cursor.execute("UPDATE Users SET accessKey = %s, lastAccessTime = %s WHERE userID = %s",(accessKey,now,userid))
+                connection.commit()
+            except:
+                Errors.append('login error')
+        else:
+            Errors.append('password error')
+
+    info['Errors'] = Errors
     return jsonify(info)
