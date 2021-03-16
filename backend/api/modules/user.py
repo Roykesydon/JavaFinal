@@ -1,0 +1,134 @@
+# admin.py
+from flask import Blueprint,request,jsonify
+import pymysql
+import yaml
+import re
+import traceback
+
+with open('config.yml', 'r') as f:
+    cfg = yaml.safe_load(f)
+
+connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'],charset='utf8')
+
+class CheckForm():
+    global connection
+
+    def __init__(self):
+        self.__Errors=[]
+
+    def illegalChar(self,str):
+        illegal = ['\'','\"','>','<','\\','`']
+        for illegalChar in illegal:
+            if illegalChar in str:
+                return True
+        return False
+
+    def userid(self,str):
+        if self.illegalChar(str):
+            self.__Errors.append('ID has illegal characters')
+        if len(str)>20 or len(str)<5:
+            self.__Errors.append('ID length error')
+
+    def name(self,str):
+        if self.illegalChar(str):
+            self.__Errors.append('name has illegal characters')
+        if len(str)>20 or len(str)<2:
+            self.__Errors.append('name length error')
+
+    def passwd(self,str):
+        if self.illegalChar(str):
+            self.__Errors.append('passwd has illegal characters')
+        if len(str)>20 or len(str)<6:
+            self.__Errors.append('password length error')
+
+    def passwdConfirm(self,ori,cof):
+        if self.illegalChar(cof):
+            self.__Errors.append('passwdConfirm has illegal characters')
+        if ori!=cof:
+            self.__Errors.append('password diffrent from passwordConfirm')
+
+    def email(self,str):
+        if self.illegalChar(str):
+            self.__Errors.append('email has illegal characters')
+        if not re.search(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",str):
+            self.__Errors.append('email format error')
+
+    def getErrors(self):
+        return self.__Errors
+
+
+class CheckRepeat():
+    global connection
+
+    def __init__(self):
+        self.__Errors=[]
+        self.__cursor = connection.cursor()
+    def userid(self,str):
+        self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
+        connection.commit()
+        rows = self.__cursor.fetchall()
+        if len(rows):
+            self.__Errors.append('ID has been registered')
+        connection.commit()
+
+    def email(self,str):
+        self.__cursor.execute("SELECT * from Users WHERE email = %s",str)
+        rows = self.__cursor.fetchall()
+        if len(rows):
+            self.__Errors.append('email has been registered')
+    def getErrors(self):
+        return self.__Errors
+
+def checkRegisterRequest(data):
+    checkForm = CheckForm()
+    checkForm.userid(data['userid'])
+    checkForm.name(data['name'])
+    checkForm.passwd(data['passwd'])
+    checkForm.passwdConfirm(data['passwd'],data['passwdConfirm'])
+    checkForm.email(data['email'])
+    Errors = checkForm.getErrors()
+    checkRepeat = CheckRepeat()
+    if 'email has illegal characters' not in Errors and 'email format error' not in Errors:
+        checkRepeat.email(data['email'])
+    if 'ID has illegal characters' not in Errors and 'ID length error' not in Errors:
+        checkRepeat.userid(data['userid'])
+    for error in checkRepeat.getErrors():
+        Errors.append(error)
+
+    return Errors
+
+
+
+
+user=Blueprint("user",__name__)
+
+@user.route('/')
+def index():
+    return "User route"
+
+@user.route('/register',methods=['POST'])
+def register():
+    info = dict()
+    cursor = connection.cursor()
+    info['name'] = request.values.get('name')
+    info['userid'] = request.values.get('userid')
+    info['passwd'] = request.values.get('passwd')
+    info['passwdConfirm'] = request.values.get('passwdConfirm')
+    info['email'] = request.values.get('email')
+
+    errors = checkRegisterRequest(info)
+
+    info['errors'] = errors
+
+    if len(info['errors'])==0:
+        try:
+            insertString = 'INSERT INTO Users(name,userid,password,email,bad,good)values(%s,%s,%s,%s,%s,%s)'
+            cursor.execute(insertString, (info['name'], info['userid'], info['passwd'],info['email'],0,0))
+            connection.commit()
+        except Exception:
+            traceback.print_exc()
+            connection.rollback()
+            info['errors'] = 'register fail'
+
+
+    return jsonify(info)

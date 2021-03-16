@@ -1,3 +1,6 @@
 #database
 docker-compose.yml
 backend/database/mysql/
+
+#webAPI
+backend/api/config.yml
