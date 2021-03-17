@@ -81,6 +81,8 @@ class CheckRepeat():
     def getErrors(self):
         return self.__Errors
 
+
+
 def checkRegisterRequest(data):
     checkForm = CheckForm()
     checkForm.userid(data['userid'])
@@ -108,6 +110,8 @@ user=Blueprint("user",__name__)
 def index():
     return "User route"
 
+
+
 @user.route('/register',methods=['POST'])
 def register():
     info = dict()
@@ -126,7 +130,7 @@ def register():
         try:
             insertString = 'INSERT INTO Users(name,userid,password,email,bad,good)values(%s,%s,%s,%s,%s,%s)'
             md5 = hashlib.md5()
-            md5.update(info['passwd'].encode("utf8"))
+            md5.update((request.values.get('passwd')).encode("utf8"))
             cursor.execute(insertString, (info['name'], info['userid'], md5.hexdigest(),info['email'],0,0))
             connection.commit()
         except Exception:
@@ -134,8 +138,12 @@ def register():
             connection.rollback()
             info['errors'] = 'register fail'
 
+    del info['passwd']
+    del info['passwdConfirm']
 
     return jsonify(info)
+
+
 
 @user.route('/login',methods=['POST'])
 def login():

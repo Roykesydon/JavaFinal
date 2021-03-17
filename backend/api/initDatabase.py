@@ -10,6 +10,7 @@ connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],passw
 
 cursor = connection.cursor()
 cursor.execute("DROP TABLE IF EXISTS Users;")
+connection.commit()
 
 cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     _ID int  NOT NULL AUTO_INCREMENT,\
@@ -21,5 +22,5 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     lastAccessTime varchar(200),\
     bad int,good int,\
     PRIMARY KEY (_ID) );")
-
+connection.commit()
 
