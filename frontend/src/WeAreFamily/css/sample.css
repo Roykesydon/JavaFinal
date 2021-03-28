@@ -1,0 +1,18 @@
+.root{
+    -fx-background-color: #3c3f41
+}
+.label{
+    -fx-font-size: 16pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+}
+.button{
+    -fx-background-color: #3c3f41
+}
+.button:hover{
+    -fx-background-color: #27292a;
+}
+.text-field{
+    -fx-font-size: 16pt;
+    -fx-font-family: "Segoe UI Semibold";
+}

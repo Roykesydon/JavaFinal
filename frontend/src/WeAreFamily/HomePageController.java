@@ -1,0 +1,24 @@
+package WeAreFamily;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.Node;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+
+public class HomePageController extends Main {
+
+    public void switchToSignup(ActionEvent actionEvent) throws IOException
+    {
+        Parent page = FXMLLoader.load(getClass().getResource("fxml/SignUp.fxml"));
+        Scene tmp = new Scene(page);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.hide();
+        stage.setScene(tmp);
+        stage.show();
+    }
+}
