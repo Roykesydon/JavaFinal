@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 
@@ -14,10 +13,11 @@ public class HomePageController extends Main {
 
     public void switchToSignup(ActionEvent actionEvent) throws IOException
     {
+        //use button to switch scene
         Parent page = FXMLLoader.load(getClass().getResource("fxml/SignUp.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();
+        stage.hide();//switch smoothly
         stage.setScene(tmp);
         stage.show();
     }
