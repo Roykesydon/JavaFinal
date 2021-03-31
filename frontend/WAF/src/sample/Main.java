@@ -1,4 +1,4 @@
-package sample;
+package WeAreFamily;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +11,27 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        //create a new scene (use button to switch scene reference in HomPageController.java's switchToSignup method)
         primaryStage.setTitle("We Are Family");
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));//load fxml to scene
-        primaryStage.setScene(new Scene(root, 1280, 800));
+        //Parent root = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
+        this.root = setRoot("fxml/HomePage.fxml");
+        primaryStage.setScene(new Scene(getRoot(), 1280, 800));
         primaryStage.show();
+    }
+
+    public Parent setRoot(String root)
+    {
+        try{
+            Parent page = FXMLLoader.load(getClass().getResource(root));
+            return page;
+        }catch (java.io.IOException e){
+            System.out.println("root is wrong");
+            return null;
+        }
+    }
+
+    public Parent getRoot()
+    {
+        return this.root;
     }
 
     public static void main(String[] args) {
