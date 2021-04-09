@@ -5,5 +5,9 @@ backend/database/mysql/
 #webAPI
 backend/api/config.yml
 
-#javaJDK and javaFX
-JavaLib
+#path and jdk
+frontend/.idea/
+frontend/.DS_Store/
+frontend/frontend.iml
+frontend/out/
+.DS_Store/
