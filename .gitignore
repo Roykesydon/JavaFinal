@@ -7,3 +7,7 @@ backend/api/config.yml
 
 #javaJDK and javaFX
 JavaLib
+#path and jdk
+frontend/.idea/
+frontend/frontend.iml
+frontend/out/
