@@ -4,3 +4,6 @@ backend/database/mysql/
 
 #webAPI
 backend/api/config.yml
+
+#javaJDK and javaFX
+JavaLib
