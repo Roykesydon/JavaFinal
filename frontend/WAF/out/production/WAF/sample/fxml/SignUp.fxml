@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/sample.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/sample.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
    <children>
       <Label alignment="CENTER" layoutX="222.0" layoutY="23.0" prefHeight="80.0" prefWidth="558.0" style="-fx-font-size: 36;" text="SignUpPage" textAlignment="JUSTIFY" textFill="WHITE" textOverrun="CLIP" AnchorPane.bottomAnchor="695.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="274.0" AnchorPane.topAnchor="23.0">
          <font>
@@ -35,7 +35,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="ckPassword" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" style="-fx-text-fill: #ea4141;"/>
+            <Label fx:id="ckPassword" alignment="CENTER" style="-fx-text-fill: #ea4141;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="user_name" />
             <Label text="user_password" GridPane.rowIndex="4" />
             <Label text="email" GridPane.rowIndex="8" />
@@ -46,15 +46,20 @@
             <PasswordField fx:id="userPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <PasswordField fx:id="userPWConfirm" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="userMail" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label fx:id="ckName" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-text-fill: #ea4141;"/>
-            <Label fx:id="ckID" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-text-fill: #ea4141;"/>
-            <Label fx:id="ckMail" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" style="-fx-text-fill: #ea4141;"/>
-            <Label fx:id="ckPWConfirm" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" style="-fx-text-fill: #ea4141;"/>
+            <Label fx:id="ckName" alignment="CENTER" style="-fx-text-fill: #ea4141;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="ckID" alignment="CENTER" style="-fx-text-fill: #ea4141;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="ckMail" alignment="CENTER" style="-fx-text-fill: #ea4141;" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label fx:id="ckPWConfirm" alignment="CENTER" style="-fx-text-fill: #ea4141;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
       <Button fx:id="submmit" layoutX="516.0" layoutY="660.0" mnemonicParsing="false" onAction="#checkInput" text="Submmit" textFill="WHITE">
          <font>
             <Font name="Segoe UI Semibold" size="36.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#BackHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
+         <font>
+            <Font size="36.0" />
          </font>
       </Button>
    </children>
