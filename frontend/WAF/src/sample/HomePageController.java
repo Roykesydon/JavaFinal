@@ -1,11 +1,17 @@
-package sample;
+package WeAreFamily;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+<<<<<<< HEAD
+import java.awt.event.MouseEvent;
+=======
+>>>>>>> db3b2de85de5e6f299b4d16b3d52ee85650804ce
 import java.io.IOException;
 
 
@@ -13,11 +19,18 @@ public class HomePageController extends Main {
 
     public void switchToSignup(ActionEvent actionEvent) throws IOException
     {
-        //use button to switch scene
         Parent page = FXMLLoader.load(getClass().getResource("fxml/SignUp.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();//switch smoothly
+        stage.hide();
+        stage.setScene(tmp);
+        stage.show();
+    }
+    public void switchToForgotPassWord(MouseEvent e) throws IOException {
+        Parent page = FXMLLoader.load(this.getClass().getResource("fxml/forgotPassWord.fxml"));
+        Scene tmp = new Scene(page);
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        stage.hide();
         stage.setScene(tmp);
         stage.show();
     }
@@ -28,6 +41,14 @@ public class HomePageController extends Main {
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.hide();//switch smoothly
+        stage.setScene(tmp);
+        stage.show();
+    }
+    public void switchToForgotPassWord(MouseEvent e) throws IOException {
+        Parent page = FXMLLoader.load(this.getClass().getResource("fxml/forgotPassWord.fxml"));
+        Scene tmp = new Scene(page);
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        stage.hide();
         stage.setScene(tmp);
         stage.show();
     }
