@@ -22,5 +22,10 @@
             <Font name="Yu Gothic Medium" size="36.0" />
          </font>
       </Button>
+      <Button fx:id="btnRoy" layoutX="1000.0" layoutY="614.0" mnemonicParsing="false" onAction="#royTest" prefHeight="96.0" prefWidth="212.0" text="RoyTest" textFill="WHITE">
+         <font>
+            <Font name="Yu Gothic Medium" size="36.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

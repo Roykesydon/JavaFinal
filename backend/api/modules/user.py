@@ -14,6 +14,8 @@ with open('config.yml', 'r') as f:
 
 connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'],charset='utf8')
 
+
+
 class CheckForm():
     global connection
 
@@ -21,7 +23,7 @@ class CheckForm():
         self.__Errors=[]
 
     def illegalChar(self,str):
-        illegal = ['\'','\"','>','<','\\','`']
+        illegal = ['\'','\"','>','<','\\','`','(',')',' ']
         for illegalChar in illegal:
             if illegalChar in str:
                 return True

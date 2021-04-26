@@ -21,4 +21,15 @@ public class HomePageController extends Main {
         stage.setScene(tmp);
         stage.show();
     }
+
+    public void royTest(ActionEvent actionEvent) throws IOException
+    {
+        Parent page = FXMLLoader.load(getClass().getResource("fxml/RoyTest.fxml"));
+        Scene tmp = new Scene(page);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.hide();//switch smoothly
+        stage.setScene(tmp);
+        stage.show();
+    }
+
 }
