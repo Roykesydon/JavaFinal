@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package sample;
+=======
+package WeAreFamily;
+>>>>>>> db3b2de85de5e6f299b4d16b3d52ee85650804ce
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
