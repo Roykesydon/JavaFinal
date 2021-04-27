@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="external_module">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/frontend/external_module/jfoenix-9.0.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/frontend/external_module/TrayNotification.jar!/" />
+      <root url="jar://$PROJECT_DIR$/frontend/external_module/TrayTester.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
