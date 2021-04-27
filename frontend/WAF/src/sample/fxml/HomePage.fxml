@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1280" stylesheets="@../css/homepage.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1280" stylesheets="@../css/homepage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
    <children>
-      <Label layoutX="490.0" layoutY="325.0" text="WeAreFamily" textFill="WHITE">
+      <Label layoutX="491.0" layoutY="144.0" text="WeAreFamily" textFill="WHITE">
          <font>
             <Font name="Segoe UI Semibold" size="50.0" />
          </font>
       </Label>
-      <Button layoutX="535.0" layoutY="593.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="212.0" text="登入" textFill="WHITE">
+      <Button layoutX="836.0" layoutY="582.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="212.0" text="登入" textFill="WHITE">
          <font>
             <Font name="Yu Gothic Medium" size="36.0" />
          </font>
@@ -23,10 +23,14 @@
             <Font name="Yu Gothic Medium" size="36.0" />
          </font>
       </Button>
-      <Label layoutX="369.0" layoutY="502.0" text="密碼" />
-      <Label layoutX="369.0" layoutY="420.0" text="帳號" />
-      <TextField layoutX="486.0" layoutY="435.0" prefHeight="42.0" prefWidth="301.0" />
-      <TextField layoutX="486.0" layoutY="518.0" prefHeight="42.0" prefWidth="301.0" />
-      <Label fx:id="labelForgot" layoutX="257.0" layoutY="593.0" prefHeight="73.0" prefWidth="212.0" text="忘記密碼" mnemonicParsing="false" onMouseClicked="#switchToForgotPassWord" />
+      <Label layoutX="269.0" layoutY="398.0" text="密碼" />
+      <Label layoutX="269.0" layoutY="256.0" text="帳號" />
+      <TextField layoutX="747.0" layoutY="271.0" prefHeight="42.0" prefWidth="301.0" />
+      <TextField layoutX="747.0" layoutY="413.0" prefHeight="42.0" prefWidth="301.0" />
+      <Button fx:id="labelForgot" layoutX="213.0" layoutY="582.0" mnemonicParsing="false" onAction="#switchToForgotPassWord" prefHeight="96.0" prefWidth="212.0" text="忘記密碼" textFill="WHITE">
+         <font>
+            <Font name="Yu Gothic Medium" size="36.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
