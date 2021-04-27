@@ -14,12 +14,12 @@ connection.commit()
 
 cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     _ID int  NOT NULL AUTO_INCREMENT,\
-    userID varchar(200) NOT NULL,\
-    name varchar(200) NOT NULL,\
-    email varchar(200) NOT NULL,\
-    password varchar(200) NOT NULL, \
-    accessKey varchar(200),\
-    lastAccessTime varchar(200),\
+    userID varchar(40) NOT NULL,\
+    name varchar(60) NOT NULL,\
+    email varchar(50) NOT NULL,\
+    password varchar(40) NOT NULL, \
+    accessKey varchar(100),\
+    lastAccessTime varchar(100),\
     bad int,good int,\
     PRIMARY KEY (_ID) );")
 connection.commit()

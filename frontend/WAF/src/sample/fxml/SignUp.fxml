@@ -57,10 +57,11 @@
             <Font name="Segoe UI Semibold" size="36.0" />
          </font>
       </Button>
-      <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#BackHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
+      <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
          <font>
             <Font size="36.0" />
          </font>
       </Button>
+      <Label fx:id="registerResult" alignment="CENTER" contentDisplay="CENTER" layoutX="326.0" layoutY="720.0" prefHeight="57.0" prefWidth="576.0" text="" textFill="#e12929" />
    </children>
 </AnchorPane>

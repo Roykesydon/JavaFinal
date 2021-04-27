@@ -22,40 +22,36 @@ class CheckForm():
     def __init__(self):
         self.__Errors=[]
 
-    def illegalChar(self,str):
-        illegal = ['\'','\"','>','<','\\','`','(',')',' ']
-        for illegalChar in illegal:
-            if illegalChar in str:
-                return True
-        return False
+    def letterNumberOnly(self,str):
+        if re.match("^[A-Za-z0-9]*$", str):
+            return True
+        return False 
 
     def userid(self,str):
-        if self.illegalChar(str):
+        if not self.letterNumberOnly(str):
             self.__Errors.append('ID has illegal characters')
-        if len(str)>20 or len(str)<5:
+        if len(str)>30 or len(str)<5:
             self.__Errors.append('ID length error')
 
     def name(self,str):
-        if self.illegalChar(str):
+        if not self.letterNumberOnly(str):
             self.__Errors.append('name has illegal characters')
-        if len(str)>20 or len(str)<2:
+        if len(str)>50 or len(str)<5:
             self.__Errors.append('name length error')
 
     def passwd(self,str):
-        if self.illegalChar(str):
+        if not self.letterNumberOnly(str):
             self.__Errors.append('passwd has illegal characters')
-        if len(str)>20 or len(str)<6:
+        if len(str)>30 or len(str)<5:
             self.__Errors.append('password length error')
 
     def passwdConfirm(self,ori,cof):
-        if self.illegalChar(cof):
+        if not self.letterNumberOnly(cof):
             self.__Errors.append('passwdConfirm has illegal characters')
         if ori!=cof:
             self.__Errors.append('password diffrent from passwordConfirm')
 
     def email(self,str):
-        if self.illegalChar(str):
-            self.__Errors.append('email has illegal characters')
         if not re.search(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",str):
             self.__Errors.append('email format error')
 
@@ -123,7 +119,7 @@ def register():
     info['passwd'] = request.values.get('passwd')
     info['passwdConfirm'] = request.values.get('passwdConfirm')
     info['email'] = request.values.get('email')
-
+    # print(info)
     errors = checkRegisterRequest(info)
 
     info['errors'] = errors
