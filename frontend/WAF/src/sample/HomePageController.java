@@ -32,7 +32,7 @@ public class HomePageController extends Main {
         stage.setScene(tmp);
         stage.show();
     }
-    public void switchToForgotPassWord(MouseEvent e) throws IOException {
+    public void switchToForgotPassWord(ActionEvent e) throws IOException {
         Parent page = FXMLLoader.load(this.getClass().getResource("fxml/forgotPassWord.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();

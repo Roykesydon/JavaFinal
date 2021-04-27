@@ -1,0 +1,28 @@
+<component name="libraryTable">
+  <library name="javafx-swt">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx-swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.controls.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.fxml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.graphics.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.media.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.swing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/javafx-sdk-11.0.2/lib/javafx.web.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/gson-2.8.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/jfoenix-9.0.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/TrayNotification.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/TrayTester.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/commons-codec-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpasyncclient-4.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpasyncclient-cache-4.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpclient-4.5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpclient-cache-4.5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpcore-4.4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../external_module/httpcomponents-asyncclient-4.1.4/lib/httpcore-nio-4.4.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

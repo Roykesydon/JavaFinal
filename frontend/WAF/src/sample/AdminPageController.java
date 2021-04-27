@@ -26,7 +26,7 @@ public class AdminPageController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
             drawer.setSidePane(box);
 
 
