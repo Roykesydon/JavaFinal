@@ -7,7 +7,5 @@ backend/api/config.yml
 
 #path and jdk
 frontend/.idea/
-frontend/.DS_Store/
-frontend/frontend.iml
-frontend/out/
-.DS_Store/
+frontend/WAF/.DS_Store/
+frontend/WAF/WAF.iml
