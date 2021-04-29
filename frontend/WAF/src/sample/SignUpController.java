@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sample.response.registerResponse;
+import sample.RequestController;
 
 
 public class SignUpController
@@ -65,27 +66,24 @@ public class SignUpController
         //表單格式皆合法
         if(success){
             try {
-                DefaultHttpClient appacheHttp = new DefaultHttpClient();
-                List nameValuePairs = new ArrayList(5);
-                HttpPost httpPost = new HttpPost("http://127.0.0.1:13261/user/register");
-
-                nameValuePairs.add(new BasicNameValuePair("name", userName.getText()));
-                nameValuePairs.add(new BasicNameValuePair("userid", userID.getText()));
-                nameValuePairs.add(new BasicNameValuePair("passwd", userPassword.getText()));
-                nameValuePairs.add(new BasicNameValuePair("passwdConfirm", userPWConfirm.getText()));
-                nameValuePairs.add(new BasicNameValuePair("email", userMail.getText()));
-
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                HttpResponse response = appacheHttp.execute(httpPost);
+                HttpResponse response = RequestController.post("http://127.0.0.1:13261/user/register",
+                        new String[]{"name", userName.getText()},
+                        new String[]{"userid", userID.getText()},
+                        new String[]{"passwd", userPassword.getText()},
+                        new String[]{"passwdConfirm", userPWConfirm.getText()},
+                        new String[]{"email", userMail.getText()}
+                );
                 String responseString = EntityUtils.toString(response.getEntity());
 
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     Gson gson = new Gson();
                     registerResponse jsonResponse = gson.fromJson(responseString,registerResponse.class);
+
+
                     for(String error:jsonResponse.errors){
                         System.out.print(',' + error);
                     }
+
                     System.out.println();
                     if(jsonResponse.errors.length==0){
                         registerResult.setText("Register success! switching to HomePage...");

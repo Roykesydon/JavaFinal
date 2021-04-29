@@ -150,7 +150,7 @@ def login():
     passwd = request.values.get('passwd')
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE userID = %s",userid)
-    rows = cursor.fetchone()
+    rows = cursor.fetchall()
     Errors = []
     if not len(rows):
         Errors.append('userID doesn\'t exist')
@@ -175,5 +175,5 @@ def login():
         else:
             Errors.append('password error')
 
-    info['Errors'] = Errors
+    info['errors'] = Errors
     return jsonify(info)
