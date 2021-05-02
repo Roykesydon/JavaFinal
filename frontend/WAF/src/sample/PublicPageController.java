@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import sample.global.GlobalVariable;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +28,10 @@ public class PublicPageController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
+            if(GlobalVariable.isAdmin != false) {
+                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
+                System.out.println("admin");
+            }
             drawer.setSidePane(box);
 
 

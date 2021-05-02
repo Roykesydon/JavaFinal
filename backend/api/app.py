@@ -10,5 +10,6 @@ def index():
 
 app.register_blueprint(posts,url_prefix='/posts')
 app.register_blueprint(user,url_prefix='/user')
+
 if __name__=='__main__':
     app.run(port='13261')

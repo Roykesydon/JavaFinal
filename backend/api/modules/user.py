@@ -126,10 +126,10 @@ def register():
 
     if len(info['errors'])==0:
         try:
-            insertString = 'INSERT INTO Users(name,userid,password,email,bad,good)values(%s,%s,%s,%s,%s,%s)'
+            insertString = 'INSERT INTO Users(name,userid,password,email,bad,good,isAdmin)values(%s,%s,%s,%s,%s,%s,%s)'
             md5 = hashlib.md5()
             md5.update((request.values.get('passwd')).encode("utf8"))
-            cursor.execute(insertString, (info['name'], info['userid'], md5.hexdigest(),info['email'],0,0))
+            cursor.execute(insertString, (info['name'], info['userid'], md5.hexdigest(),info['email'],0,0,False))
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -176,4 +176,6 @@ def login():
             Errors.append('password error')
 
     info['errors'] = Errors
+    info['isAdmin'] = row[9]
+    info['userID'] = row[1]
     return jsonify(info)

@@ -78,10 +78,16 @@ public class HomePageController extends Main {
                         errorsResultCount++;
                         System.out.print(',' + error);
                     }
+
                     System.out.println();
+
                     if(jsonResponse.errors.length==0){
                         loginResult.setText("Login success! switching to MainApp...");
                         GlobalVariable.accessKey = jsonResponse.accessKey;
+                        GlobalVariable.userID = jsonResponse.userID;
+                        System.out.println(jsonResponse.isAdmin);
+                        if( ! jsonResponse.isAdmin.equals("0"))
+                            GlobalVariable.isAdmin = true;
                         switchToMainApp(actionEvent);
                     }
                     else{

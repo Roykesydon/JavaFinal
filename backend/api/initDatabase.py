@@ -21,6 +21,7 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     accessKey varchar(100),\
     lastAccessTime varchar(100),\
     bad int,good int,\
+    isAdmin bool NOT NULL,\
     PRIMARY KEY (_ID) );")
 connection.commit()
 
