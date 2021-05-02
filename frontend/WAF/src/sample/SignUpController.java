@@ -39,9 +39,11 @@ public class SignUpController
     {
         String password = userPassword.getText();
         String mail = userMail.getText();
+        String id = userID.getText();
+        String name = userName.getText();
         boolean success = true;
 
-        CheckSignUp checkUser = new CheckSignUp(password,mail);
+        CheckSignUp checkUser = new CheckSignUp(password,mail,id,name);
 
         //verify submit form
         if(checkUser.checkPassWord())
@@ -61,6 +63,18 @@ public class SignUpController
         else {
             success = false;
             ckMail.setText("WRONG");
+        }
+        if(checkUser.checkID())
+            ckID.setText("OK");
+        else {
+            success = false;
+            ckID.setText("WRONG");
+        }
+        if(checkUser.checkName())
+            ckName.setText("OK");
+        else {
+            success = false;
+            ckName.setText("WRONG");
         }
 
         //表單格式皆合法

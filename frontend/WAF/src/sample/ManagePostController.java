@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ManagePageController implements Initializable {
+public class ManagePostController implements Initializable {
 
     @FXML
     private JFXHamburger hamburger;
@@ -32,7 +32,12 @@ public class ManagePageController implements Initializable {
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
             drawer.setSidePane(box);
 
-
+            if(GlobalVariable.userEnterFirstTime) {
+                drawer.close();
+                GlobalVariable.userEnterFirstTime = false;
+            }
+            else
+                drawer.open();
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -45,7 +50,7 @@ public class ManagePageController implements Initializable {
                     drawer.open();
             });
         }catch (IOException ex){
-            Logger.getLogger(ManagePageController.class.getName()).log(Level.SEVERE,null,ex);
+            Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }
     }
 }

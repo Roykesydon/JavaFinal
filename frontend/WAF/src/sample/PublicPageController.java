@@ -33,7 +33,12 @@ public class PublicPageController implements Initializable {
                 System.out.println("admin");
             }
             drawer.setSidePane(box);
-
+            if(GlobalVariable.userEnterFirstTime) {
+                drawer.close();
+                GlobalVariable.userEnterFirstTime = false;
+            }
+            else
+                drawer.open();
 
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
