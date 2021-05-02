@@ -24,12 +24,12 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     accessKey varchar(100),\
     lastAccessTime varchar(100),\
     isAdmin bool NOT NULL,\
-    joinPost1 int,\
-    joinPost2 int,\
-    joinPost3 int,\
-    createPost1 int,\
-    createPost2 int,\
-    createPost3 int,\
+    joinPost1 varchar(60),\
+    joinPost2 varchar(60),\
+    joinPost3 varchar(60),\
+    createPost1 varchar(60),\
+    createPost2 varchar(60),\
+    createPost3 varchar(60),\
     PRIMARY KEY (_ID) );")
 connection.commit()
 
@@ -39,5 +39,6 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Posts( \
     category varchar(60) NOT NULL,\
     price varchar(50) NOT NULL,\
     postID varchar(60) NOT NULL,\
+    joinPeopleCount int NOT NULL,\
     PRIMARY KEY (_ID) );")
 connection.commit()

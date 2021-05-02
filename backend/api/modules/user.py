@@ -151,12 +151,14 @@ def login():
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE userID = %s",userid)
     rows = cursor.fetchall()
+    connection.commit()
     Errors = []
     if not len(rows):
         Errors.append('userID doesn\'t exist')
     else:
         cursor.execute("SELECT * from Users WHERE userID = %s",userid)
         rows = cursor.fetchall()
+        connection.commit()
         row = rows[0]
         md5 = hashlib.md5()
         md5.update(passwd.encode("utf8"))
