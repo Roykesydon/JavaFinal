@@ -39,28 +39,42 @@ public class SignUpController
     {
         String password = userPassword.getText();
         String mail = userMail.getText();
+        String id = userID.getText();
+        String name = userName.getText();
         boolean success = true;
 
-        CheckSignUp checkUser = new CheckSignUp(password,mail);
+        CheckSignUp checkUser = new CheckSignUp(password,mail,id,name);
 
         //verify submit form
         if(checkUser.checkPassWord())
             ckPassword.setText("OK");
         else {
             success = false;
-            ckPassword.setText("WRONG");
+            ckPassword.setText("要有大小寫英文以及數字ㄛ～");
         }
         if(password.equals(userPWConfirm.getText()))
             ckPWConfirm.setText("OK");
         else {
             success = false;
-            ckPWConfirm.setText("WRONG");
+            ckPWConfirm.setText("跟上面不一樣ㄛ～");
         }
         if(checkUser.checkMail())
             ckMail.setText("OK");
         else {
             success = false;
-            ckMail.setText("WRONG");
+            ckMail.setText("注意@後面要有.ㄛ～");
+        }
+        if(checkUser.checkID())
+            ckID.setText("OK");
+        else {
+            success = false;
+            ckID.setText("注意要有5~30字且只能有數字加英文ㄛ～");
+        }
+        if(checkUser.checkName())
+            ckName.setText("OK");
+        else {
+            success = false;
+            ckName.setText("注意要有5~50字且只能有數字加英文ㄛ～");
         }
 
         //表單格式皆合法

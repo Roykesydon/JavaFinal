@@ -30,6 +30,12 @@ public class MakeNewPostController implements Initializable {
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
             drawer.setSidePane(box);
 
+            if(GlobalVariable.userEnterFirstTime) {
+                drawer.close();
+                GlobalVariable.userEnterFirstTime = false;
+            }
+            else
+                drawer.open();
 
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
@@ -43,7 +49,7 @@ public class MakeNewPostController implements Initializable {
                     drawer.open();
             });
         }catch (IOException ex){
-            Logger.getLogger(ManagePageController.class.getName()).log(Level.SEVERE,null,ex);
+            Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }
     }
 }
