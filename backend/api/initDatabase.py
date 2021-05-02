@@ -12,6 +12,9 @@ cursor = connection.cursor()
 cursor.execute("DROP TABLE IF EXISTS Users;")
 connection.commit()
 
+cursor.execute("DROP TABLE IF EXISTS Posts;")
+connection.commit()
+
 cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     _ID int  NOT NULL AUTO_INCREMENT,\
     userID varchar(40) NOT NULL,\
@@ -20,8 +23,21 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     password varchar(40) NOT NULL, \
     accessKey varchar(100),\
     lastAccessTime varchar(100),\
-    bad int,good int,\
     isAdmin bool NOT NULL,\
+    joinPost1 int,\
+    joinPost2 int,\
+    joinPost3 int,\
+    createPost1 int,\
+    createPost2 int,\
+    createPost3 int,\
     PRIMARY KEY (_ID) );")
 connection.commit()
 
+cursor.execute("CREATE TABLE IF NOT EXISTS Posts( \
+    _ID int  NOT NULL AUTO_INCREMENT,\
+    creator varchar(40) NOT NULL,\
+    category varchar(60) NOT NULL,\
+    price varchar(50) NOT NULL,\
+    postID varchar(60) NOT NULL,\
+    PRIMARY KEY (_ID) );")
+connection.commit()
