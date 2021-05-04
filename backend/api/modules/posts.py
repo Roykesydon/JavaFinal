@@ -97,8 +97,40 @@ def getOwnPost():
             creator = row[1]
             category = row[2]
             price = row[3]
+            postID = row[4]
             joinPeopleCount = row[5]
-            info['ownPost'].append(creator+","+category+","+str(price)+","+str(joinPeopleCount))
+            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+
+    info['errors'] = errors
+
+    return jsonify(info)
+
+@posts.route('/getAllPost',methods=['POST'])
+def getAllPost():
+
+    info = dict()
+    errors = []
+    info['posts'] = []
+
+    cursor = connection.cursor()
+    
+    try:
+        cursor.execute("SELECT * from Posts")
+        rows = cursor.fetchall()
+        connection.commit()
+    except Exception:
+        traceback.print_exc()
+        connection.rollback()
+        errors.append('getAllPost fail')
+    
+
+    for row in rows:
+        creator = row[1]
+        category = row[2]
+        price = row[3]
+        postID = row[4]
+        joinPeopleCount = row[5]
+        info['posts'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
 
     info['errors'] = errors
 

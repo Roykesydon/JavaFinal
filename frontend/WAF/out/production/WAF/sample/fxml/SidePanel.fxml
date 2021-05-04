@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
       <ImageView fx:id="img" fitHeight="265.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -15,6 +14,6 @@
       <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="149.0" prefWidth="250.0" text="Profile" />
       <JFXButton fx:id="PublicPostBut" onAction="#EnterPublicPost" prefHeight="150.0" prefWidth="250.0" text="PublicPost" />
       <JFXButton fx:id="ManagePostBut" onAction="#EnterManagePost" prefHeight="156.0" prefWidth="250.0" text="ManagePost" />
-      <JFXButton fx:id="AdminBut" onAction="#EnterAdmin" prefHeight="174.0" prefWidth="250.0" text="Admin" />
+      <JFXButton fx:id="MakeNewPostBut" onAction="#EnterMakeNewPost" prefHeight="130.0" prefWidth="250.0" text="MakeNewPost" />
    </children>
 </VBox>
