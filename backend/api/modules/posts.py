@@ -64,6 +64,76 @@ def createPost():
 
     return jsonify(info)
 
+@posts.route('/joinPost',methods=['POST'])
+def joinPost():
+
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+    postID = request.values.get('postID')
+    userID = -1
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    joinPostsSpace = -1
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        row = rows[0]
+        userID = row[1]
+        joinedPosts = [ row[8],row[9],row[10]]
+
+        for index,joinedPost in enumerate(joinedPosts):
+            print(joinedPosts)
+            if joinedPost == postID:
+                errors.append('already join post')
+                break
+
+        for index,joinedPost in enumerate(joinedPosts):
+            if joinedPost == None:
+                joinPostsSpace = index
+                break
+        else:
+            errors.append("can't join more Post")
+
+
+    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    if len(rows) == 0:
+        errors.append("postID don't exist")
+    else:
+        row = rows[0]
+
+        creator = row[1]
+        joinedPeople = row[5]
+
+        if joinedPeople >=10:
+            errors.append('post already full')
+        if creator == userID:
+            errors.append("can't join user's own post")
+
+    info['errors'] = errors
+
+    if len(info['errors'])==0:
+        try:
+            cursor.execute("UPDATE Users SET joinPost"+ str(joinPostsSpace+1)+ " = %sWHERE accessKey = %s",(postID,accessKey))
+            connection.commit()
+            cursor.execute("UPDATE Posts SET joinPeopleCount = %s WHERE PostID = %s",(str(joinedPeople+1),postID))
+            connection.commit()
+        except Exception:
+            traceback.print_exc()
+            connection.rollback()
+            info['errors'] = 'joinPost fail'
+
+    return jsonify(info) 
+
 @posts.route('/getProfileAndOwnPost',methods=['POST'])
 def getOwnPost():
 
@@ -131,6 +201,63 @@ def getAllPost():
         postID = row[4]
         joinPeopleCount = row[5]
         info['posts'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+
+    info['errors'] = errors
+
+    return jsonify(info)
+
+@posts.route('/getOwnAndJoinPost',methods=['POST'])
+def getOwnAndJoinPost():
+
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    joinPostsSpace = -1
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        row = rows[0]
+        info['userID'] = row[1]
+        joinPost=[] 
+        for i in range(3):
+            joinPost.append(row[i+8])
+
+        cursor.execute("SELECT * from Posts WHERE creator = %s",info['userID'])
+        rows = cursor.fetchall()
+        connection.commit()
+
+        info['ownPost'] = []
+        for row in rows:
+            creator = row[1]
+            category = row[2]
+            price = row[3]
+            postID = row[4]
+            joinPeopleCount = row[5]
+            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+            
+        info['joinPost'] = []
+        for postID in joinPost:
+            if postID != None:
+                cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+                rows = cursor.fetchall()
+                connection.commit()
+
+                if len(rows)!=0:
+                    row = rows[0]
+                    creator = row[1]
+                    category = row[2]
+                    price = row[3]
+                    postID = row[4]
+                    joinPeopleCount = row[5]
+                    info['joinPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
 
     info['errors'] = errors
 
