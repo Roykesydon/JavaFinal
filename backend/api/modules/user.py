@@ -181,3 +181,48 @@ def login():
     info['isAdmin'] = row[7]
     info['userID'] = row[1]
     return jsonify(info)
+
+
+class CheckEmail():
+    global connection
+
+    def __init__(self):
+        self.__Errors=[]
+        self.__cursor = connection.cursor()
+
+    def userid(self,str):
+        self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
+        rows = self.__cursor.fetchall()
+        if not len(rows):
+            self.__Errors.append('ID has not found')
+    def getErrors(self):
+        return self.__Errors
+
+
+@user.route('/setIdentityCode',methods=['POST'])
+def setIdentityCode():
+
+    info = dict()
+    errors = []
+    cursor = connection.cursor()
+    userid = request.values.get('userid')
+    cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+    checkEmail=CheckEmail()
+    checkEmail.userid(userid)
+    info['errors'] = checkEmail.getErrors()
+    connection.commit()
+    if len(info['errors'])==0:
+        info['userID'] = userid
+        try:
+            IdentityCode = ""
+            for i in range(6):
+                tmp=random.randint(0,9)
+                IdentityCode += str(tmp)
+
+            cursor.execute("UPDATE Users SET IdentityCode = %s WHERE userID = %s",(IdentityCode,userid))
+            connection.commit()
+        except Exception:
+            traceback.print_exc()
+            connection.rollback()
+            info['errors'] = 'setIdentityCode fail'
+    return jsonify(info)
