@@ -226,3 +226,35 @@ def setIdentityCode():
             connection.rollback()
             info['errors'] = 'setIdentityCode fail'
     return jsonify(info)
+
+def checkPassWord(data):
+    checkForm = CheckForm()
+    checkForm.passwd(data['passwd'])
+    checkForm.passwdConfirm(data['passwd'],data['passwdConfirm'])
+    Errors = checkForm.getErrors()
+    return Errors
+
+
+@user.route('/resetPassword',methods=['POST'])
+def resetPassword():
+    info = dict()
+    errors=[]
+    cursor=connection.cursor()
+    info['userid'] = request.values.get('userid')
+    info['passwd'] = request.values.get('passwd')
+    info['passwdConfirm'] = request.values.get('passwdConfirm')
+    errors = checkPassWord(info)
+    info['errors'] = errors
+    if len(info['errors'])==0:
+        try:
+            md5 = hashlib.md5()
+            md5.update((request.values.get('passwd')).encode("utf8"))
+            cursor.execute("UPDATE Users SET password = %s WHERE userID = %s", (md5.hexdigest(),info['userid']))
+            connection.commit()
+        except Exception:
+            traceback.print_exc()
+            connection.rollback()
+            info['errors'] = 'register fail'
+    del info['passwd']
+    del info['passwdConfirm']
+    return jsonify(info)
