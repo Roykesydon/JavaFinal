@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -123,8 +121,14 @@ public class PublicPageController implements Initializable {
         Button button = new Button(name);
         button.setId(id);
         button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> System.out.println("You Clicked " + button.getId()));
+                e -> buttonFunction(button.getId()));
         return button;
+    }
+
+    public void buttonFunction(String tmp)
+    {
+        //Write button's function here
+        System.out.println("You Clicked " + tmp + " from PublicPage");
     }
 
 
