@@ -10,3 +10,7 @@ backend/api/GMailConfig.yml
 frontend/.idea/
 frontend/WAF/.DS_Store/
 frontend/WAF/WAF.iml
+
+#GUI out
+frontend/out
+frontend/WAF/out
