@@ -361,3 +361,5 @@ def removeUser():
 
     return jsonify(info) 
 
+@posts.route('/deletePost',methods=['POST'])
+def deletePost()

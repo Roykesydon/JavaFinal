@@ -56,3 +56,41 @@ def createNotice():
             info['errors'] = 'createNotice fail'
 
     return jsonify(info)
+
+@notifications.route('/getNewestTenNotice',methods=['POST'])
+def getOwnPost():
+
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    joinPostsSpace = -1
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        row = rows[0]
+        owner = row[1]
+
+        cursor.execute("SELECT * from Posts WHERE creator = %s",info['userID'])
+        rows = cursor.fetchall()
+        connection.commit()
+
+        info['ownPost'] = []
+        for row in rows:
+            creator = row[1]
+            category = row[2]
+            price = row[3]
+            postID = row[4]
+            joinPeopleCount = row[5]
+            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+
+    info['errors'] = errors
+
+    return jsonify(info)
