@@ -7,6 +7,7 @@ name = "pypi"
 flask = "==1.1.2"
 pymysql = "==1.0.2"
 pyyaml = "==5.4.1"
+requests2 = "*"
 
 [dev-packages]
 

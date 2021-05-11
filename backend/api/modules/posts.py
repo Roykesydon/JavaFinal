@@ -3,6 +3,7 @@ from flask import Blueprint,request,jsonify
 import pymysql
 import yaml
 import traceback
+import requests
 
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
@@ -359,4 +360,4 @@ def removeUser():
 
     info['errors'] = errors
 
-    return jsonify(info) 
+    return jsonify(info)
