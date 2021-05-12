@@ -234,6 +234,20 @@ def checkPassWord(data):
     Errors = checkForm.getErrors()
     return Errors
 
+@user.route('/checkIdentityCode',methods=['POST'])
+def checkIdentityCode():
+    info = dict()
+    errors=[]
+    cursor = connection.cursor()
+    userid = request.values.get('userid')
+    IdentityCode=request.values.get('IdentityCode')
+    cursor.execute("SELECT IdentityCode from Users WHERE userID = %s",userid)
+    rows = cursor.fetchall()
+    connection.commit()
+    if rows[0][0]!=IdentityCode:
+        errors.append('IdentityCode error')
+    info['errors']=errors
+    return jsonify(info)
 
 @user.route('/resetPassword',methods=['POST'])
 def resetPassword():
