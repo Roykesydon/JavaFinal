@@ -228,7 +228,7 @@ def getOwnAndJoinPost():
     else:
         row = rows[0]
         info['userID'] = row[1]
-        joinPost=[] 
+        joinPost=[]
         for i in range(3):
             joinPost.append(row[i+8])
 
@@ -243,8 +243,15 @@ def getOwnAndJoinPost():
             price = row[3]
             postID = row[4]
             joinPeopleCount = row[5]
-            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
-            
+            postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
+            for i in range(3):
+                cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                rows = cursor.fetchall()
+                connection.commit()
+                for row in rows:
+                    postDetail += ','+row[1]
+            info['ownPost'].append(postDetail)
+
         info['joinPost'] = []
         for postID in joinPost:
             if postID != None:
@@ -259,7 +266,14 @@ def getOwnAndJoinPost():
                     price = row[3]
                     postID = row[4]
                     joinPeopleCount = row[5]
-                    info['joinPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+                    postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
+                    for i in range(3):
+                        cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                        rows = cursor.fetchall()
+                        connection.commit()
+                        for row in rows:
+                            postDetail += ','+row[1]
+                    info['ownPost'].append(postDetail)
 
     info['errors'] = errors
 
@@ -337,7 +351,7 @@ def removeUser():
                    
         #check if user has auth to remove target:
         if (not isCreator) and removeUserID != userID:
-            errorChainFlag = True 
+            errorChainFlag = True
             errors.append("User doesn't have auth to remove removeUser")
                    
         #update post joined count and remove user data
