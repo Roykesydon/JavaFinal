@@ -1,17 +1,24 @@
 package sample;
 
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.util.EntityUtils;
+import sample.global.GlobalVariable;
+import sample.response.posts.getProfileAndOwnPostResponse;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import sample.response.notice.CheckNoticeResponse;
 public class Main extends Application {
     private Parent root;
 
@@ -25,7 +32,7 @@ public class Main extends Application {
 
         Timer timer = new Timer();
         TimerTask task = new Polling();
-        timer.schedule(task, 1000, 2000);
+        timer.schedule(task, 1000, 1000);
     }
 
     private static void sendNotification(String title,String content) throws AWTException {
@@ -42,18 +49,28 @@ public class Main extends Application {
 
     static private class Polling extends TimerTask
     {
-        public static int i = 0;
         public void run()
         {
-
             try {
-                if(i%5==0) {
-                    Main.sendNotification("testTitle1", "testContent");
+                HttpResponse response = RequestController.post("http://127.0.0.1:13261/notifications/checkNotification",
+                        new String[]{"accessKey", GlobalVariable.accessKey}
+                );
+                String responseString = EntityUtils.toString(response.getEntity());
+
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    Gson gson = new Gson();
+                    CheckNoticeResponse jsonResponse = gson.fromJson(responseString, CheckNoticeResponse.class);
+                    if(jsonResponse.errors.length==0){
+                        Main.sendNotification("WeAreFamily", jsonResponse.message);
+                    }
+
+                } else {
+                    System.out.println(response.getStatusLine());
                 }
-            } catch (AWTException e) {
+            }
+            catch (IOException | AWTException e) {
                 e.printStackTrace();
             }
-            i++;
         }
     }
 
