@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PublicPageController">
     <children>
         <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />
         <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <Label layoutX="732.0" layoutY="337.0" style="-fx-text-fill: white;" text="PublicPost">
+        <Label layoutX="531.0" layoutY="38.0" style="-fx-text-fill: white;" text="PublicPostPage">
             <font>
                 <Font size="53.0" />
             </font>
         </Label>
+      <Label fx:id="getAllPostResult" layoutX="516.0" layoutY="718.0" prefHeight="56.0" prefWidth="648.0" textFill="#c65d5d" />
+      <Label fx:id="postsLabel" layoutX="513.0" layoutY="121.0" prefHeight="549.0" prefWidth="721.0" text="Label" style="-fx-text-fill: white;"/>
+
     </children>
 </AnchorPane>

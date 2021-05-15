@@ -37,6 +37,24 @@ joinPost
 　<input type="submit" value="送出表單">
 </form>
 <hr>
+setIdentityCode
+<form action="http://localhost:13261/user/setIdentityCode" method="post">
+    userid:<input type="text" name="userid"><br>
+　<input type="submit" value="送出表單">
+</form>
+<hr>
+sendEmailTest
+<form action="http://localhost:13261/Email/sendEmail" method="post">
+    userid:<input type="text" name="userid"><br>
+　<input type="submit" value="送出表單">
+</form>
+<hr>
+resetPassWordTest
+<form action="http://localhost:13261/user/resetPassword" method="post">
+    userid:<input type="text" name="userid"><br>
+    passwd:<input name="passwd"></input><br>
+    passwdConfirm:<input name="passwdConfirm"></input><br>
+    <hr>
 getProfileAndOwnPost
 <form action="http://localhost:13261/posts/getProfileAndOwnPost" method="post">
 　  accessKey:<input type="text" name="accessKey"><br>
@@ -59,5 +77,19 @@ removeUser
 　  accessKey:<input type="text" name="accessKey"><br>
     postID:<input type="text" name="postID"><br>
     removeUserID:<input type="text" name="removeUserID"><br>
+　<input type="submit" value="送出表單">
+</form>
+<hr>
+createNotice
+<form action="http://localhost:13261/notifications/createNotice" method="post">
+　  accessKey:<input type="text" name="accessKey"><br>
+    message:<input type="text" name="message"><br>
+　<input type="submit" value="送出表單">
+</form>
+<hr>
+deletePost
+<form action="http://localhost:13261/posts/deletePost" method="post">
+    accessKey:<input type="text" name="accessKey"><br>
+    postID:<input type="text" name="postID"><br>
 　<input type="submit" value="送出表單">
 </form>

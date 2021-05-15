@@ -4,8 +4,13 @@ backend/database/mysql/
 
 #webAPI
 backend/api/config.yml
+backend/api/GMailConfig.yml
 
 #path and jdk
 frontend/.idea/
 frontend/WAF/.DS_Store/
 frontend/WAF/WAF.iml
+
+#GUI out
+frontend/out
+frontend/WAF/out

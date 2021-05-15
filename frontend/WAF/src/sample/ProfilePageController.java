@@ -139,7 +139,7 @@ public class ProfilePageController implements Initializable {
 
     public void buttonFunction(String tmp)
     {
-        //Write button's function here
+        //Write DeleteButton's function here
         System.out.println("You Clicked " + tmp + " from ProfilePage");
     }
 

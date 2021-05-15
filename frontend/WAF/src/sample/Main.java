@@ -6,6 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Main extends Application {
     private Parent root;
 
@@ -17,6 +23,39 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(getRoot(), 1280, 800));
         primaryStage.setResizable(false);
         primaryStage.show();
+
+        Timer timer = new Timer();
+        TimerTask task = new Polling();
+        timer.schedule(task, 1000, 2000);
+    }
+
+    private static void sendNotification(String title,String content) throws AWTException {
+        SystemTray tray = SystemTray.getSystemTray();
+
+        Image image = Toolkit.getDefaultToolkit().createImage("icon1.png");
+
+        TrayIcon trayIcon = new TrayIcon(image, "Polling");
+        trayIcon.setImageAutoSize(true);
+        tray.add(trayIcon);
+        trayIcon.displayMessage(title, content, TrayIcon.MessageType.INFO);
+        tray.remove(trayIcon);
+    }
+
+    static private class Polling extends TimerTask
+    {
+        public static int i = 0;
+        public void run()
+        {
+
+            try {
+                if(i%5==0) {
+                    Main.sendNotification("testTitle1", "testContent");
+                }
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+            i++;
+        }
     }
 
     public Parent setRoot(String root)

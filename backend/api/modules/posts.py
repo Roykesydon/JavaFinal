@@ -3,18 +3,20 @@ from flask import Blueprint,request,jsonify
 import pymysql
 import yaml
 import traceback
+import requests
 
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
 connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
 
-
 posts=Blueprint("posts",__name__)
 
 @posts.route('/')
 def index():
-    return"Posts route"
+    r = requests.get('https://www.google.com.tw/')
+    print(r.status_code)
+    return str(r.status_code)
 
 @posts.route('/createPost',methods=['POST'])
 def createPost():
@@ -296,8 +298,7 @@ def removeUser():
 
         for index,createPost in enumerate(createPosts):
             if createPost == postID:
-                postflag = True
-                isCreator = True
+                errors.append("cannot remove post's creator")
                 break
     
     errorChainFlag=False
@@ -360,3 +361,53 @@ def removeUser():
     info['errors'] = errors
 
     return jsonify(info) 
+
+@posts.route('/deletePost',methods=['POST'])
+def deletePost():
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+    postID = request.values.get('postID')
+   
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        postflag = False
+        isCreator = False
+        postIndex = -1
+        
+        row = rows[0]
+        userID = row[1]
+        createPosts = [row[11],row[12],row[13]]
+        isAdmin = row[7]
+                
+        # check auth        
+        if not isAdmin:
+            for index,createPost in enumerate(createPosts):
+                if createPost == postID:
+                    postflag = True
+                    isCreator = True
+                    break
+        
+            if postflag == False:
+                errors.append("user don't have auth")
+    
+    if len(errors) == 0:
+            for index in range(3):
+                cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
+                connection.commit() 
+            for index in range(3):
+                cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
+                connection.commit()     
+    cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
+    connection.commit()     
+    
+    info['errors'] = errors
+    
+    return jsonify(info)

@@ -127,7 +127,7 @@ public class PublicPageController implements Initializable {
 
     public void buttonFunction(String tmp)
     {
-        //Write button's function here
+        //Write joinButton's function here
         System.out.println("You Clicked " + tmp + " from PublicPage");
     }
 
