@@ -5,18 +5,18 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.posts.MakeNewPostResponse;
 import sample.response.posts.getProfileAndOwnPostResponse;
 
 import java.io.IOException;
@@ -27,6 +27,8 @@ import java.util.logging.Logger;
 
 public class ProfilePageController implements Initializable {
 
+    public VBox postVBox;
+    private Label[] postLabelArr;
     @FXML
     private JFXHamburger hamburger;
 
@@ -112,8 +114,9 @@ public class ProfilePageController implements Initializable {
                         String ownPosts = "";
                         for(String postInfo:jsonResponse.ownPost){
                             ownPosts += postInfo;
+                            ownPosts += ",";
                         }
-                        ownPostsLabel.setText(ownPosts);
+                        renderAllPost(ownPosts,jsonResponse.ownPost.length);
                     }
 
                 } else {
@@ -123,6 +126,55 @@ public class ProfilePageController implements Initializable {
             catch (IOException  e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public Button makeButton(String name, String id)  {
+        Button button = new Button(name);
+        button.setId(id);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> buttonFunction(button.getId()));
+        return button;
+    }
+
+    public void buttonFunction(String tmp)
+    {
+        //Write DeleteButton's function here
+        System.out.println("You Clicked " + tmp + " from ProfilePage");
+    }
+
+    public void renderAllPost(String posts,int postsQuantity)
+    {
+        postLabelArr = new Label[postsQuantity];
+        int postCount = 0;
+        int count = 0;
+        String tmp = "";
+        String postID = "";
+        for (String retval: posts.split(","))
+        {
+            count++;
+            if(count == 5)
+            {
+                tmp += "\n";
+                Label tmpLabel = new Label(tmp);
+                tmpLabel.setFont(new Font(18));
+                tmpLabel.setId(postID);
+                postLabelArr[postCount] = tmpLabel;
+                tmp = "";
+                postCount++;
+                count = 0;
+            }
+            else
+            {
+                if(count == 4)
+                    postID = retval;
+                tmp += retval + " ";
+            }
+        }
+        for(Label aaa:postLabelArr)
+        {
+            Button tmpBut = makeButton("我要刪掉此團！",aaa.getId() + "Button");
+            postVBox.getChildren().addAll(aaa,tmpBut);
         }
     }
 }
