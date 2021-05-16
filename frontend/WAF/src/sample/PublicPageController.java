@@ -17,8 +17,11 @@ import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
 import sample.response.posts.getAllPostResponse;
+import sample.response.setIdentityCodeResponse;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +37,7 @@ public class PublicPageController implements Initializable {
     private JFXDrawer drawer;
     public Label getAllPostResult;
     private Label[] postLabelArr;
+    public Label joinStatusLabel= new Label();
 
     public void initialize(URL url, ResourceBundle rb) {
         HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
@@ -117,18 +121,39 @@ public class PublicPageController implements Initializable {
         }
     }
 
-    public Button makeButton(String name, String id)  {
+    public Button makeButton(String name, String id,String postID)  {
         Button button = new Button(name);
         button.setId(id);
         button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> buttonFunction(button.getId()));
+                e -> buttonFunction(postID));
         return button;
     }
-
-    public void buttonFunction(String tmp)
+    public void buttonFunction(String postID)
     {
-        //Write joinButton's function here
-        System.out.println("You Clicked " + tmp + " from PublicPage");
+        try {
+            HttpResponse response=RequestController.post("http://localhost:13261/posts/joinPost",
+                    new String[]{"accessKey",GlobalVariable.accessKey},
+                    new String[]{"postID",postID}
+            );
+            String responseString= EntityUtils.toString(response.getEntity());
+            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                Gson gson =new Gson();
+                setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                if(Arrays.toString(gsonResponse.errors)=="[]"){
+                    joinStatusLabel.setText("成功!");
+                }
+                else{
+                    joinStatusLabel.setText("失敗!");
+                }
+            }
+            else{
+                System.out.println(response.getStatusLine().getStatusCode());
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        //System.out.println("You Clicked " + tmp + " from PublicPage");
     }
 
 
@@ -162,8 +187,9 @@ public class PublicPageController implements Initializable {
         }
         for(Label aaa:postLabelArr)
         {
-            Button tmpBut = makeButton("我要跟這團！",aaa.getId() + "Button");
+            Button tmpBut = makeButton("我要跟這團！",aaa.getId() + "Button",aaa.getId());
             postVBox.getChildren().addAll(aaa,tmpBut);
         }
+        postVBox.getChildren().add(joinStatusLabel);
     }
 }
