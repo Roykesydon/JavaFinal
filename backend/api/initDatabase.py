@@ -33,6 +33,7 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     createPost1 varchar(60),\
     createPost2 varchar(60),\
     createPost3 varchar(60),\
+    identityCode varchar(6),\
     PRIMARY KEY (_ID) );")
 connection.commit()
 

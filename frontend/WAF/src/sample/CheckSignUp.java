@@ -23,6 +23,9 @@ public class CheckSignUp
         this.userName = name;
     }
 
+    CheckSignUp(String passWord){
+        this.userPassWord = passWord;
+    }
     public boolean checkPassWord()
     {
         try
