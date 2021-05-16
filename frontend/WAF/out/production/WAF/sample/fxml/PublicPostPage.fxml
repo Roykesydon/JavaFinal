@@ -18,7 +18,7 @@
             </font>
         </Label>
       <Label fx:id="getAllPostResult" layoutX="516.0" layoutY="718.0" prefHeight="56.0" prefWidth="648.0" textFill="#c65d5d" />
-      <ScrollPane fx:id="postsScroll" layoutX="276.0" layoutY="128.0" prefHeight="600.0" prefWidth="993.0" style="-fx-background-color: #3c3f41#3c3f41; -fx-border-color: #3c3f41#3c3f41;">
+      <ScrollPane fx:id="postsScroll" layoutX="288.0" layoutY="128.0" prefHeight="600.0" prefWidth="982.0" style="-fx-background-color: #3c3f41#3c3f41; -fx-border-color: #3c3f41#3c3f41;">
          <content>
             <VBox fx:id="postVBox" prefHeight="1073.0" prefWidth="975.0" />
          </content>

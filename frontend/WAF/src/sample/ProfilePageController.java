@@ -156,7 +156,6 @@ public class ProfilePageController implements Initializable {
             if(count == 5)
             {
                 tmp += "\n";
-                System.out.println(tmp);
                 Label tmpLabel = new Label(tmp);
                 tmpLabel.setFont(new Font(18));
                 tmpLabel.setId(postID);
