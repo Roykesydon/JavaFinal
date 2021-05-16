@@ -1,81 +1,120 @@
 package sample;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-//import com.sun.mail.smtp.SMTPTransport;
-//import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.util.EntityUtils;
+import sample.response.setIdentityCodeResponse;
+import sample.response.checkIdentityResponse;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.util.Properties;
+import sample.global.GlobalVariable;
+import java.util.Arrays;
 import java.io.IOException;
-//import javax.mail.Message;
-//import javax.mail.MessagingException;
-//import javax.mail.PasswordAuthentication;
-//import javax.mail.Session;
-//import javax.mail.Transport;
-//import javax.mail.internet.InternetAddress;
-//import javax.mail.internet.MimeMessage;
 
 public class forgotPasswordController {
+    public TextField userIdentityCode, userid;
+    public Label userIdResponse;
+    public void setIdentityCode(ActionEvent actionEvent)  {
+        if(!userid.getText().isEmpty()) {
+            try {
+                HttpResponse response=RequestController.post("http://localhost:13261/user/setIdentityCode",
+                        new String[]{"userid",userid.getText()}
+                );
+                String responseString= EntityUtils.toString(response.getEntity());
+                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                    Gson gson =new Gson();
+                    setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                    if(Arrays.toString(gsonResponse.errors)=="[]"){
+                        sendIdentityCode();
+                    }
+                    else{
+                        userIdResponse.setText((Arrays.toString(gsonResponse.errors)));
+                    }
+                }
+                else{
+                    System.out.println(response.getStatusLine().getStatusCode());
+                    userIdResponse.setText("回應錯誤");
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        else{
+            userIdResponse.setText("請輸入帳號");
+        }
 
-//    public void sendMail() {
-//        String to = "toby3924830@gmail.com";//change accordingly
-//        // Sender's email ID needs to be mentioned
-//        String from = "toby3924830@gmail.com";//change accordingly
-//        final String username = "toby3924830@gmail.com";//change accordingly
-//        final String password = "ekrndkoymfzuvous";//change accordingly
-//        // Assuming you are sending email through relay.jangosmtp.net
-//        String host = "smtp.gmail.com";
-//        Properties props = new Properties();
-//        props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.starttls.enable", "true");
-//        props.put("mail.smtp.host", host);
-//        props.put("mail.smtp.port", "587");
-//
-//        // Get the Session object.
-//        Session session = Session.getInstance(props,
-//                new javax.mail.Authenticator() {
-//                    protected PasswordAuthentication getPasswordAuthentication() {
-//                        return new PasswordAuthentication(username, password);
-//                    }
-//                });
-//        session.setDebug(true);
-//        try {
-//            // Create a default MimeMessage object.
-//            Message message = new MimeMessage(session);
-//
-//            // Set From: header field of the header.
-//            message.setFrom(new InternetAddress(from));
-//
-//            // Set To: header field of the header.
-//            message.setRecipients(Message.RecipientType.TO,
-//                    InternetAddress.parse(to));
-//
-//            // Set Subject: header field
-//            message.setSubject("Testing Subject");
-//
-//            // Now set the actual message
-//            message.setText("Hello, this is sample for to check send "
-//                    + "email using JavaMailAPI ");
-//
-//            // Send message
-//            Transport.send(message);
-//
-//            System.out.println("Sent message successfully....");
-//        } catch (MessagingException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    public void switchToResetPassWord(ActionEvent actionEvent) throws IOException {
-//        sendMail();
-        Parent page =FXMLLoader.load(this.getClass().getResource("fxml/resetPassWord.fxml"));
+    }
+    public void sendIdentityCode(){
+        if(!userid.getText().isEmpty()) {
+            try {
+                HttpResponse response=RequestController.post("http://localhost:13261/Email/sendEmail",
+                    new String[]{"userid",userid.getText()}
+                );
+                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                    userIdResponse.setText("Email寄送成功");
+                }
+                else{
+                    userIdResponse.setText("Email回應錯誤");
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        else{
+            userIdResponse.setText("請輸入帳號");
+        }
+    }
+    public void switchToResetPassWord(ActionEvent actionEvent){
+        if(!userid.getText().isEmpty()) {
+            try {
+                HttpResponse response=RequestController.post("http://localhost:13261/user/checkIdentityCode",
+                        new String[]{"userid",userid.getText()},
+                        new String[]{"IdentityCode",userIdentityCode.getText()}
+                );
+                String responseString= EntityUtils.toString(response.getEntity());
+                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                    Gson gson =new Gson();
+                    checkIdentityResponse gsonResponse = gson.fromJson(responseString,checkIdentityResponse.class);
+                    if(Arrays.toString(gsonResponse.errors)=="[]"){
+                        GlobalVariable.userID=userid.getText();
+                        Parent page =FXMLLoader.load(this.getClass().getResource("fxml/resetPassWord.fxml"));
+                        Scene tmp = new Scene(page);
+                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                        stage.hide();
+                        stage.setScene(tmp);
+                        stage.show();
+                    }
+                    else{
+                        userIdResponse.setText(Arrays.toString(gsonResponse.errors));
+                    }
+                }
+                else{
+                    userIdResponse.setText("驗證碼錯誤");
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        else{
+            userIdResponse.setText("請輸入帳號");
+        }
+    }
+    public void backHomePage(ActionEvent actionEvent) throws IOException {
+        Parent page = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();
+        stage.hide();//switch smoothly
         stage.setScene(tmp);
         stage.show();
     }
-
 }
