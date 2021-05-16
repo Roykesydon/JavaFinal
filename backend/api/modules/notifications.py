@@ -57,7 +57,6 @@ def createNotice():
 
     return jsonify(info)
 
-#施工中
 @notifications.route('/getNewestTenNotice',methods=['POST'])
 def getNewestTenNotice():
     info = dict()
@@ -65,38 +64,36 @@ def getNewestTenNotice():
 
     accessKey = request.values.get('accessKey')
 
+    userID = ""
+
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
     rows = cursor.fetchall()
     connection.commit()
 
-    joinPostsSpace = -1
-
     if len(rows) == 0:
         errors.append("accessKey doesn't exist!")
     else:
         row = rows[0]
-        owner = row[1]
+        userID = row[1]
 
-        cursor.execute("SELECT * from Posts WHERE creator = %s",info['userID'])
+        cursor.execute("SELECT * from Notifications WHERE owner = %s ORDER BY timestamp DESC",userID)
         rows = cursor.fetchall()
         connection.commit()
 
-        info['ownPost'] = []
+        if len(rows)>10:
+            rows=rows[:10]
+
+        info['Notices'] = []
         for row in rows:
-            creator = row[1]
-            category = row[2]
-            price = row[3]
-            postID = row[4]
-            joinPeopleCount = row[5]
-            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+            info['Notices'].append(row[2])
 
     info['errors'] = errors
 
     return jsonify(info)
 
 
-#施工中
+
 #一次polling只會回傳最多一則還未讀的notification
 @notifications.route('/checkNotification',methods=['POST'])
 def checkNotification():
