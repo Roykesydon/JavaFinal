@@ -2,10 +2,13 @@ package sample;
 
 import com.google.gson.Gson;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
@@ -30,6 +33,13 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(getRoot(), 1280, 800));
         primaryStage.setResizable(false);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         Timer timer = new Timer();
         TimerTask task = new Polling();
