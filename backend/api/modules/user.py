@@ -101,7 +101,6 @@ def checkRegisterRequest(data):
 
 
 
-
 user=Blueprint("user",__name__)
 
 @user.route('/')

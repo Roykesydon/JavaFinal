@@ -1,4 +1,5 @@
 # blog.py
+from os import error
 from flask import Blueprint,request,jsonify
 import pymysql
 import yaml
@@ -228,7 +229,7 @@ def getOwnAndJoinPost():
     else:
         row = rows[0]
         info['userID'] = row[1]
-        joinPost=[] 
+        joinPost=[]
         for i in range(3):
             joinPost.append(row[i+8])
 
@@ -243,8 +244,15 @@ def getOwnAndJoinPost():
             price = row[3]
             postID = row[4]
             joinPeopleCount = row[5]
-            info['ownPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
-            
+            postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
+            for i in range(3):
+                cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                rows = cursor.fetchall()
+                connection.commit()
+                for row in rows:
+                    postDetail += ','+row[1]
+            info['ownPost'].append(postDetail)
+
         info['joinPost'] = []
         for postID in joinPost:
             if postID != None:
@@ -259,7 +267,14 @@ def getOwnAndJoinPost():
                     price = row[3]
                     postID = row[4]
                     joinPeopleCount = row[5]
-                    info['joinPost'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
+                    postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
+                    for i in range(3):
+                        cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                        rows = cursor.fetchall()
+                        connection.commit()
+                        for row in rows:
+                            postDetail += ','+row[1]
+                    info['ownPost'].append(postDetail)
 
     info['errors'] = errors
 
@@ -337,7 +352,7 @@ def removeUser():
                    
         #check if user has auth to remove target:
         if (not isCreator) and removeUserID != userID:
-            errorChainFlag = True 
+            errorChainFlag = True
             errors.append("User doesn't have auth to remove removeUser")
                    
         #update post joined count and remove user data
@@ -347,7 +362,7 @@ def removeUser():
                 cursor.execute("UPDATE Users SET joinPost"+str(removeUserPostIndex)+" = %s WHERE userID = %s",(None,removeUserID))
                 connection.commit() 
                 cursor.execute("UPDATE Posts SET joinPeopleCount = %s WHERE postID = %s",(str(joinPeopleCount-1),postID))
-                connection.commit() 
+                connection.commit()
             except Exception:
                 traceback.print_exc()
                 connection.rollback()
@@ -369,7 +384,7 @@ def deletePost():
 
     accessKey = request.values.get('accessKey')
     postID = request.values.get('postID')
-   
+
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
     rows = cursor.fetchall()
@@ -381,33 +396,119 @@ def deletePost():
         postflag = False
         isCreator = False
         postIndex = -1
-        
+
         row = rows[0]
         userID = row[1]
         createPosts = [row[11],row[12],row[13]]
         isAdmin = row[7]
-                
-        # check auth        
+
+        # check auth
         if not isAdmin:
             for index,createPost in enumerate(createPosts):
                 if createPost == postID:
                     postflag = True
                     isCreator = True
                     break
-        
+
             if postflag == False:
                 errors.append("user don't have auth")
-    
+
     if len(errors) == 0:
-            for index in range(3):
-                cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
-                connection.commit() 
-            for index in range(3):
-                cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
-                connection.commit()     
+        for index in range(3):
+            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
+            connection.commit()
+        for index in range(3):
+            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
+            connection.commit()
     cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
-    connection.commit()     
-    
+    connection.commit()
+
     info['errors'] = errors
-    
+
+    return jsonify(info)
+
+@posts.route('/completePost',methods=['POST'])
+def completePost():
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+    postID = request.values.get('postID')
+    chooseList = request.values.get('chooseList')
+    chooseList = chooseList.split(',')
+
+    creatorEmail = ""
+    postCategory = ""
+    price = ""
+
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    rows = cursor.fetchall()
+    connection.commit()
+    if len(rows)==0:
+        errors.append("post doesn't exist")
+    else:
+        row = rows[0]
+        postCategory = row[2]
+        price = row[3]
+
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        row = rows[0]
+        createPost = [row[11],row[12],row[13]]
+        creatorEmail = row[3]
+        if postID not in createPost:
+            errors.append("don't own the post")
+
+    if len(errors)==0:
+        for chooseUser in chooseList:
+            cursor.execute("SELECT * from Users WHERE userID = %s",chooseUser)
+            rows = cursor.fetchall()
+            connection.commit()
+            if len(rows)==0:
+                errors.append("can't find choose user")
+                break
+            else:
+                row = rows[0]
+                joinPost = [row[8],row[9],row[10]]
+                if postID not in joinPost:
+                    errors.append("choose list has person not in post")
+                    break
+
+    # sendNotice,deletePost
+
+    if len(errors) == 0:
+        for index in range(3):
+            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %s",postID)
+            rows = cursor.fetchall()
+            connection.commit()
+            for row in rows:
+                userID = row[1]
+                userAccessKey = row[5]
+                if userID in chooseList:
+                    para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" "+price+"\nowner email:"+creatorEmail}
+                    r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
+                else:
+                    para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" "+price}
+                    r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
+        para = {'accessKey':accessKey,'message':'Match successfully\nAlready send your email to people you chose\n'+postCategory+" "+price}
+        r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
+
+        for index in range(3):
+            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
+            connection.commit()
+        for index in range(3):
+            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
+            connection.commit()
+        cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
+        connection.commit()
+
+    info['errors'] = errors
+
     return jsonify(info)
