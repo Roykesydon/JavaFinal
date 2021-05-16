@@ -44,7 +44,8 @@ public class resetPassWordController implements Initializable {
                 if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
                     Gson gson =new Gson();
                     resetPassWordResponse gsonResponse = gson.fromJson(responseString,resetPassWordResponse.class);
-                    if(Arrays.toString(gsonResponse.errors)=="[]"){
+                    CheckSignUp checkPassWord = new CheckSignUp(newPassWord.getText());
+                    if(Arrays.toString(gsonResponse.errors)=="[]"&&checkPassWord.checkPassWord()==true){
                         resetResponse.setText("修改成功");
                         Parent page = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
                         Scene tmp = new Scene(page);
@@ -54,19 +55,13 @@ public class resetPassWordController implements Initializable {
                         stage.show();
                     }
                     else{
-                        if(Arrays.toString(gsonResponse.errors)=="[password length error]"){
-                            resetResponse.setText("長度錯誤");
+                        if(!checkPassWord.checkPassWord()){
+                            resetResponse.setText("需有大小寫英文以及數字");
                         }
-                        else if(Arrays.toString(gsonResponse.errors)=="[passwd has illegal characters]"){
-                            resetResponse.setText("密碼不可含非法字元");
+                        if(!newPassWord.getText().equals(confirmPassWord.getText())){
+                            resetResponse.setText("與密碼不同");
                         }
-                        else if(Arrays.toString(gsonResponse.errors)=="[password diffrent from passwordConfirm]"){
-                            resetResponse.setText("確認密碼與密碼不符");
-                        }
-                        else{
-                            resetResponse.setText(Arrays.toString(gsonResponse.errors));
-                            System.out.println(Arrays.toString(gsonResponse.errors));
-                        }
+                        System.out.println(Arrays.toString(gsonResponse.errors));
                     }
                 }
                 else{
