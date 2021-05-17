@@ -27,11 +27,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        GlobalVariable.mainStage = primaryStage;
         primaryStage.setTitle("We Are Family");
 //        Parent root = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
         this.root = setRoot("fxml/HomePage.fxml");
         primaryStage.setScene(new Scene(getRoot(), 1280, 800));
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new javafx.scene.image.Image("/sample/css/WAF.png"));
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -44,6 +46,7 @@ public class Main extends Application {
         Timer timer = new Timer();
         TimerTask task = new Polling();
         timer.schedule(task, 1000, 1000);
+
     }
 
     private static void sendNotification(String title,String content) throws AWTException {

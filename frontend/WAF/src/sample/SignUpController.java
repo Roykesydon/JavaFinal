@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import sample.global.GlobalVariable;
 import sample.response.registerResponse;
 import sample.RequestController;
 
@@ -46,35 +47,50 @@ public class SignUpController
         CheckSignUp checkUser = new CheckSignUp(password,mail,id,name);
 
         //verify submit form
-        if(checkUser.checkPassWord())
+        if(checkUser.checkPassWord()) {
             ckPassword.setText("OK");
+            ckPassword.setStyle("-fx-text-fill: #00dd77;");
+        }
         else {
             success = false;
-            ckPassword.setText("要有大小寫英文以及數字ㄛ～");
+            ckPassword.setText("請輸入至少個別一大、小寫英文與數字");
+            ckPassword.setStyle("-fx-text-fill: #ea4141;");
         }
-        if(password.equals(userPWConfirm.getText()))
+        if(password.equals(userPWConfirm.getText())) {
             ckPWConfirm.setText("OK");
+            ckPWConfirm.setStyle("-fx-text-fill: #00dd77;");
+        }
         else {
             success = false;
-            ckPWConfirm.setText("跟上面不一樣ㄛ～");
+            ckPWConfirm.setText("與原密碼不符");
+            ckPWConfirm.setStyle("-fx-text-fill: #ea4141;");
         }
-        if(checkUser.checkMail())
+        if(checkUser.checkMail()) {
             ckMail.setText("OK");
+            ckMail.setStyle("-fx-text-fill: #00dd77;");
+        }
         else {
             success = false;
-            ckMail.setText("注意@後面要有.ㄛ～");
+            ckMail.setText("請輸入正確的信箱格式");
+            ckMail.setStyle("-fx-text-fill: #ea4141;");
         }
-        if(checkUser.checkID())
+        if(checkUser.checkID()) {
             ckID.setText("OK");
-        else {
-            success = false;
-            ckID.setText("注意要有5~30字且只能有數字加英文ㄛ～");
+            ckID.setStyle("-fx-text-fill: #00dd77;");
         }
-        if(checkUser.checkName())
-            ckName.setText("OK");
         else {
             success = false;
-            ckName.setText("注意要有5~50字且只能有數字加英文ㄛ～");
+            ckID.setText("只能有數字和英文，且限於5~30字");
+            ckID.setStyle("-fx-text-fill: #ea4141;");
+        }
+        if(checkUser.checkName()) {
+            ckName.setText("OK");
+            ckName.setStyle("-fx-text-fill: #00dd77;");
+        }
+        else {
+            success = false;
+            ckName.setText("只能有數字和英文，且限於5~50字");
+            ckName.setStyle("-fx-text-fill: #ea4141;");
         }
 
         //表單格式皆合法
@@ -102,6 +118,7 @@ public class SignUpController
                     if(jsonResponse.errors.length==0){
                         registerResult.setText("Register success! switching to HomePage...");
                         backHomePage(actionEvent);
+                        ToastCaller toast = new ToastCaller("Register Success!", GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
                     else{
                         registerResult.setText("Register fail");

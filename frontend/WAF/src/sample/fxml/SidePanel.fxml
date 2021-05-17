@@ -6,9 +6,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
-      <ImageView fx:id="img" fitHeight="265.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="img" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../css/icon1.png" />
+            <Image url="@../css/square_logo.png" />
          </image>
       </ImageView>
       <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="149.0" prefWidth="250.0" text="Profile" />

@@ -52,7 +52,8 @@ class CheckForm():
             self.__Errors.append('password diffrent from passwordConfirm')
 
     def email(self,str):
-        if not re.search(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",str):
+        # if not re.search(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",str):
+        if not re.search(r"^[A-Za-z0-9]+@+[A-Za-z0-9]+[.-]+[A-Za-z0-9]+$",str):
             self.__Errors.append('email format error')
 
     def getErrors(self):
