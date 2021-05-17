@@ -76,6 +76,12 @@ public class HomePageController extends Main {
 
                         errorsResult += error;
                         errorsResultCount++;
+
+                        ToastCaller toast;
+                        if(error.equals("password error"))
+                            toast = new ToastCaller("密碼輸入錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if(error.equals("userID doesn't exist"))
+                            toast = new ToastCaller("User ID不存在", GlobalVariable.mainStage,ToastCaller.ERROR);
                         System.out.print(',' + error);
                     }
 
@@ -91,7 +97,7 @@ public class HomePageController extends Main {
                         switchToMainApp(actionEvent);
                     }
                     else{
-                        loginResult.setText(errorsResult);
+//                      loginResult.setText(errorsResult);
                     }
                 } else {
                     System.out.println(response.getStatusLine());
