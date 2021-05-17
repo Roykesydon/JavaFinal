@@ -76,6 +76,9 @@ def joinPost():
     accessKey = request.values.get('accessKey')
     postID = request.values.get('postID')
     userID = -1
+    creator=""
+    postCategory = ""
+    price = ""
 
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
@@ -113,7 +116,8 @@ def joinPost():
         errors.append("postID don't exist")
     else:
         row = rows[0]
-
+        postCategory = row[2]
+        price = row[3]
         creator = row[1]
         joinedPeople = row[5]
 
@@ -135,7 +139,17 @@ def joinPost():
             connection.rollback()
             info['errors'] = 'joinPost fail'
 
-    return jsonify(info) 
+    #send notice
+    if joinedPeople == 9:
+        cursor.execute("SELECT * from Users WHERE userID = %s",creator)
+        rows = cursor.fetchall()
+        connection.commit()
+        row = rows[0]
+        creatorAccesskey = row[5]
+        para = {'accessKey':creatorAccesskey,'message':'Your post queue is full\n'+postCategory+" "+price+" NT"}
+        r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
+
+    return jsonify(info)
 
 @posts.route('/getProfileAndOwnPost',methods=['POST'])
 def getOwnPost():
@@ -366,7 +380,7 @@ def removeUser():
             except Exception:
                 traceback.print_exc()
                 connection.rollback()
-                errors.append('updatePostData fail') 
+                errors.append('updatePostData fail')
             
             
     else:
@@ -385,7 +399,23 @@ def deletePost():
     accessKey = request.values.get('accessKey')
     postID = request.values.get('postID')
 
+
+    postCategory = ""
+    price = ""
+    ownerID=""
+
     cursor = connection.cursor()
+
+    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    rows = cursor.fetchall()
+    connection.commit()
+    if len(rows)==0:
+        errors.append("post doesn't exist")
+    else:
+        row = rows[0]
+        postCategory = row[2]
+        price = row[3]
+
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
     rows = cursor.fetchall()
     connection.commit()
@@ -398,7 +428,7 @@ def deletePost():
         postIndex = -1
 
         row = rows[0]
-        userID = row[1]
+        ownerID = row[1]
         createPosts = [row[11],row[12],row[13]]
         isAdmin = row[7]
 
@@ -415,11 +445,24 @@ def deletePost():
 
     if len(errors) == 0:
         for index in range(3):
+            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %s",postID)
+            rows = cursor.fetchall()
+            connection.commit()
+            for row in rows:
+                userID = row[1]
+                userAccessKey = row[5]
+                para = {'accessKey':userAccessKey,'message':'Post been deleted\n'+postCategory+" "+price+" NT\nowner ID:"+ownerID}
+                r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
+
+    if len(errors) == 0:
+        for index in range(3):
             cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
             connection.commit()
         for index in range(3):
             cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
             connection.commit()
+
+
     cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
     connection.commit()
 
@@ -440,6 +483,7 @@ def completePost():
     creatorEmail = ""
     postCategory = ""
     price = ""
+    ownerID = ""
 
     cursor = connection.cursor()
 
@@ -461,6 +505,7 @@ def completePost():
         errors.append("accessKey doesn't exist!")
     else:
         row = rows[0]
+        ownerID = row[1]
         createPost = [row[11],row[12],row[13]]
         creatorEmail = row[3]
         if postID not in createPost:
@@ -492,12 +537,12 @@ def completePost():
                 userID = row[1]
                 userAccessKey = row[5]
                 if userID in chooseList:
-                    para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" "+price+"\nowner email:"+creatorEmail}
+                    para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" "+price+" NT\nowner email:"+creatorEmail}
                     r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
                 else:
-                    para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" "+price}
+                    para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" "+price+" NT\nowner ID:"+ownerID}
                     r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
-        para = {'accessKey':accessKey,'message':'Match successfully\nAlready send your email to people you chose\n'+postCategory+" "+price}
+        para = {'accessKey':accessKey,'message':'Match successfully\nAlready send your email to people you chose\n'+postCategory+" "+price +" NT"}
         r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
 
         for index in range(3):

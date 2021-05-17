@@ -175,10 +175,10 @@ def login():
                 Errors.append('login error')
         else:
             Errors.append('password error')
+        info['isAdmin'] = row[7]
+        info['userID'] = row[1]
 
     info['errors'] = Errors
-    info['isAdmin'] = row[7]
-    info['userID'] = row[1]
     return jsonify(info)
 
 
@@ -218,6 +218,7 @@ def setIdentityCode():
                 tmp=random.randint(0,9)
                 IdentityCode += str(tmp)
 
+            print(IdentityCode)
             cursor.execute("UPDATE Users SET IdentityCode = %s WHERE userID = %s",(IdentityCode,userid))
             connection.commit()
         except Exception:
