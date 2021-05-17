@@ -462,9 +462,9 @@ def deletePost():
             cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
             connection.commit()
 
-
-    cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
-    connection.commit()
+    if len(errors) == 0:
+        cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
+        connection.commit()
 
     info['errors'] = errors
 
