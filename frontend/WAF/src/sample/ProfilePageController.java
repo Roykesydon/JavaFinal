@@ -88,7 +88,7 @@ public class ProfilePageController implements Initializable {
     {
 
         boolean success = true;
-        postVBox.setPadding(new Insets(20, 40, 20, 20));
+        postVBox.setPadding(new Insets(20, 50, 20, 10));
         postVBox.setSpacing(20);
         //表單格式皆合法
         if(success){
