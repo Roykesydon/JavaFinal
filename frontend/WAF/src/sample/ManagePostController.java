@@ -121,7 +121,7 @@ public class ManagePostController implements Initializable {
                         String ownPosts = "";
                         for(String postInfo:jsonResponse.ownPost){
                             ownPosts += postInfo;
-                            ownPosts += ",";
+                            ownPosts += "=";
                         }
                         //create class variable to use renderAllPost method in update scene
                         classOwnPost = ownPosts;
@@ -186,26 +186,30 @@ public class ManagePostController implements Initializable {
         postLabelArr = new Label[postsQuantity];
         String tmp = "";
         String postID = "";
-        for (String retval: posts.split(","))
+        for (String retval: posts.split("="))
         {
-            count++;
-            if(count == 5)
-            {
-                tmp += "\n";
-                Label tmpLabel = new Label(tmp);
-                tmpLabel.setFont(new Font(18));
-                tmpLabel.setId(postID);
-                postLabelArr[postCount] = tmpLabel;
-                tmp = "";
-                postCount++;
-                count = 0;
-            }
-            else
-            {
-                if(count == 4)
-                    postID = retval;
-                tmp += retval + " ";
-            }
+//            count++;
+//            if(count == 5)
+//            {
+//                tmp += "\n";
+//                Label tmpLabel = new Label(tmp);
+//                tmpLabel.setFont(new Font(18));
+//                tmpLabel.setId(postID);
+//                postLabelArr[postCount] = tmpLabel;
+//                tmp = "";
+//                postCount++;
+//                count = 0;
+//            }
+//            else
+//            {
+//                if(count == 4)
+//                    postID = retval;
+//                tmp += retval + " ";
+//            }
+            Label tmpLabel = new Label(retval+"\n");
+            tmpLabel.setFont(new Font(18));
+            tmpLabel.setId(postID);
+            postLabelArr[postCount++]=tmpLabel;
         }
         for(Label aaa:postLabelArr)
         {

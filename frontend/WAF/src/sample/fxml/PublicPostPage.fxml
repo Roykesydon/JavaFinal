@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorpane" stylesheets="@../css/publicPost.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PublicPageController">
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" stylesheets="@../css/publicPost.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PublicPageController">
     <children>
         <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />
         <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <Label layoutX="531.0" layoutY="38.0" style="-fx-text-fill: white;" text="PublicPostPage">
+        <Label layoutX="284.0" layoutY="69.0" style="-fx-text-fill: white;" text="PublicPostPage">
             <font>
                 <Font size="53.0" />
             </font>
         </Label>
       <Label fx:id="getAllPostResult" layoutX="516.0" layoutY="718.0" prefHeight="56.0" prefWidth="648.0" textFill="#c65d5d" />
-      <ScrollPane fx:id="postsScroll" layoutX="288.0" layoutY="128.0" prefHeight="600.0" prefWidth="982.0" style="-fx-background-color: #3c3f41#3c3f41; -fx-border-color: #3c3f41#3c3f41;">
+      <ScrollPane fx:id="postsScroll" layoutX="284.0" layoutY="186.0" prefHeight="552.0" prefWidth="982.0" style="-fx-background-color: #323232; -fx-border-color: #323232;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);-fx-background: rgb(50,50,50);">
          <content>
-            <VBox fx:id="postVBox" prefHeight="1073.0" prefWidth="975.0" />
+            <VBox fx:id="postVBox" prefHeight="548.0" prefWidth="962.0" />
          </content>
       </ScrollPane>
+      <Button fx:id="filterBtn" layoutX="1125.0" layoutY="87.0" mnemonicParsing="false" onAction="#filterPost" prefHeight="50.0" prefWidth="111.0" text="搜尋">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <ComboBox fx:id="categoryComboBox" layoutX="787.0" layoutY="87.0" prefHeight="50.0" prefWidth="297.0" />
 
     </children>
 </AnchorPane>

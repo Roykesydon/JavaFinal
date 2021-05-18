@@ -39,7 +39,7 @@ public class ToastCaller {
                     @Override
                     public void run() {
 
-                        FadeTransition ft = new FadeTransition(Duration.millis(500),label);
+                        FadeTransition ft = new FadeTransition(Duration.millis(250),label);
                         ft.setFromValue(1.0);
                         ft.setToValue(0.0);
                         ft.play();
@@ -50,11 +50,11 @@ public class ToastCaller {
                     public void run() {
                         Platform.runLater(()->toastStage.close());
                     }
-                }, 2500);
+                }, 2250);
 
                 toastStage.setX(mainStage.getX()+mainStage.getHeight()/2);
                 toastStage.setY(mainStage.getY()+mainStage.getWidth()/2);
-                FadeTransition ft = new FadeTransition(Duration.millis(500),label);
+                FadeTransition ft = new FadeTransition(Duration.millis(250),label);
                 ft.setFromValue(0.0);
                 ft.setToValue(1.0);
                 ft.play();
