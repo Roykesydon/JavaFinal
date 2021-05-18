@@ -191,7 +191,7 @@ class CheckEmail():
         self.__cursor = connection.cursor()
 
     def userid(self,str):
-        self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
+        self.__cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
         rows = self.__cursor.fetchall()
         if not len(rows):
             self.__Errors.append('ID has not found')
@@ -201,12 +201,10 @@ class CheckEmail():
 
 @user.route('/setIdentityCode',methods=['POST'])
 def setIdentityCode():
-
     info = dict()
-    errors = []
     cursor = connection.cursor()
     userid = request.values.get('userid')
-    cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+    cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':userid})
     checkEmail=CheckEmail()
     checkEmail.userid(userid)
     info['errors'] = checkEmail.getErrors()
@@ -216,11 +214,17 @@ def setIdentityCode():
         try:
             IdentityCode = ""
             for i in range(6):
-                tmp=random.randint(0,9)
-                IdentityCode += str(tmp)
-
-            print(IdentityCode)
-            cursor.execute("UPDATE Users SET IdentityCode = %s WHERE userID = %s",(IdentityCode,userid))
+                tmp=random.randint(0,2)
+                if tmp==0:
+                    tmp=random.randint(0,9)
+                    IdentityCode += str(tmp)
+                elif tmp==1:
+                    tmp=random.randint(65,90)
+                    IdentityCode += chr(tmp)
+                else :
+                    tmp=random.randint(97,122)
+                    IdentityCode += chr(tmp)
+            cursor.execute("UPDATE Users SET IdentityCode = %(IdentityCode)s WHERE userID = %(userID)s",{'IdentityCode':IdentityCode,'userID':userid})
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -242,11 +246,18 @@ def checkIdentityCode():
     cursor = connection.cursor()
     userid = request.values.get('userid')
     IdentityCode=request.values.get('IdentityCode')
-    cursor.execute("SELECT IdentityCode from Users WHERE userID = %s",userid)
+    cursor.execute("SELECT IdentityCode from Users WHERE userID = %(userID)s",{'userID':userid})
     rows = cursor.fetchall()
     connection.commit()
     if rows[0][0]!=IdentityCode:
         errors.append('IdentityCode error')
+    else:
+        accessKey = ''.join(random.choices(string.ascii_letters + string.digits, k = 16))+'-'+userid
+        now = datetime.datetime.today()
+        now = now.strftime('%Y-%m-%d')
+        cursor.execute("UPDATE Users SET accessKey = %(accessKey)s, lastAccessTime = %(lastAccessTime)s WHERE userID = %(userID)s",{'accessKey':accessKey,'lastAccessTime':now,'userID':userid})
+        connection.commit()
+        info['accessKey']=accessKey
     info['errors']=errors
     return jsonify(info)
 
@@ -255,16 +266,22 @@ def resetPassword():
     info = dict()
     errors=[]
     cursor=connection.cursor()
-    info['userid'] = request.values.get('userid')
     info['passwd'] = request.values.get('passwd')
     info['passwdConfirm'] = request.values.get('passwdConfirm')
+    info['accessKey'] = request.values.get('accessKey')
     errors = checkPassWord(info)
+    cursor.execute("SELECT userID from Users WHERE accessKey = %(accessKey)s",{'accessKey':info['accessKey']})
+    rows = cursor.fetchall()
+    connection.commit()
+    if not len(rows):
+        errors.append('not pass identityCode yet!')
+    cursor.fetchall
     info['errors'] = errors
     if len(info['errors'])==0:
         try:
             md5 = hashlib.md5()
             md5.update((request.values.get('passwd')).encode("utf8"))
-            cursor.execute("UPDATE Users SET password = %s WHERE userID = %s", (md5.hexdigest(),info['userid']))
+            cursor.execute("UPDATE Users SET password = %(password)s WHERE accessKey = %(accessKey)s", {'password':md5.hexdigest(),'accessKey':info['accessKey']})
             connection.commit()
         except Exception:
             traceback.print_exc()
