@@ -2,6 +2,7 @@ package sample;
 
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -188,15 +189,18 @@ public class ManagePostController implements Initializable {
         String chooseList = "";
         for( Node element : managePostVBox.getChildren())
         {
-            if(element instanceof JFXCheckBox)
-                if(element.getId().equals(postID))
-                    if(((JFXCheckBox) element).isSelected())
-                    {
-                        tmpList += ((JFXCheckBox) element).getText();
-                        tmpList += ",";
-                    }
+            if(element instanceof VBox)
+                for( Node checkBox : ((VBox) element).getChildren())
+                {
+                    if(checkBox instanceof JFXCheckBox)
+                        if(checkBox.getId().equals(postID))
+                            if(((JFXCheckBox) checkBox).isSelected())
+                            {
+                                tmpList += ((JFXCheckBox) checkBox).getText();
+                                tmpList += ",";
+                            }
+                }
         }
-
         if(!tmpList.equals(""))
         {
             if(tmpList.charAt(tmpList.length() - 1) == ',')
