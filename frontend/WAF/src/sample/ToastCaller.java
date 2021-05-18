@@ -22,40 +22,46 @@ public class ToastCaller {
     public final static int SUCCESS = 1;
     public final static int ERROR = 2;
     public ToastCaller(String message,Stage mainStage,int toastType) {
-        Stage toastStage = new Stage();
-        toastStage.initStyle(StageStyle.TRANSPARENT);
-        Label label= setLabelInfo(message,toastType);
-
-        Scene scene=new Scene(label);
-        scene.setFill(null);
-
-        toastStage.setScene(scene);
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                Stage toastStage = new Stage();
+                toastStage.initStyle(StageStyle.TRANSPARENT);
+                Label label= setLabelInfo(message,toastType);
 
+                Scene scene=new Scene(label);
+                scene.setFill(null);
+
+                toastStage.setScene(scene);
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        FadeTransition ft = new FadeTransition(Duration.millis(500),label);
+                        ft.setFromValue(1.0);
+                        ft.setToValue(0.0);
+                        ft.play();
+                    }
+                }, 2000);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(()->toastStage.close());
+                    }
+                }, 2500);
+
+                toastStage.setX(mainStage.getX()+mainStage.getHeight()/2);
+                toastStage.setY(mainStage.getY()+mainStage.getWidth()/2);
                 FadeTransition ft = new FadeTransition(Duration.millis(500),label);
-                ft.setFromValue(1.0);
-                ft.setToValue(0.0);
+                ft.setFromValue(0.0);
+                ft.setToValue(1.0);
                 ft.play();
+                toastStage.show();
             }
-        }, 2000);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(()->toastStage.close());
-            }
-        }, 2500);
+        });
 
-        toastStage.setX(mainStage.getX()+mainStage.getHeight()/2);
-        toastStage.setY(mainStage.getY()+mainStage.getWidth()/2);
-        FadeTransition ft = new FadeTransition(Duration.millis(500),label);
-        ft.setFromValue(0.0);
-        ft.setToValue(1.0);
-        ft.play();
-        toastStage.show();
     }
     public Label setLabelInfo(String message,int toastType){
         Label label = new Label();

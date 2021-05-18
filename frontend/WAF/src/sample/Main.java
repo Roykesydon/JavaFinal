@@ -24,7 +24,7 @@ import java.util.TimerTask;
 import sample.response.notice.CheckNoticeResponse;
 public class Main extends Application {
     private Parent root;
-
+    public static int connectErrorCount;
     @Override
     public void start(Stage primaryStage) throws Exception{
         GlobalVariable.mainStage = primaryStage;
@@ -61,7 +61,7 @@ public class Main extends Application {
         tray.remove(trayIcon);
     }
 
-    static private class Polling extends TimerTask
+    private static class Polling extends TimerTask
     {
         public void run()
         {
@@ -83,6 +83,11 @@ public class Main extends Application {
                 }
             }
             catch (IOException | AWTException e) {
+                ToastCaller toast;
+                if(Main.connectErrorCount==0)
+                    toast = new ToastCaller("無法與伺服器連線",GlobalVariable.mainStage,ToastCaller.ERROR);
+                Main.connectErrorCount++;
+                Main.connectErrorCount%=10;
                 e.printStackTrace();
             }
         }
