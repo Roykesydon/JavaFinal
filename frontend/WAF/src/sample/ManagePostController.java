@@ -9,43 +9,37 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
 import sample.response.posts.getProfileAndOwnPostResponse;
+import sample.response.setIdentityCodeResponse;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ManagePostController implements Initializable {
 
     public VBox managePostVBox;
-    public GridPane checkBoxPane;
     @FXML
     private JFXHamburger hamburger;
 
     @FXML
     private JFXDrawer drawer;
-    private Label[] postLabelArr;
-    private String[] testingJoinUser = {"A","B","C","D","E","F","G","H","I","J"};
-    JFXCheckBox tmpCheckBox[] = new JFXCheckBox[10];
-    List<JFXCheckBox> checkBoxList = new ArrayList<>();
-    private String classOwnPost;
     private getProfileAndOwnPostResponse classJsonResponse;
-    private List<Integer> countJoinUser = new ArrayList<>();
+    private Label deleteStatusLabel;
+    private Label choosePeopleStatusLabel;
+    private List<String> postData = new ArrayList<>();
 
 
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,15 +71,15 @@ public class ManagePostController implements Initializable {
         }
         /* catch relative post from method */
         try {
-            getProfileAndOwnPost();
+            getOwnAndJoinPost();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void getProfileAndOwnPost() throws IOException
+    public void getOwnAndJoinPost() throws IOException
     {
-
+        postData.clear();
         boolean success = true;
 
         //表單格式皆合法
@@ -120,12 +114,9 @@ public class ManagePostController implements Initializable {
                     if(jsonResponse.errors.length==0){
                         String ownPosts = "";
                         for(String postInfo:jsonResponse.ownPost){
-                            ownPosts += postInfo;
-                            ownPosts += ",";
+                            postData.add(postInfo);
                         }
-                        //create class variable to use renderAllPost method in update scene
-                        classOwnPost = ownPosts;
-                        renderAllPost(classOwnPost,classJsonResponse.ownPost.length);
+                        renderAllPost(postData,classJsonResponse.ownPost.length);
                     }
 
                 } else {
@@ -138,91 +129,157 @@ public class ManagePostController implements Initializable {
         }
     }
 
-    public Button makeButton(String name, String id)  {
+    public Button makeButton(String name, String id, String postID)  {
         Button button = new Button(name);
         button.setId(id);
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> buttonFunction(button.getId()));
+        if(name.equals("我要選這些人！"))
+        {
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    e -> choosePeopleFunction(postID));
+        }
+        else if(name.equals("刪除此貼文！"))
+        {
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    e -> deletePeopleFunction(postID));
+        }
+        else
+            System.out.println("字串比對錯誤(ManagePostController makeButton method)");
         return button;
     }
 
-    public JFXCheckBox makeCheckBox(String name,String id)  {
-        JFXCheckBox checkBox = new JFXCheckBox(name);
-        checkBox.setId(id + "'s " + name + " CheckBox");
+    public JFXCheckBox makeCheckBox(String joinPeopleID,String postID)  {
+        JFXCheckBox checkBox = new JFXCheckBox(joinPeopleID);
+        checkBox.setId(postID);
         return checkBox;
     }
 
-    public void buttonFunction(String tmp)
+    public void deletePeopleFunction(String postID)
     {
-        boolean hasSelected = false;
-        Iterator<JFXCheckBox> checkIterator = checkBoxList.iterator();
-        //Write DeleteButton's function here
-        while (checkIterator.hasNext())
-        {
-            JFXCheckBox tmpCheckBox = checkIterator.next();
-            if(tmpCheckBox.isSelected())
-            {
-                /* delete people here */
-                if(!hasSelected)
-                    hasSelected = true;
-                System.out.println(tmpCheckBox);
-                checkIterator.remove();
+        try {
+            HttpResponse response=RequestController.post("http://localhost:13261/posts/deletePost",
+                    new String[]{"accessKey",GlobalVariable.accessKey},
+                    new String[]{"postID",postID}
+            );
+            String responseString= EntityUtils.toString(response.getEntity());
+            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                Gson gson =new Gson();
+                setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                if(Arrays.toString(gsonResponse.errors)=="[]"){
+                    managePostVBox.getChildren().clear();
+                    getOwnAndJoinPost();
+                }
+                else{
+                    deleteStatusLabel.setText("失敗!");
+                    System.out.println("failed");
+                }
+            }
+            else{
+                System.out.println(response.getStatusLine().getStatusCode());
             }
         }
-        if(hasSelected)
-        {
-            managePostVBox.getChildren().clear();
-            renderAllPost(classOwnPost,classJsonResponse.ownPost.length);
+        catch (IOException e){
+            e.printStackTrace();
         }
-        /* check checkBoxList */
-        for(JFXCheckBox checkBox2:checkBoxList)
-            System.out.println(checkBox2.getId());
     }
 
-    public void renderAllPost(String posts,int postsQuantity)
+    public void choosePeopleFunction(String postID)
     {
-        int postCount = 0;
-        int count = 0;
-        postLabelArr = new Label[postsQuantity];
-        String tmp = "";
-        String postID = "";
-        for (String retval: posts.split(","))
+        String tmpList = "";
+        String chooseList = "";
+        for( Node element : managePostVBox.getChildren())
         {
-            count++;
-            if(count == 5)
-            {
-                tmp += "\n";
-                Label tmpLabel = new Label(tmp);
-                tmpLabel.setFont(new Font(18));
-                tmpLabel.setId(postID);
-                postLabelArr[postCount] = tmpLabel;
-                tmp = "";
-                postCount++;
-                count = 0;
+            if(element instanceof JFXCheckBox)
+                if(element.getId().equals(postID))
+                    if(((JFXCheckBox) element).isSelected())
+                    {
+                        tmpList += ((JFXCheckBox) element).getText();
+                        tmpList += ",";
+                    }
+        }
+
+        if(!tmpList.equals(""))
+        {
+            if(tmpList.charAt(tmpList.length() - 1) == ',')
+                chooseList = tmpList.substring(0,tmpList.length() - 1);
+            try {
+                HttpResponse response=RequestController.post("http://localhost:13261/posts/completePost",
+                        new String[]{"accessKey",GlobalVariable.accessKey},
+                        new String[]{"postID",postID},
+                        new String[]{"chooseList",chooseList}
+                );
+                String responseString= EntityUtils.toString(response.getEntity());
+                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                    Gson gson =new Gson();
+                    setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                    if(Arrays.toString(gsonResponse.errors)=="[]"){
+                        managePostVBox.getChildren().clear();
+                        getOwnAndJoinPost();
+                    }
+                    else{
+                        deleteStatusLabel.setText("失敗!");
+                        System.out.println("failed");
+                    }
+                }
+                else{
+                    System.out.println(response.getStatusLine().getStatusCode());
+                }
             }
-            else
-            {
-                if(count == 4)
-                    postID = retval;
-                tmp += retval + " ";
+            catch (IOException e){
+                e.printStackTrace();
             }
         }
-        for(Label aaa:postLabelArr)
+    }
+
+    public void renderAllPost(List<String> postData,int postsQuantity)
+    {
+        //creator,category,price,postID,joinPeopleCount,joinPeopleName1,....
+        /* collect information */
+        String creator = "",category = "",price = "",postID = "",joinPeopleCount = "";
+        for(String tmp:postData)
         {
-            managePostVBox.getChildren().add(aaa);
-            //checkBoxPane = new GridPane();
-            for(int i = 0;i < testingJoinUser.length;i++)
+            VBox checkBoxVBox = new VBox();
+            deleteStatusLabel = new Label("");
+            choosePeopleStatusLabel = new Label("");
+            String tmpData = "";
+            String[] dataArr = tmp.split(",");
+            for(int i = 0;i<5;i++)
             {
-                countJoinUser.add(testingJoinUser.length);
-                tmpCheckBox[i] = makeCheckBox(testingJoinUser[i],aaa.getId());
-                checkBoxList.add(tmpCheckBox[i]);
-                //System.out.println(tmpCheckBox[i].getId());
-                //checkBoxPane.add(tmpCheckBox[i],i + 1,0);
-                managePostVBox.getChildren().add(tmpCheckBox[i]);
+                if(i==0)
+                    creator = dataArr[i];
+                else if(i==1)
+                    category = dataArr[i];
+                else if(i==2)
+                    price = dataArr[i];
+                else if(i==3)
+                    postID = dataArr[i];
+                else if(i==4)
+                    joinPeopleCount = dataArr[i];
             }
-            //managePostVBox.getChildren().add(checkBoxPane);
+
+            /* add node to scene */
+            tmpData += "發文者:" + creator + " 商品種類:" + category+ " 價錢(尚未平分):" + price + " 已加入人數:" + joinPeopleCount;
+            if(dataArr.length > 5)
+            {
+                tmpData +="\n";
+                tmpData += "已加入的人:";
+                for(int i = 5;i < dataArr.length;i++)
+                {
+                    JFXCheckBox tmpCheckBox = makeCheckBox(dataArr[i],postID);
+                    checkBoxVBox.getChildren().add(tmpCheckBox);
+                    tmpData += dataArr[i] + " ";
+                }
+            }
+            Label dataLabel = new Label(tmpData);
+            dataLabel.setStyle("-fx-background-color: rgba(70,230,140,255);-fx-font-size: 30");
+            managePostVBox.getChildren().add(dataLabel);
+            managePostVBox.getChildren().add(checkBoxVBox);
+            System.out.println();
+            if(creator.equals(GlobalVariable.userID))
+            {
+                Button choosePeopleButton = makeButton("我要選這些人！",postID + "chooseButton",postID);
+                Button deletePeopleButton = makeButton("刪除此貼文！",postID + "deleteButton",postID);
+                managePostVBox.getChildren().addAll(choosePeopleButton,deletePeopleButton,deleteStatusLabel,choosePeopleStatusLabel);
+            }
         }
-        Button tmpBut = makeButton("我要選這些人！","ChoosePeopleButton");
-        managePostVBox.getChildren().add(tmpBut);
     }
 }
