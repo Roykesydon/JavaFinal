@@ -60,7 +60,7 @@ public class ProfilePageController implements Initializable {
             else
                 drawer.open();
 
-            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(255,255,255)");
+//            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
 
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
@@ -88,7 +88,7 @@ public class ProfilePageController implements Initializable {
     {
 
         boolean success = true;
-        postVBox.setPadding(new Insets(20, 50, 20, 10));
+        postVBox.setPadding(new Insets(20, 50, 20, 8));
         postVBox.setSpacing(20);
         //表單格式皆合法
         if(success){

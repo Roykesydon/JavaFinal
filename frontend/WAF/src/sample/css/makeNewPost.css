@@ -2,3 +2,25 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 5px;
 }
+
+.text-input {
+    -fx-text-inner-color: #ffffff;
+    -fx-background-color: #323232;
+}
+.text-input:focused {
+    -fx-background-color:#323232;
+}
+
+.combo-box {
+    -fx-text-inner-color: #ffffff;
+    -fx-background-color: #323232;
+}
+.combo-box .list-cell{
+    -fx-text-inner-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #323232;
+}
+/*.list-cell {*/
+/*    -fx-text-inner-color: #ffffff;*/
+/*    -fx-background-color: #323232;*/
+/*}*/
