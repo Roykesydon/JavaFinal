@@ -39,6 +39,5 @@
             <Font name="Yu Gothic Medium" size="36.0" />
          </font>
       </Button>
-      <Label fx:id="loginResult" alignment="CENTER" contentDisplay="CENTER" layoutX="251.0" layoutY="526.0" prefHeight="42.0" prefWidth="754.0" text="" textAlignment="CENTER" textFill="#f21a1a" />
    </children>
 </AnchorPane>
