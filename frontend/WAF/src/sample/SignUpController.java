@@ -112,6 +112,13 @@ public class SignUpController
 
                     for(String error:jsonResponse.errors){
                         System.out.print(',' + error);
+                        ToastCaller toast;
+                        if(error.equals("ID has been registered"))
+                            toast = new ToastCaller("ID已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if(error.equals("email has been registered"))
+                            toast = new ToastCaller("信箱已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if(error.equals("register fail"))
+                            toast = new ToastCaller("伺服器錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
                     }
 
                     System.out.println();
@@ -121,11 +128,11 @@ public class SignUpController
                         ToastCaller toast = new ToastCaller("Register Success!", GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
                     else{
-                        registerResult.setText("Register fail");
+//                        registerResult.setText("Register fail");
                     }
                 } else {
                     System.out.println(response.getStatusLine());
-                    registerResult.setText("Register fail");
+//                    registerResult.setText("Register fail");
                 }
             }
             catch (IOException  e) {

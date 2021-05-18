@@ -15,3 +15,12 @@
 .label{
     -fx-text-fill: white;
 }
+
+
+.text-input {
+    -fx-text-inner-color: #ffffff;
+    -fx-background-color: #323232;
+}
+.text-input:focused {
+    -fx-background-color:#323232;
+}
