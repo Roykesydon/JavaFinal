@@ -8,15 +8,20 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
+import sample.postController.ProfilePostController;
 import sample.response.posts.getProfileAndOwnPostResponse;
 
 import java.io.IOException;
@@ -29,6 +34,8 @@ public class ProfilePageController implements Initializable {
 
     public VBox postVBox;
     private Label[] postLabelArr;
+    private AnchorPane[] postArr;
+
     @FXML
     private JFXHamburger hamburger;
 
@@ -36,6 +43,9 @@ public class ProfilePageController implements Initializable {
     private JFXDrawer drawer;
 
     public Label useridLabel,nameLabel,emailLabel,lastAccessTimeLabel,ownPostsLabel;
+    public TextField searchTextField;
+
+    public ScrollPane postsScroll;
 
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -49,6 +59,8 @@ public class ProfilePageController implements Initializable {
             }
             else
                 drawer.open();
+
+            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(255,255,255)");
 
             HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             burgerTask2.setRate(-1);
@@ -66,22 +78,23 @@ public class ProfilePageController implements Initializable {
         }
 
         try {
-            getProfileAndOwnPost();
+            getProfileAndOwnPost(GlobalVariable.userID);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void getProfileAndOwnPost() throws IOException
+    public void getProfileAndOwnPost(String userID) throws IOException
     {
 
         boolean success = true;
-
+        postVBox.setPadding(new Insets(20, 40, 20, 20));
+        postVBox.setSpacing(20);
         //表單格式皆合法
         if(success){
             try {
                 HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getProfileAndOwnPost",
-                        new String[]{"accessKey", GlobalVariable.accessKey}
+                        new String[]{"userID", userID}
                 );
                 String responseString = EntityUtils.toString(response.getEntity());
 
@@ -97,7 +110,9 @@ public class ProfilePageController implements Initializable {
                     for(String error:jsonResponse.errors){
                         if(errorsResultCount != 0)
                             errorsResult += " , ";
-
+                        ToastCaller toast;
+                        if(error.equals("userID doesn't exist!"))
+                            toast = new ToastCaller("UserID不存在", GlobalVariable.mainStage,ToastCaller.ERROR);
                         errorsResult += error;
                         errorsResultCount++;
                         System.out.print(',' + error);
@@ -114,7 +129,7 @@ public class ProfilePageController implements Initializable {
                         String ownPosts = "";
                         for(String postInfo:jsonResponse.ownPost){
                             ownPosts += postInfo;
-                            ownPosts += ",";
+                            ownPosts += "=";
                         }
                         renderAllPost(ownPosts,jsonResponse.ownPost.length);
                     }
@@ -129,52 +144,66 @@ public class ProfilePageController implements Initializable {
         }
     }
 
-    public Button makeButton(String name, String id)  {
-        Button button = new Button(name);
-        button.setId(id);
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> buttonFunction(button.getId()));
-        return button;
+//    public Button makeButton(String name, String id)  {
+//        Button button = new Button(name);
+//        button.setId(id);
+//        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+//                e -> buttonFunction(button.getId()));
+//        return button;
+//    }
+
+//    public void buttonFunction(String tmp)
+//    {
+//        //Write DeleteButton's function here
+//        System.out.println("You Clicked " + tmp + " from ProfilePage");
+//    }
+
+    public void renderAllPost(String posts,int postsQuantity) throws IOException {
+        try {
+//            postLabelArr = new Label[postsQuantity];
+            System.out.println("posts: "+posts);
+            postVBox.getChildren().clear();
+            if(postsQuantity!=0){
+                postArr = new AnchorPane[postsQuantity];
+                int postCount = 0;
+                for (String retval: posts.split("="))
+                {
+//                System.out.println(posts.split("|"));
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/ProfilePost.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
+
+                    System.out.println("retval: "+retval);
+                    String[] postInfo = retval.split(",");
+
+                    ProfilePostController itemController = fxmlLoader.getController();
+                    itemController.setData(postInfo[0],postInfo[1],postInfo[2],postInfo[4]);
+
+                    postArr[postCount++] = anchorPane;
+                }
+//            for(Label aaa:postLabelArr)
+//            {
+////            Button tmpBut = makeButton("我要刪掉此團！",aaa.getId() + "Button");
+////            postVBox.getChildren().addAll(aaa,tmpBut);
+//                postVBox.getChildren().addAll(aaa);
+//            }
+                for(AnchorPane aaa:postArr){
+                    postVBox.getChildren().add(aaa);
+                }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void buttonFunction(String tmp)
-    {
-        //Write DeleteButton's function here
-        System.out.println("You Clicked " + tmp + " from ProfilePage");
+    public void searchUser(){
+        try {
+            getProfileAndOwnPost(searchTextField.getText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void renderAllPost(String posts,int postsQuantity)
-    {
-        postLabelArr = new Label[postsQuantity];
-        int postCount = 0;
-        int count = 0;
-        String tmp = "";
-        String postID = "";
-        for (String retval: posts.split(","))
-        {
-            count++;
-            if(count == 5)
-            {
-                tmp += "\n";
-                Label tmpLabel = new Label(tmp);
-                tmpLabel.setFont(new Font(18));
-                tmpLabel.setId(postID);
-                postLabelArr[postCount] = tmpLabel;
-                tmp = "";
-                postCount++;
-                count = 0;
-            }
-            else
-            {
-                if(count == 4)
-                    postID = retval;
-                tmp += retval + " ";
-            }
-        }
-        for(Label aaa:postLabelArr)
-        {
-            Button tmpBut = makeButton("我要刪掉此團！",aaa.getId() + "Button");
-            postVBox.getChildren().addAll(aaa,tmpBut);
-        }
-    }
 }
+

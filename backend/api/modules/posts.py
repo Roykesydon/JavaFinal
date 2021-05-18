@@ -157,17 +157,17 @@ def getOwnPost():
     info = dict()
     errors = []
 
-    accessKey = request.values.get('accessKey')
+    userID = request.values.get('userID')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE userID = %s",userID)
     rows = cursor.fetchall()
     connection.commit()
 
     joinPostsSpace = -1
 
     if len(rows) == 0:
-        errors.append("accessKey doesn't exist!")
+        errors.append("userID doesn't exist!")
     else:
         row = rows[0]
         info['userID'] = userID = row[1]
@@ -553,6 +553,39 @@ def completePost():
             connection.commit()
         cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
         connection.commit()
+
+    info['errors'] = errors
+
+    return jsonify(info)
+
+@posts.route('/getFilteredPost',methods=['POST'])
+def getFilteredPost():
+
+    info = dict()
+    errors = []
+    info['posts'] = []
+
+    category = request.values.get('category')
+
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute("SELECT * from Posts WHERE category = %s",category)
+        rows = cursor.fetchall()
+        connection.commit()
+    except Exception:
+        traceback.print_exc()
+        connection.rollback()
+        errors.append('getFilteredPost fail')
+    
+
+    for row in rows:
+        creator = row[1]
+        category = row[2]
+        price = row[3]
+        postID = row[4]
+        joinPeopleCount = row[5]
+        info['posts'].append(creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount))
 
     info['errors'] = errors
 
