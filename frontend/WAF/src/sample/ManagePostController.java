@@ -55,14 +55,21 @@ public class ManagePostController implements Initializable {
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
             drawer.setSidePane(box);
 
+            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
                 GlobalVariable.userEnterFirstTime = false;
+                burgerTask2.setRate(-1);
             }
-            else
+            else {
+                burgerTask2.setRate(1);
+                burgerTask2.play();
                 drawer.open();
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
-            burgerTask2.setRate(-1);
+            }
+
+//            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
+
+
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
                 burgerTask2.play();

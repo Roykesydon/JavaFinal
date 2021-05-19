@@ -49,6 +49,7 @@ public class ProfilePageController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
@@ -56,14 +57,17 @@ public class ProfilePageController implements Initializable {
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
                 GlobalVariable.userEnterFirstTime = false;
+                burgerTask2.setRate(-1);
             }
-            else
+            else {
+                burgerTask2.setRate(1);
+                burgerTask2.play();
                 drawer.open();
+            }
 
 //            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
 
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
-            burgerTask2.setRate(-1);
+
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
                 burgerTask2.play();
@@ -73,6 +77,7 @@ public class ProfilePageController implements Initializable {
                 else
                     drawer.open();
             });
+
         }catch (IOException ex){
             Logger.getLogger(ProfilePageController.class.getName()).log(Level.SEVERE,null,ex);
         }
