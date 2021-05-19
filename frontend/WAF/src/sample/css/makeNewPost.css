@@ -24,3 +24,7 @@
 /*    -fx-text-inner-color: #ffffff;*/
 /*    -fx-background-color: #323232;*/
 /*}*/
+
+.button:hover{
+    -fx-background-color: #27292a;
+}

@@ -48,6 +48,8 @@ public class SignUpController
         if(password.equals(userPWConfirm.getText())) {
             ckPWConfirm.setText("OK");
             ckPWConfirm.setStyle("-fx-text-fill: #00dd77;");
+            if(userPWConfirm.getText().equals(""))
+                ckPWConfirm.setText("");
         }
         else {
             success = false;
@@ -69,7 +71,7 @@ public class SignUpController
         }
         else {
             success = false;
-            ckID.setText("只能有數字和英文，且限於5~30字");
+            ckID.setText("只能有數字和英文，限於5~30字");
             ckID.setStyle("-fx-text-fill: #ea4141;");
         }
         if(checkUser.checkName()) {
@@ -78,7 +80,7 @@ public class SignUpController
         }
         else {
             success = false;
-            ckName.setText("只能有數字和英文，且限於5~50字");
+            ckName.setText("只能有數字和英文，限於5~50字");
             ckName.setStyle("-fx-text-fill: #ea4141;");
         }
 

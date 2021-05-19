@@ -19,8 +19,15 @@
 
 .text-input {
     -fx-text-inner-color: #ffffff;
+    /*-fx-background-color: #323232;*/
+}
+/*.text-input:focused {*/
+/*    -fx-background-color:#323232;*/
+/*}*/
+
+#btnSignIn{
     -fx-background-color: #323232;
 }
-.text-input:focused {
-    -fx-background-color:#323232;
+#btnSignIn:hover{
+    -fx-background-color: #27292a;
 }
