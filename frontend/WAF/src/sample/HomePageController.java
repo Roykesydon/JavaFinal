@@ -100,7 +100,7 @@ public class HomePageController extends Main {
                     }
                 } else {
                     System.out.println(response.getStatusLine());
-                    loginResult.setText(errorsResult);
+//                    loginResult.setText(errorsResult);
                 }
             }
             catch (IOException  e) {

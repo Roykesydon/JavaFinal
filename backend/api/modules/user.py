@@ -275,7 +275,6 @@ def resetPassword():
     connection.commit()
     if not len(rows):
         errors.append('not pass identityCode yet!')
-    cursor.fetchall
     info['errors'] = errors
     if len(info['errors'])==0:
         try:
