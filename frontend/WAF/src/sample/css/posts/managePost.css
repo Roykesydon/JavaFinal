@@ -1,0 +1,9 @@
+#completeBtn,#deleteBtn{
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: white;
+    -fx-border-color:#ffffff;
+    -fx-background-insets: 0;
+}
+#completeBtn:hover,#deleteBtn:hover{
+    -fx-background-color: #27292a;
+}

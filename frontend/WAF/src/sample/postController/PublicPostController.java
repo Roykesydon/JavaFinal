@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
@@ -21,6 +22,7 @@ public class PublicPostController {
     public Label priceLabel;
     public Label joinPeopleLabel;
     public Button joinBtn;
+    public AnchorPane anchorPane;
 
     public void setData(String ownerID,String category,String price,String joinPeople,String postID){
         ownerIDLabel.setText(ownerID);
@@ -28,6 +30,10 @@ public class PublicPostController {
         priceLabel.setText("NT$ "+price);
         joinPeopleLabel.setText(joinPeople+"/10");
         makeButton("加入",postID);
+        if(ownerID.equals(GlobalVariable.userID) || joinPeople.equals("10")) {
+            joinBtn.setDisable(true);
+            joinBtn.setStyle("-fx-text-fill: #888888;-fx-border-color:#888888;");
+        }
     }
 
 

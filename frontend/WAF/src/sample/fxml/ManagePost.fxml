@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorpane" stylesheets="@../css/managePost.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManagePostController">
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" stylesheets="@../css/managePost.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManagePostController">
     <children>
         <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />
         <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ScrollPane layoutX="288.0" layoutY="128.0" prefHeight="600.0" prefWidth="982.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="309.0" layoutY="128.0" prefHeight="641.0" prefWidth="933.0" style="-fx-background-color: #323232; -fx-border-color: #323232;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);-fx-background: rgb(50,50,50);">
          <content>
-            <VBox fx:id="managePostVBox" prefHeight="1073.0" prefWidth="975.0" />
+            <VBox fx:id="managePostVBox" prefHeight="635.0" prefWidth="916.0" />
          </content>
       </ScrollPane>
       <Label layoutX="531.0" layoutY="38.0" style="-fx-text-fill: white;" text="ManagePostPage">

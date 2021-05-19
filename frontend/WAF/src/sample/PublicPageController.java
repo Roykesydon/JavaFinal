@@ -120,7 +120,7 @@ public class PublicPageController implements Initializable {
             } else {
                 System.out.println(response.getStatusLine());
             }
-            getAllPostResult.setText(errorsResult);
+//            getAllPostResult.setText(errorsResult);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -130,38 +130,43 @@ public class PublicPageController implements Initializable {
 
     public void renderAllPost(String posts,int postsQuantity) throws IOException {
 //        postLabelArr = new Label[postsQuantity];
-        postArr = new AnchorPane[postsQuantity];
-        int postCount = 0;
-        int count = 0;
-        String tmp = "";
-        String postID = "";
-        if(posts.equals(""))
-            return;
-        for (String retval: posts.split("="))
-        {
+        try {
+            postArr = new AnchorPane[postsQuantity];
+            int postCount = 0;
+            int count = 0;
+            String tmp = "";
+            String postID = "";
+            if(posts.equals(""))
+                return;
+            for (String retval: posts.split("="))
+            {
 //                System.out.println(posts.split("|"));
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/PublicPost.fxml"));
-            AnchorPane anchorPane = fxmlLoader.load();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/PublicPost.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
 
-            System.out.println("retval: "+retval);
-            String[] postInfo = retval.split(",");
+                System.out.println("retval: "+retval);
+                String[] postInfo = retval.split(",");
 
-            PublicPostController itemController = fxmlLoader.getController();
-            itemController.setData(postInfo[0],postInfo[1],postInfo[2],postInfo[4],postInfo[3]);
+                PublicPostController itemController = fxmlLoader.getController();
+                itemController.setData(postInfo[0],postInfo[1],postInfo[2],postInfo[4],postInfo[3]);
 
-            postArr[postCount++] = anchorPane;
-        }
+                postArr[postCount++] = anchorPane;
+            }
 
 //        for(Label aaa:postLabelArr)
 //        {
 //            Button tmpBut = makeButton("我要跟這團！",aaa.getId() + "Button",aaa.getId());
 //            postVBox.getChildren().addAll(aaa,tmpBut);
 //        }
-        for(AnchorPane aaa:postArr){
-            postVBox.getChildren().add(aaa);
-        }
+            for(AnchorPane aaa:postArr){
+                postVBox.getChildren().add(aaa);
+            }
 //        postVBox.getChildren().add(joinStatusLabel);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void filterPost() {

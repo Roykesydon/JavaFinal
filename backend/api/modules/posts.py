@@ -79,6 +79,7 @@ def joinPost():
     creator=""
     postCategory = ""
     price = ""
+    joinedPeople=-1
 
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)

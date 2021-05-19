@@ -10,16 +10,19 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
+import sample.postController.PublicPostController;
 import sample.response.posts.GetProfileAndOwnPostResponse;
 import sample.response.SetIdentityCodeResponse;
 
@@ -41,6 +44,7 @@ public class ManagePostController implements Initializable {
     private Label deleteStatusLabel;
     private Label choosePeopleStatusLabel;
     private List<String> postData = new ArrayList<>();
+    private AnchorPane[] postArr;
 
 
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,6 +77,9 @@ public class ManagePostController implements Initializable {
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }
         /* catch relative post from method */
+        managePostVBox.setPadding(new Insets(20, 20, 20, 20));
+        managePostVBox.setSpacing(20);
+
         try {
             getOwnAndJoinPost();
         } catch (IOException e) {
@@ -132,122 +139,15 @@ public class ManagePostController implements Initializable {
         }
     }
 
-    public Button makeButton(String name, String id, String postID)  {
-        Button button = new Button(name);
-        button.setId(id);
-        if(name.equals("我要選這些人！"))
-        {
-            button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e -> choosePeopleFunction(postID));
-        }
-        else if(name.equals("刪除此貼文！"))
-        {
-            button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e -> deletePeopleFunction(postID));
-        }
-        else
-            System.out.println("字串比對錯誤(ManagePostController makeButton method)");
-        return button;
-    }
 
-    public JFXCheckBox makeCheckBox(String joinPeopleID,String postID)  {
-        JFXCheckBox checkBox = new JFXCheckBox(joinPeopleID);
-        checkBox.setId(postID);
-        return checkBox;
-    }
 
-    public void deletePeopleFunction(String postID)
-    {
-        try {
-            HttpResponse response=RequestController.post("http://localhost:13261/posts/deletePost",
-                    new String[]{"accessKey",GlobalVariable.accessKey},
-                    new String[]{"postID",postID}
-            );
-            String responseString= EntityUtils.toString(response.getEntity());
-            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                Gson gson =new Gson();
-                SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
-                if(Arrays.toString(gsonResponse.errors)=="[]"){
-                    managePostVBox.getChildren().clear();
-                    getOwnAndJoinPost();
-                }
-                else{
-                    deleteStatusLabel.setText("失敗!");
-                    System.out.println("failed");
-                }
-            }
-            else{
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void choosePeopleFunction(String postID)
-    {
-        String tmpList = "";
-        String chooseList = "";
-        /* manageBox have many postVBox. PostVBox has many checkBox */
-        for( Node element : managePostVBox.getChildren())
-        {
-            if(element instanceof VBox)
-                for( Node postVBox : ((VBox) element).getChildren())
-                {
-                    if(postVBox instanceof VBox)
-                        for(Node checkBox : ((VBox) postVBox).getChildren())
-                        {
-                            if(checkBox instanceof JFXCheckBox)
-                                if(checkBox.getId().equals(postID))
-                                    if(((JFXCheckBox) checkBox).isSelected())
-                                    {
-                                        tmpList += ((JFXCheckBox) checkBox).getText();
-                                        tmpList += ",";
-                                    }
-                        }
-                }
-        }
-        if(!tmpList.equals(""))
-        {
-            /* remove last ',' */
-            if(tmpList.charAt(tmpList.length() - 1) == ',')
-                chooseList = tmpList.substring(0,tmpList.length() - 1);
-            try {
-                HttpResponse response=RequestController.post("http://localhost:13261/posts/completePost",
-                        new String[]{"accessKey",GlobalVariable.accessKey},
-                        new String[]{"postID",postID},
-                        new String[]{"chooseList",chooseList}
-                );
-                String responseString= EntityUtils.toString(response.getEntity());
-                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                    Gson gson =new Gson();
-                    SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
-                    if(Arrays.toString(gsonResponse.errors)=="[]"){
-                        managePostVBox.getChildren().clear();
-                        getOwnAndJoinPost();
-                    }
-                    else{
-                        deleteStatusLabel.setText("失敗!");
-                        System.out.println("failed");
-                    }
-                }
-                else{
-                    System.out.println(response.getStatusLine().getStatusCode());
-                }
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void renderAllPost(List<String> postData,int postsQuantity)
-    {
+    public void renderAllPost(List<String> postData,int postsQuantity) throws IOException {
         //creator,category,price,postID,joinPeopleCount,joinPeopleName1,....
         /* WARNING!!!! postVBox just can have one VBox inside!!! */
         /* collect information */
-        String creator = "",category = "",price = "",postID = "",joinPeopleCount = "";
+
+        postArr = new AnchorPane[postsQuantity];
+
         for(String tmp:postData)
         {
             VBox postVBox = new VBox();//put one post in this VBox
@@ -256,47 +156,21 @@ public class ManagePostController implements Initializable {
             choosePeopleStatusLabel = new Label("");
             String tmpData = "";
             String[] dataArr = tmp.split(",");
-            for(int i = 0;i<5;i++)
-            {
-                if(i==0)
-                    creator = dataArr[i];
-                else if(i==1)
-                    category = dataArr[i];
-                else if(i==2)
-                    price = dataArr[i];
-                else if(i==3)
-                    postID = dataArr[i];
-                else if(i==4)
-                    joinPeopleCount = dataArr[i];
-            }
 
-            /* add node to scene */
-            tmpData += "發文者:" + creator + " 商品種類:" + category+ " 價錢(尚未平分):" + price + " 已加入人數:" + joinPeopleCount;
-            if(dataArr.length > 5)
-            {
-                tmpData +="\n";
-                tmpData += "已加入的人:";
-                for(int i = 5;i < dataArr.length;i++)
-                {
-                    JFXCheckBox tmpCheckBox = makeCheckBox(dataArr[i],postID);
-                    checkBoxVBox.getChildren().add(tmpCheckBox);
-                    tmpData += dataArr[i] + " ";
-                }
-            }
-            Label dataLabel = new Label(tmpData);
-            dataLabel.setStyle("-fx-background-color: rgba(70,230,140,255);-fx-font-size: 30");
-            //managePostVBox.getChildren().add(dataLabel);
-            postVBox.getChildren().add(dataLabel);
-            //managePostVBox.getChildren().add(checkBoxVBox);
-            postVBox.getChildren().add(checkBoxVBox);
-            System.out.println();
-            if(creator.equals(GlobalVariable.userID))
-            {
-                Button choosePeopleButton = makeButton("我要選這些人！",postID + "chooseButton",postID);
-                Button deletePeopleButton = makeButton("刪除此貼文！",postID + "deleteButton",postID);
-                postVBox.getChildren().addAll(choosePeopleButton,deletePeopleButton,deleteStatusLabel,choosePeopleStatusLabel);
-            }
-            managePostVBox.getChildren().add(postVBox);
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/ManagePost.fxml"));
+            AnchorPane anchorPane = fxmlLoader.load();
+
+
+            ArrayList<String> joinList = new ArrayList<String>();
+            for(int i = 5;i < dataArr.length;i++)
+                joinList.add(dataArr[i]);
+
+            sample.postController.ManagePostController itemController = fxmlLoader.getController();
+            itemController.setData(dataArr[0],dataArr[1],dataArr[2],dataArr[3],dataArr[4],joinList,managePostVBox);
+
+            managePostVBox.getChildren().add(anchorPane);
         }
     }
 }

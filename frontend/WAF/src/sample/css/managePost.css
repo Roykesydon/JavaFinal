@@ -2,3 +2,65 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 5px;
 }
+
+
+/*scroll bar background*/
+.scroll-bar:vertical .track{
+    -fx-background-color :#323232;
+    -fx-border-color :#323232;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.combo-box {
+    -fx-text-inner-color: #ffffff;
+    -fx-background-color: #323232;
+}
+.combo-box .list-cell{
+    -fx-text-inner-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #323232;
+}
+
+#filterBtn{
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: white;
+    -fx-border-color:#ffffff;
+    -fx-background-insets: 0;
+}
+#filterBtn:hover{
+    -fx-background-color: #27292a;
+}
