@@ -15,6 +15,9 @@ import sample.response.CheckIdentityResponse;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.global.GlobalVariable;
+
+import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.io.IOException;
 
@@ -78,7 +81,7 @@ public class ForgotPasswordController {
             if(status==0)userIdResponse.setText("請輸入帳號");
         }
     }
-    public void switchToResetPassWord(ActionEvent actionEvent){
+    public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
             if(tryCount==4){
                 userIdResponse.setText("失敗次數過多驗證碼已改變\n請按重寄驗證碼");
@@ -98,8 +101,9 @@ public class ForgotPasswordController {
                             GlobalVariable.userID = userid.getText();
                             GlobalVariable.accessKey = gsonResponse.accessKey;
                             tryCount = 0;
-                            Parent page = FXMLLoader.load(getClass().getResource("fxml/ResetPassWord.fxml"));
-                            Scene tmp = new Scene(page);
+                            URL url = new File("src/sample/fxml/ResetPassWord.fxml").toURI().toURL();
+                            Parent root = FXMLLoader.load(url);
+                            Scene tmp = new Scene(root);
                             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                             stage.hide();
                             stage.setScene(tmp);
