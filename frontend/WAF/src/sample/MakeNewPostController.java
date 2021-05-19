@@ -45,7 +45,6 @@ public class MakeNewPostController implements Initializable {
             drawer.setSidePane(box);
 
 
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
                 GlobalVariable.userEnterFirstTime = false;

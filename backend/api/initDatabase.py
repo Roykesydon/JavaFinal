@@ -18,6 +18,9 @@ connection.commit()
 cursor.execute("DROP TABLE IF EXISTS Notifications;")
 connection.commit()
 
+cursor.execute("DROP TABLE IF EXISTS Comments;")
+connection.commit()
+
 cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     _ID int  NOT NULL AUTO_INCREMENT,\
     userID varchar(40) NOT NULL,\
@@ -52,6 +55,16 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Notifications( \
     owner varchar(40) NOT NULL,\
     message varchar(250) NOT NULL,\
     isSent bool NOT NULL,\
+    timestamp varchar(15)  NOT NULL,\
+    PRIMARY KEY (_ID) );")
+connection.commit()
+
+
+cursor.execute("CREATE TABLE IF NOT EXISTS Comments( \
+    _ID int  NOT NULL AUTO_INCREMENT,\
+    sender varchar(40) NOT NULL,\
+    receiver varchar(40) NOT NULL,\
+    message varchar(250) NOT NULL,\
     timestamp varchar(15)  NOT NULL,\
     PRIMARY KEY (_ID) );")
 connection.commit()

@@ -48,7 +48,6 @@ public class ProfilePageController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
