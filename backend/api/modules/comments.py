@@ -98,7 +98,7 @@ def getComments():
 
         info['Notices'] = []
         for row in rows:
-            info['Notices'].append(""+row[1]+","+row[3]+","+row[4])
+            info['Notices'].append(""+row[1]+"="+row[3]+"="+row[4])
 
     info['errors'] = errors
 
