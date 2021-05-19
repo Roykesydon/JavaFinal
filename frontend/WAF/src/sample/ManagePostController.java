@@ -44,20 +44,22 @@ public class ManagePostController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle rb) {
+        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
             drawer.setSidePane(box);
-
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
                 GlobalVariable.userEnterFirstTime = false;
+                burgerTask2.setRate(-1);
             }
-            else
+            else {
+                burgerTask2.setRate(1);
+                burgerTask2.play();
                 drawer.open();
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
-            burgerTask2.setRate(-1);
+            }
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
                 burgerTask2.play();
@@ -187,22 +189,28 @@ public class ManagePostController implements Initializable {
     {
         String tmpList = "";
         String chooseList = "";
+        /* manageBox have many postVBox. PostVBox has many checkBox */
         for( Node element : managePostVBox.getChildren())
         {
             if(element instanceof VBox)
-                for( Node checkBox : ((VBox) element).getChildren())
+                for( Node postVBox : ((VBox) element).getChildren())
                 {
-                    if(checkBox instanceof JFXCheckBox)
-                        if(checkBox.getId().equals(postID))
-                            if(((JFXCheckBox) checkBox).isSelected())
-                            {
-                                tmpList += ((JFXCheckBox) checkBox).getText();
-                                tmpList += ",";
-                            }
+                    if(postVBox instanceof VBox)
+                        for(Node checkBox : ((VBox) postVBox).getChildren())
+                        {
+                            if(checkBox instanceof JFXCheckBox)
+                                if(checkBox.getId().equals(postID))
+                                    if(((JFXCheckBox) checkBox).isSelected())
+                                    {
+                                        tmpList += ((JFXCheckBox) checkBox).getText();
+                                        tmpList += ",";
+                                    }
+                        }
                 }
         }
         if(!tmpList.equals(""))
         {
+            /* remove last ',' */
             if(tmpList.charAt(tmpList.length() - 1) == ',')
                 chooseList = tmpList.substring(0,tmpList.length() - 1);
             try {
@@ -237,10 +245,12 @@ public class ManagePostController implements Initializable {
     public void renderAllPost(List<String> postData,int postsQuantity)
     {
         //creator,category,price,postID,joinPeopleCount,joinPeopleName1,....
+        /* WARNING!!!! postVBox just can have one VBox inside!!! */
         /* collect information */
         String creator = "",category = "",price = "",postID = "",joinPeopleCount = "";
         for(String tmp:postData)
         {
+            VBox postVBox = new VBox();//put one post in this VBox
             VBox checkBoxVBox = new VBox();
             deleteStatusLabel = new Label("");
             choosePeopleStatusLabel = new Label("");
@@ -275,15 +285,18 @@ public class ManagePostController implements Initializable {
             }
             Label dataLabel = new Label(tmpData);
             dataLabel.setStyle("-fx-background-color: rgba(70,230,140,255);-fx-font-size: 30");
-            managePostVBox.getChildren().add(dataLabel);
-            managePostVBox.getChildren().add(checkBoxVBox);
+            //managePostVBox.getChildren().add(dataLabel);
+            postVBox.getChildren().add(dataLabel);
+            //managePostVBox.getChildren().add(checkBoxVBox);
+            postVBox.getChildren().add(checkBoxVBox);
             System.out.println();
             if(creator.equals(GlobalVariable.userID))
             {
                 Button choosePeopleButton = makeButton("我要選這些人！",postID + "chooseButton",postID);
                 Button deletePeopleButton = makeButton("刪除此貼文！",postID + "deleteButton",postID);
-                managePostVBox.getChildren().addAll(choosePeopleButton,deletePeopleButton,deleteStatusLabel,choosePeopleStatusLabel);
+                postVBox.getChildren().addAll(choosePeopleButton,deletePeopleButton,deleteStatusLabel,choosePeopleStatusLabel);
             }
+            managePostVBox.getChildren().add(postVBox);
         }
     }
 }
