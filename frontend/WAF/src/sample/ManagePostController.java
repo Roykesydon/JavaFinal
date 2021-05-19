@@ -186,6 +186,8 @@ public class ManagePostController implements Initializable {
         postLabelArr = new Label[postsQuantity];
         String tmp = "";
         String postID = "";
+        if(posts.equals(""))
+            return;
         for (String retval: posts.split("="))
         {
 //            count++;
