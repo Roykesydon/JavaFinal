@@ -65,7 +65,7 @@ public class ProfilePageController implements Initializable {
                 drawer.open();
             }
 
-            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(255,255,255)");
+//            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
 
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
@@ -91,7 +91,7 @@ public class ProfilePageController implements Initializable {
     {
 
         boolean success = true;
-        postVBox.setPadding(new Insets(20, 50, 20, 10));
+        postVBox.setPadding(new Insets(20, 50, 20, 8));
         postVBox.setSpacing(20);
         //表單格式皆合法
         if(success){

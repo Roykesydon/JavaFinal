@@ -451,7 +451,7 @@ def deletePost():
             for row in rows:
                 userID = row[1]
                 userAccessKey = row[5]
-                para = {'accessKey':userAccessKey,'message':'Post been deleted\n'+postCategory+" "+price+" NT\nowner ID:"+ownerID}
+                para = {'accessKey':userAccessKey,'message':'Post been deleted\n'+postCategory+" NT$ "+price+"\nowner ID:"+ownerID}
                 r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
 
     if len(errors) == 0:
@@ -537,7 +537,7 @@ def completePost():
                 userID = row[1]
                 userAccessKey = row[5]
                 if userID in chooseList:
-                    para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" "+price+" NT\nowner email:"+creatorEmail}
+                    para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" NT$ "+price+"\nowner email:"+creatorEmail}
                     r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
                 else:
                     para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" "+price+" NT\nowner ID:"+ownerID}

@@ -7,6 +7,7 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
+import sample.postController.ProfilePostController;
+import sample.postController.PublicPostController;
 import sample.response.posts.getAllPostResponse;
 import sample.response.setIdentityCodeResponse;
 
@@ -37,7 +40,9 @@ public class PublicPageController implements Initializable {
     private JFXDrawer drawer;
     public Label getAllPostResult;
     private Label[] postLabelArr;
+    private AnchorPane[] postArr;
     public Label joinStatusLabel= new Label();
+    public ComboBox categoryComboBox;
 
     public void initialize(URL url, ResourceBundle rb) {
         HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
@@ -47,6 +52,7 @@ public class PublicPageController implements Initializable {
                 box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
                 System.out.println("admin");
             }
+
             drawer.setSidePane(box);
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
@@ -76,6 +82,9 @@ public class PublicPageController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        postVBox.setPadding(new Insets(20, 20, 20, 20));
+        postVBox.setSpacing(20);
+        categoryComboBox.getItems().addAll("Spotify","NintendoSwitchOnline","YoutubePremium","Netflix","AppleMusic");
     }
 
     public void getAllPost() throws IOException
@@ -106,8 +115,9 @@ public class PublicPageController implements Initializable {
                     int count = 0;//to split two responseString with comma
                     String posts = "";
                     for(String postInfo:jsonResponse.posts){
+                        if(count++ != 0)
+                            posts += "=";
                         posts += postInfo;
-                        posts += ',';
                     }
                     renderAllPost(posts,jsonResponse.posts.length);
                 }
@@ -121,75 +131,91 @@ public class PublicPageController implements Initializable {
         }
     }
 
-    public Button makeButton(String name, String id,String postID)  {
-        Button button = new Button(name);
-        button.setId(id);
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> buttonFunction(postID));
-        return button;
-    }
-    public void buttonFunction(String postID)
-    {
-        try {
-            HttpResponse response=RequestController.post("http://localhost:13261/posts/joinPost",
-                    new String[]{"accessKey",GlobalVariable.accessKey},
-                    new String[]{"postID",postID}
-            );
-            String responseString= EntityUtils.toString(response.getEntity());
-            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                Gson gson =new Gson();
-                setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
-                if(Arrays.toString(gsonResponse.errors)=="[]"){
-                    joinStatusLabel.setText("成功!");
-                }
-                else{
-                    joinStatusLabel.setText("失敗!");
-                }
-            }
-            else{
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        //System.out.println("You Clicked " + tmp + " from PublicPage");
-    }
 
-
-    public void renderAllPost(String posts,int postsQuantity)
-    {
-        postLabelArr = new Label[postsQuantity];
+    public void renderAllPost(String posts,int postsQuantity) throws IOException {
+//        postLabelArr = new Label[postsQuantity];
+        postArr = new AnchorPane[postsQuantity];
         int postCount = 0;
         int count = 0;
         String tmp = "";
         String postID = "";
-        for (String retval: posts.split(","))
+        if(posts.equals(""))
+            return;
+        for (String retval: posts.split("="))
         {
-            count++;
-            if(count == 5)
-            {
-                tmp += "\n";
-                Label tmpLabel = new Label(tmp);
-                tmpLabel.setFont(new Font(18));
-                tmpLabel.setId(postID);
-                postLabelArr[postCount] = tmpLabel;
-                tmp = "";
-                postCount++;
-                count = 0;
-            }
-            else
-            {
-                if(count == 4)
-                    postID = retval;
-                tmp += retval + " ";
-            }
+//                System.out.println(posts.split("|"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/PublicPost.fxml"));
+            AnchorPane anchorPane = fxmlLoader.load();
+
+            System.out.println("retval: "+retval);
+            String[] postInfo = retval.split(",");
+
+            PublicPostController itemController = fxmlLoader.getController();
+            itemController.setData(postInfo[0],postInfo[1],postInfo[2],postInfo[4],postInfo[3]);
+
+            postArr[postCount++] = anchorPane;
         }
-        for(Label aaa:postLabelArr)
-        {
-            Button tmpBut = makeButton("我要跟這團！",aaa.getId() + "Button",aaa.getId());
-            postVBox.getChildren().addAll(aaa,tmpBut);
+
+//        for(Label aaa:postLabelArr)
+//        {
+//            Button tmpBut = makeButton("我要跟這團！",aaa.getId() + "Button",aaa.getId());
+//            postVBox.getChildren().addAll(aaa,tmpBut);
+//        }
+        for(AnchorPane aaa:postArr){
+            postVBox.getChildren().add(aaa);
         }
-        postVBox.getChildren().add(joinStatusLabel);
+//        postVBox.getChildren().add(joinStatusLabel);
+    }
+
+    public void filterPost() {
+        try {
+            if(categoryComboBox.getValue()==null){
+                ToastCaller toast = new ToastCaller("請選擇分類",GlobalVariable.mainStage,ToastCaller.ERROR);
+                return ;
+            }
+            postVBox.getChildren().clear();
+            HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getFilteredPost",
+                    new String[]{"category",categoryComboBox.getValue().toString()}
+            );
+            String responseString = EntityUtils.toString(response.getEntity());
+
+            String errorsResult = "";
+            int errorsResultCount = 0;
+
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                Gson gson = new Gson();
+                getAllPostResponse jsonResponse = gson.fromJson(responseString, getAllPostResponse.class);
+                errorsResult = "";
+                errorsResultCount=0;
+                for(String error:jsonResponse.errors){
+                    if(errorsResultCount != 0)
+                        errorsResult += " , ";
+                    if(error.equals("getFilteredPost fail")){
+                        ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                    }
+                    errorsResult += error;
+                    errorsResultCount++;
+                    System.out.print(',' + error);
+                }
+                System.out.println();
+                if(jsonResponse.errors.length==0){
+                    int count = 0;//to split two responseString with comma
+                    String posts = "";
+                    for(String postInfo:jsonResponse.posts){
+                        if(count++!=0)
+                            posts+="=";
+                        posts += postInfo;
+                    }
+                    renderAllPost(posts,jsonResponse.posts.length);
+                }
+            } else {
+                System.out.println(response.getStatusLine());
+            }
+            getAllPostResult.setText(errorsResult);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

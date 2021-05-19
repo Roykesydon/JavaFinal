@@ -4,8 +4,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
+      <JFXButton fx:id="spaceBut"  prefHeight="0.1" prefWidth="250.0" text="" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
       <ImageView fx:id="img" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../css/square_logo.png" />

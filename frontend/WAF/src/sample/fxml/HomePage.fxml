@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1280" stylesheets="@../css/homepage.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1280" stylesheets="@../css/homepage.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomePageController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="136.0" prefHeight="241.0" prefWidth="1134.0" style="-fx-font-size:12em;" text="WeAreFamily" textFill="WHITE">
          <font>
@@ -39,6 +39,5 @@
             <Font name="Yu Gothic Medium" size="36.0" />
          </font>
       </Button>
-      <Label fx:id="loginResult" alignment="CENTER" contentDisplay="CENTER" layoutX="251.0" layoutY="526.0" prefHeight="42.0" prefWidth="754.0" text="" textAlignment="CENTER" textFill="#f21a1a" />
    </children>
 </AnchorPane>

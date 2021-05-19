@@ -74,24 +74,29 @@ public class MakeNewPostController implements Initializable {
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }
 
-        categoryComboBox.getItems().addAll("Spotify","NintendoSwitchOnline");
+        categoryComboBox.getItems().addAll("Spotify","NintendoSwitchOnline","YoutubePremium","Netflix","AppleMusic");
     }
 
     public void makeNewPostRequest(ActionEvent actionEvent) throws IOException
     {
-        String category = categoryComboBox.getValue().toString();
-        String price = priceTextField.getText();
+
         boolean success = true;
 
         //verify submit form
         //有選擇種類
         //輸入的是數字 而且是整數 而且數字屬於合理範圍(不會溢位)
         //
-
+        if(categoryComboBox.getValue() == null || priceTextField.getText().equals("")){
+            success = false;
+            ToastCaller toast = new ToastCaller("輸入項目不可為空",GlobalVariable.mainStage,ToastCaller.ERROR);
+        }
 
         //表單格式皆合法
         if(success){
             try {
+                String category = categoryComboBox.getValue().toString();
+                String price = priceTextField.getText();
+
                 HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/createPost",
                         new String[]{"accessKey", GlobalVariable.accessKey},
                         new String[]{"category", category},
@@ -115,19 +120,25 @@ public class MakeNewPostController implements Initializable {
                         errorsResult += error;
                         errorsResultCount++;
                         System.out.print(',' + error);
+                        if(error.equals("can't create more Post")){
+                            ToastCaller toast = new ToastCaller("已達到創建貼文上限",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        }
+                        if(error.equals("createPost fail")){
+                            ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        }
                     }
 
                     System.out.println();
 
                     if(jsonResponse.errors.length==0){
-                        makeNewPostResult.setText("成功創建貼文");
+                        ToastCaller toast = new ToastCaller("創建成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
                     else{
-                        makeNewPostResult.setText(errorsResult);
+//                        makeNewPostResult.setText(errorsResult);
                     }
                 } else {
                     System.out.println(response.getStatusLine());
-                    makeNewPostResult.setText(errorsResult);
+//                    makeNewPostResult.setText(errorsResult);
                 }
             }
             catch (IOException  e) {

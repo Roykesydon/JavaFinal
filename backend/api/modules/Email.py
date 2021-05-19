@@ -29,7 +29,7 @@ def sendEmail():
     info = dict()
     cursor = connection.cursor()
     userid = request.values.get('userid')
-    cursor.execute("SELECT email, IdentityCode from Users WHERE userID = %s",userid)
+    cursor.execute("SELECT email, IdentityCode from Users WHERE userID = %(userID)s",{'userID':userid})
     rows = cursor.fetchall()
     connection.commit()
     content = MIMEMultipart()  #建立MIMEMultipart物件
