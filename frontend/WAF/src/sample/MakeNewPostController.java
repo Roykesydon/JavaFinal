@@ -17,7 +17,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.loginResponse;
 import sample.response.posts.MakeNewPostResponse;
 
 import java.io.IOException;

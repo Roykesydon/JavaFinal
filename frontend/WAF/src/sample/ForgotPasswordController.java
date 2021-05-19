@@ -3,22 +3,22 @@ package sample;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
-import sample.response.setIdentityCodeResponse;
-import sample.response.checkIdentityResponse;
+import sample.response.SetIdentityCodeResponse;
+import sample.response.CheckIdentityResponse;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.global.GlobalVariable;
 import java.util.Arrays;
 import java.io.IOException;
 
-public class forgotPasswordController {
+public class ForgotPasswordController {
     public TextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
@@ -34,8 +34,8 @@ public class forgotPasswordController {
                 String responseString= EntityUtils.toString(response.getEntity());
                 if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
                     Gson gson =new Gson();
-                    setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
-                    if(Arrays.toString(gsonResponse.errors)=="[]"){
+                    SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
+                    if(Arrays.toString(gsonResponse.errors).equals("[]")){
                         if(status==0)sendIdentityCode(status);
                         else tryCount=0;
                     }
@@ -93,12 +93,12 @@ public class forgotPasswordController {
                     String responseString = EntityUtils.toString(response.getEntity());
                     if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                         Gson gson = new Gson();
-                        checkIdentityResponse gsonResponse = gson.fromJson(responseString, checkIdentityResponse.class);
-                        if (Arrays.toString(gsonResponse.errors) == "[]") {
+                        CheckIdentityResponse gsonResponse = gson.fromJson(responseString, CheckIdentityResponse.class);
+                        if (Arrays.toString(gsonResponse.errors).equals("[]")) {
                             GlobalVariable.userID = userid.getText();
                             GlobalVariable.accessKey = gsonResponse.accessKey;
                             tryCount = 0;
-                            Parent page = FXMLLoader.load(this.getClass().getResource("fxml/resetPassWord.fxml"));
+                            Parent page = FXMLLoader.load(getClass().getResource("fxml/ResetPassWord.fxml"));
                             Scene tmp = new Scene(page);
                             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                             stage.hide();

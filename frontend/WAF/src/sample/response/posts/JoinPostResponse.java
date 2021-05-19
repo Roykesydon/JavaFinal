@@ -1,5 +1,5 @@
 package sample.response.posts;
 
-public class joinPostResponse {
+public class JoinPostResponse {
     public String[] errors;
 }

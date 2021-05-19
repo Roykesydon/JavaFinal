@@ -19,7 +19,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.posts.getProfileAndOwnPostResponse;
+import sample.response.posts.GetProfileAndOwnPostResponse;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,7 +44,7 @@ public class ManagePostController implements Initializable {
     JFXCheckBox tmpCheckBox[] = new JFXCheckBox[10];
     List<JFXCheckBox> checkBoxList = new ArrayList<>();
     private String classOwnPost;
-    private getProfileAndOwnPostResponse classJsonResponse;
+    private GetProfileAndOwnPostResponse classJsonResponse;
     private List<Integer> countJoinUser = new ArrayList<>();
 
 
@@ -100,7 +100,7 @@ public class ManagePostController implements Initializable {
 
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     Gson gson = new Gson();
-                    getProfileAndOwnPostResponse jsonResponse = gson.fromJson(responseString, getProfileAndOwnPostResponse.class);
+                    GetProfileAndOwnPostResponse jsonResponse = gson.fromJson(responseString, GetProfileAndOwnPostResponse.class);
                     //create class variable to use renderAllPost method in update scene
                     classJsonResponse = jsonResponse;
 

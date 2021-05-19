@@ -8,22 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.loginResponse;
-import sample.response.registerResponse;
+import sample.response.LoginResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomePageController extends Main {
@@ -66,7 +58,7 @@ public class HomePageController extends Main {
 
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     Gson gson = new Gson();
-                    loginResponse jsonResponse = gson.fromJson(responseString,loginResponse.class);
+                    LoginResponse jsonResponse = gson.fromJson(responseString, LoginResponse.class);
 
                     errorsResult = "";
                     errorsResultCount=0;
@@ -110,7 +102,7 @@ public class HomePageController extends Main {
     }
 
     public void switchToForgotPassWord(ActionEvent e) throws IOException {
-        Parent page = FXMLLoader.load(this.getClass().getResource("fxml/forgotPassWord.fxml"));
+        Parent page = FXMLLoader.load(this.getClass().getResource("fxml/ForgotPassword.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.hide();
