@@ -37,6 +37,7 @@ public class MakeNewPostController implements Initializable {
     public Label makeNewPostResult;
 
     public void initialize(URL url, ResourceBundle rb) {
+        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)
@@ -46,13 +47,14 @@ public class MakeNewPostController implements Initializable {
             if(GlobalVariable.userEnterFirstTime) {
                 drawer.close();
                 GlobalVariable.userEnterFirstTime = false;
+                burgerTask2.setRate(-1);
             }
             else {
+                burgerTask2.setRate(1);
+                burgerTask2.play();
                 drawer.open();
             }
 
-            HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
-            burgerTask2.setRate(-1);
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
                 burgerTask2.play();
