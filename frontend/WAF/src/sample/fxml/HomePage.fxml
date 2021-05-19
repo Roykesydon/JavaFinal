@@ -37,12 +37,12 @@
 <!--            <Font name="Yu Gothic Medium" size="36.0" />-->
 <!--         </font>-->
 <!--      </Button>-->
-      <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="490.0" prefHeight="42.0" prefWidth="301.0" promptText="User ID" unFocusColor="#c9c9c9">
+      <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="490.0" prefHeight="42.0" prefWidth="301.0" promptText="User ID" unFocusColor="#c9c9c9" style=" -fx-prompt-text-fill:#888888">
       <font>
          <Font size="20.0" />
       </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="556.0" prefHeight="42.0" prefWidth="301.0" promptText="Password" unFocusColor="#c6c6c6">
+      <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="556.0" prefHeight="42.0" prefWidth="301.0" promptText="Password" unFocusColor="#c6c6c6" style=" -fx-prompt-text-fill:#888888">
          <font>
             <Font size="20.0" />
          </font>
