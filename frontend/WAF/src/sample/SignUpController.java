@@ -12,23 +12,12 @@ import javafx.stage.Stage;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import sample.global.GlobalVariable;
-import sample.response.registerResponse;
-import sample.RequestController;
+import sample.response.RegisterResponse;
 
 
 public class SignUpController
@@ -107,7 +96,7 @@ public class SignUpController
 
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     Gson gson = new Gson();
-                    registerResponse jsonResponse = gson.fromJson(responseString,registerResponse.class);
+                    RegisterResponse jsonResponse = gson.fromJson(responseString, RegisterResponse.class);
 
 
                     for(String error:jsonResponse.errors){

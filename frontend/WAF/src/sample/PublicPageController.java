@@ -12,19 +12,15 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.postController.ProfilePostController;
 import sample.postController.PublicPostController;
-import sample.response.posts.getAllPostResponse;
-import sample.response.setIdentityCodeResponse;
+import sample.response.posts.GetAllPostResponse;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,7 +95,7 @@ public class PublicPageController implements Initializable {
 
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 Gson gson = new Gson();
-                getAllPostResponse jsonResponse = gson.fromJson(responseString, getAllPostResponse.class);
+                GetAllPostResponse jsonResponse = gson.fromJson(responseString, GetAllPostResponse.class);
                 errorsResult = "";
                 errorsResultCount=0;
                 for(String error:jsonResponse.errors){
@@ -185,7 +181,7 @@ public class PublicPageController implements Initializable {
 
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 Gson gson = new Gson();
-                getAllPostResponse jsonResponse = gson.fromJson(responseString, getAllPostResponse.class);
+                GetAllPostResponse jsonResponse = gson.fromJson(responseString, GetAllPostResponse.class);
                 errorsResult = "";
                 errorsResultCount=0;
                 for(String error:jsonResponse.errors){

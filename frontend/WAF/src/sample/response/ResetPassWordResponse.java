@@ -1,6 +1,6 @@
 package sample.response;
 
-public class setIdentityCodeResponse {
+public class ResetPassWordResponse {
     public String userid;
     public String[] errors;
 }

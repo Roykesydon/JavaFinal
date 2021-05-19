@@ -20,8 +20,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.posts.getProfileAndOwnPostResponse;
-import sample.response.setIdentityCodeResponse;
+import sample.response.posts.GetProfileAndOwnPostResponse;
+import sample.response.SetIdentityCodeResponse;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class ManagePostController implements Initializable {
 
     @FXML
     private JFXDrawer drawer;
-    private getProfileAndOwnPostResponse classJsonResponse;
+    private GetProfileAndOwnPostResponse classJsonResponse;
     private Label deleteStatusLabel;
     private Label choosePeopleStatusLabel;
     private List<String> postData = new ArrayList<>();
@@ -97,7 +97,7 @@ public class ManagePostController implements Initializable {
 
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     Gson gson = new Gson();
-                    getProfileAndOwnPostResponse jsonResponse = gson.fromJson(responseString, getProfileAndOwnPostResponse.class);
+                    GetProfileAndOwnPostResponse jsonResponse = gson.fromJson(responseString, GetProfileAndOwnPostResponse.class);
                     //create class variable to use renderAllPost method in update scene
                     classJsonResponse = jsonResponse;
 
@@ -166,7 +166,7 @@ public class ManagePostController implements Initializable {
             String responseString= EntityUtils.toString(response.getEntity());
             if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
                 Gson gson =new Gson();
-                setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
                 if(Arrays.toString(gsonResponse.errors)=="[]"){
                     managePostVBox.getChildren().clear();
                     getOwnAndJoinPost();
@@ -222,7 +222,7 @@ public class ManagePostController implements Initializable {
                 String responseString= EntityUtils.toString(response.getEntity());
                 if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
                     Gson gson =new Gson();
-                    setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                    SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
                     if(Arrays.toString(gsonResponse.errors)=="[]"){
                         managePostVBox.getChildren().clear();
                         getOwnAndJoinPost();

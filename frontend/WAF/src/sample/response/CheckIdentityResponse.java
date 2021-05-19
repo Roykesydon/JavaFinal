@@ -1,6 +1,6 @@
 package sample.response;
 
-public class checkIdentityResponse {
+public class CheckIdentityResponse {
     public String accessKey;
     public String[] errors;
 }
