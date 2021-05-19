@@ -24,3 +24,10 @@
 .text-input:focused {
     -fx-background-color:#323232;
 }
+
+#backBtn{
+    -fx-background-color: #323232;
+}
+#backBtn:hover{
+    -fx-background-color: #27292a;
+}

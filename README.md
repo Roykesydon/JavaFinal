@@ -1,18 +1,22 @@
 # JavaFinalProject
 
 
+## 需要填的config
+```
+backend/api/config.yml
+backend/api/GMailConfig.yml
+backend/database/docker-compose.yml
+```
+
 ## API
 先用pyenv把python版本切換到3.8
 
 
-### 需要填的config
-backend/api/config.yml
-backend/api/GMailConfig.yml
-backend/database/docker-compose.yml
 
 
-```
+
 前置作業
+```
 cd backend/api/
 pipenv install
 pipenv run python initDatabase.py

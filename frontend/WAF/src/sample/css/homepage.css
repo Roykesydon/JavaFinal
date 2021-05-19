@@ -31,4 +31,10 @@
 #btnSignIn:hover{
     -fx-background-color: #27292a;
 }
+#btnSignUp{
+    -fx-background-color: #323232;
+}
+#btnSignUp:hover{
+    -fx-background-color: #27292a;
+}
 

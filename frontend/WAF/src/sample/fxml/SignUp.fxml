@@ -66,19 +66,19 @@
 <!--         </children>-->
 <!--      </GridPane>-->
 
-               <JFXTextField fx:id="userName" style=" -fx-prompt-text-fill:#888888" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="198.0" prefHeight="23.0" prefWidth="587.0" promptText="User Name" unFocusColor="#c9c9c9" />
-               <JFXTextField fx:id="userID" style=" -fx-prompt-text-fill:#888888" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="293.0" prefHeight="47.0" prefWidth="587.0" promptText="User ID" unFocusColor="#c9c9c9" />
-               <JFXPasswordField fx:id="userPassword" style=" -fx-prompt-text-fill:#888888" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="392.0" prefHeight="47.0" prefWidth="587.0" promptText="Password" unFocusColor="#c9c9c9" />
-               <JFXPasswordField fx:id="userPWConfirm" style=" -fx-prompt-text-fill:#888888" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="489.0" prefHeight="47.0" prefWidth="587.0" promptText="Confirm Password" unFocusColor="#c9c9c9" />
-               <JFXTextField fx:id="userMail" style=" -fx-prompt-text-fill:#888888" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="595.0" prefHeight="47.0" prefWidth="587.0" promptText="User Email" unFocusColor="#c9c9c9" />
-      <Button fx:id="submmit"  layoutX="516.0" layoutY="691.0" mnemonicParsing="false" onAction="#checkInput" text="Submmit" textFill="WHITE">
+               <JFXTextField fx:id="userName" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="198.0" prefHeight="23.0" prefWidth="587.0" promptText="User Name" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="293.0" prefHeight="47.0" prefWidth="587.0" promptText="User ID" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="392.0" prefHeight="47.0" prefWidth="587.0" promptText="Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXPasswordField fx:id="userPWConfirm" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="489.0" prefHeight="47.0" prefWidth="587.0" promptText="Confirm Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXTextField fx:id="userMail" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="595.0" prefHeight="47.0" prefWidth="587.0" promptText="User Email" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+      <Button fx:id="submmit" layoutX="544.0" layoutY="695.0" mnemonicParsing="false" onAction="#checkInput" prefHeight="78.0" prefWidth="194.0" text="Submmit" textFill="WHITE">
          <font>
-            <Font name="Segoe UI Semibold" size="36.0" />
+            <Font name="Segoe UI Semibold" size="23.0" />
          </font>
       </Button>
-      <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
          <font>
-            <Font size="36.0" />
+            <Font size="23.0" />
          </font>
       </Button>
    </children>

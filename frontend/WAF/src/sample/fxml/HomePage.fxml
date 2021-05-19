@@ -17,9 +17,9 @@
 <!--            <Font name="Yu Gothic Medium" size="36.0" />-->
 <!--         </font>-->
 <!--      </Button>-->
-      <Button fx:id="btnSignUp" layoutX="1054.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToSignup" prefHeight="96.0" prefWidth="212.0" text="註冊" textFill="#e8e8e8">
+      <Button fx:id="btnSignUp" layoutX="1096.0" layoutY="27.0" mnemonicParsing="false" onAction="#switchToSignup" prefHeight="82.0" prefWidth="152.0" text="註冊" textFill="#e8e8e8">
          <font>
-            <Font name="Yu Gothic Medium" size="36.0" />
+            <Font name="Yu Gothic Medium" size="22.0" />
          </font>
       </Button>
 <!--      <Label layoutX="307.0" layoutY="500.0" style="-fx-font-size:3em;" text="Password" />-->
@@ -37,24 +37,24 @@
 <!--            <Font name="Yu Gothic Medium" size="36.0" />-->
 <!--         </font>-->
 <!--      </Button>-->
-      <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="490.0" prefHeight="42.0" prefWidth="301.0" promptText="User ID" unFocusColor="#c9c9c9" style=" -fx-prompt-text-fill:#888888">
+      <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="490.0" prefHeight="42.0" prefWidth="301.0" promptText="User ID" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9">
       <font>
          <Font size="20.0" />
       </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="556.0" prefHeight="42.0" prefWidth="301.0" promptText="Password" unFocusColor="#c6c6c6" style=" -fx-prompt-text-fill:#888888">
+      <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="478.0" layoutY="556.0" prefHeight="42.0" prefWidth="301.0" promptText="Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c6c6c6">
          <font>
             <Font size="20.0" />
          </font>
       </JFXPasswordField>
-      <Button fx:id="btnSignIn"  layoutX="547.0" layoutY="637.0" mnemonicParsing="false" onAction="#loginRequest" prefHeight="67.0" prefWidth="162.0"   text="登入" textFill="#e8e8e8">
+      <Button fx:id="btnSignIn" layoutX="547.0" layoutY="637.0" mnemonicParsing="false" onAction="#loginRequest" prefHeight="67.0" prefWidth="162.0" text="登入" textFill="#e8e8e8">
          <font>
-            <Font name="Yu Gothic Medium" size="36.0" />
+            <Font name="Yu Gothic Medium" size="25.0" />
          </font>
       </Button>
       <Button fx:id="labelForgot" layoutX="523.0" layoutY="718.0" mnemonicParsing="false" onAction="#switchToForgotPassWord" prefHeight="54.0" prefWidth="212.0" text="忘記密碼" textFill="#9e9e9e">
          <font>
-            <Font name="Yu Gothic Medium" size="24.0" />
+            <Font name="Yu Gothic Medium" size="18.0" />
          </font>
       </Button>
    </children>
