@@ -1,6 +1,6 @@
 package sample.response;
 
-public class registerResponse {
+public class RegisterResponse {
     public String email;
     public String[] errors;
     public String name;

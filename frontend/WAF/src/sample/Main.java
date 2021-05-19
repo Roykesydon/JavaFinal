@@ -13,12 +13,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.posts.getProfileAndOwnPostResponse;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import sample.response.notice.CheckNoticeResponse;

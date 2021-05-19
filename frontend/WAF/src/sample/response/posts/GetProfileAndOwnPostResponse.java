@@ -1,6 +1,6 @@
 package sample.response.posts;
 
-public class getProfileAndOwnPostResponse {
+public class GetProfileAndOwnPostResponse {
     public String lastAccessTime;
     public String[] errors;
     public String userID;

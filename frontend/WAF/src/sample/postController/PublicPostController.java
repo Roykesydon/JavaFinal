@@ -10,7 +10,7 @@ import org.apache.http.util.EntityUtils;
 import sample.RequestController;
 import sample.ToastCaller;
 import sample.global.GlobalVariable;
-import sample.response.setIdentityCodeResponse;
+import sample.response.SetIdentityCodeResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -48,7 +48,7 @@ public class PublicPostController {
             String responseString= EntityUtils.toString(response.getEntity());
             if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
                 Gson gson =new Gson();
-                setIdentityCodeResponse gsonResponse = gson.fromJson(responseString,setIdentityCodeResponse.class);
+                SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
                 if(Arrays.toString(gsonResponse.errors)=="[]"){
 //                    joinStatusLabel.setText("成功!");
                     ToastCaller toast = new ToastCaller("加入成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);

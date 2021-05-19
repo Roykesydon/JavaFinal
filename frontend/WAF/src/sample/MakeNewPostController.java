@@ -17,7 +17,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
-import sample.response.loginResponse;
 import sample.response.posts.MakeNewPostResponse;
 
 import java.io.IOException;
@@ -38,6 +37,7 @@ public class MakeNewPostController implements Initializable {
     public Label makeNewPostResult;
 
     public void initialize(URL url, ResourceBundle rb) {
+        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)
@@ -56,9 +56,6 @@ public class MakeNewPostController implements Initializable {
                 burgerTask2.play();
                 drawer.open();
             }
-
-//            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
-
 
             hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                 burgerTask2.setRate(burgerTask2.getRate() * -1);
