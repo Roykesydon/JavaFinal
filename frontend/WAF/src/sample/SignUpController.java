@@ -114,7 +114,6 @@ public class SignUpController
 
                     System.out.println();
                     if(jsonResponse.errors.length==0){
-                        registerResult.setText("Register success! switching to HomePage...");
                         backHomePage(actionEvent);
                         ToastCaller toast = new ToastCaller("Register Success!", GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
