@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MakeNewPostController implements Initializable {
     @FXML
@@ -35,6 +37,11 @@ public class MakeNewPostController implements Initializable {
     public TextField priceTextField;
     public ComboBox categoryComboBox;
     public Label makeNewPostResult;
+
+    private static final String regexPrice = "^[0-9]+.?[0-9]+$";
+    private static  final String regexIntPrice="[0-9]+";
+    private Pattern pattern;
+    private Matcher matcher;
 
     public void initialize(URL url, ResourceBundle rb) {
         HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
@@ -76,9 +83,35 @@ public class MakeNewPostController implements Initializable {
     {
 
         boolean success = true;
-
         //verify submit form
         //有選擇種類
+        try
+        {
+            this.pattern = Pattern.compile(regexPrice);
+            this.matcher = this.pattern.matcher(priceTextField.getText());
+            if(this.matcher.matches()) {
+                this.pattern = Pattern.compile(regexIntPrice);
+                this.matcher = this.pattern.matcher(priceTextField.getText());
+                if(this.matcher.matches()) {
+                    int priceInt = Integer.parseInt(priceTextField.getText());
+                    if (priceInt > 10000) {
+                        success = false;
+                        ToastCaller toast = new ToastCaller("價格超出上限", GlobalVariable.mainStage, ToastCaller.ERROR);
+                    } else if (priceInt == 0) {
+                        success = false;
+                        ToastCaller toast = new ToastCaller("價格不可為零", GlobalVariable.mainStage, ToastCaller.ERROR);
+                    }
+                }
+                else{
+                    success = false;
+                    ToastCaller toast = new ToastCaller("輸入含有小數點",GlobalVariable.mainStage,ToastCaller.ERROR);
+                }
+            }
+            else {
+                success = false;
+                ToastCaller toast = new ToastCaller("輸入項目函非法字元",GlobalVariable.mainStage,ToastCaller.ERROR);
+            }
+        }catch (RuntimeException e){e.printStackTrace();}
         //輸入的是數字 而且是整數 而且數字屬於合理範圍(不會溢位)
         //
         if(categoryComboBox.getValue() == null || priceTextField.getText().equals("")){
