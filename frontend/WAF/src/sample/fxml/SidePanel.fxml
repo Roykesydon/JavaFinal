@@ -12,6 +12,7 @@
             <Image url="@../css/square_logo.png" />
          </image>
       </ImageView>
+      <JFXButton fx:id="NotificationBut" onAction="#EnterNotification" prefHeight="124.0" prefWidth="250.0" text="Notification" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
       <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="149.0" prefWidth="250.0" text="Profile" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
       <JFXButton fx:id="PublicPostBut" onAction="#EnterPublicPost" prefHeight="150.0" prefWidth="250.0" text="Public Post" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
       <JFXButton fx:id="ManagePostBut" onAction="#EnterManagePost" prefHeight="156.0" prefWidth="250.0" text="Manage Post" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
