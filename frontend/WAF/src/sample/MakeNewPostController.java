@@ -111,7 +111,11 @@ public class MakeNewPostController implements Initializable {
                 success = false;
                 ToastCaller toast = new ToastCaller("輸入項目函非法字元",GlobalVariable.mainStage,ToastCaller.ERROR);
             }
-        }catch (RuntimeException e){e.printStackTrace();}
+        }
+        catch(NumberFormatException e){
+            success = false;
+            ToastCaller toast = new ToastCaller("價格超出上限", GlobalVariable.mainStage, ToastCaller.ERROR);
+        }
         //輸入的是數字 而且是整數 而且數字屬於合理範圍(不會溢位)
         //
         if(categoryComboBox.getValue() == null || priceTextField.getText().equals("")){
