@@ -79,6 +79,16 @@ public class SidePanelController {
         stage.show();
     }
 
+    public void EnterCommentPage(ActionEvent actionEvent) throws IOException {
+        //use button to switch scene
+        Parent page = FXMLLoader.load(getClass().getResource("fxml/CommentPage.fxml"));
+        Scene tmp = new Scene(page);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        //stage.hide();//switch smoothly
+        stage.setScene(tmp);
+        stage.show();
+    }
+
     public void EnterAdmin(ActionEvent actionEvent) throws IOException {
         //use button to switch scene
         Parent page = FXMLLoader.load(getClass().getResource("fxml/Admin.fxml"));

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
-      <JFXButton fx:id="spaceBut"  prefHeight="0.1" prefWidth="250.0" text="" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
+      <JFXButton fx:id="spaceBut" prefHeight="0.1" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="" />
       <ImageView fx:id="img" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../css/square_logo.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="NotificationBut" onAction="#EnterNotification" prefHeight="124.0" prefWidth="250.0" text="Notification" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
-      <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="149.0" prefWidth="250.0" text="Profile" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
-      <JFXButton fx:id="PublicPostBut" onAction="#EnterPublicPost" prefHeight="150.0" prefWidth="250.0" text="Public Post" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
-      <JFXButton fx:id="ManagePostBut" onAction="#EnterManagePost" prefHeight="156.0" prefWidth="250.0" text="Manage Post" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
-      <JFXButton fx:id="MakeNewPostBut" onAction="#EnterMakeNewPost" prefHeight="130.0" prefWidth="250.0" text="Make New Post" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;"/>
+      <JFXButton fx:id="NotificationBut" onAction="#EnterNotification" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Notification" />
+      <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Profile" />
+      <JFXButton fx:id="CommentBut" onAction="#EnterCommentPage" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Comment" />
+      <JFXButton fx:id="PublicPostBut" onAction="#EnterPublicPost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Public Post" />
+      <JFXButton fx:id="ManagePostBut" onAction="#EnterManagePost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Manage Post" />
+      <JFXButton fx:id="MakeNewPostBut" onAction="#EnterMakeNewPost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Make New Post" />
    </children>
 </VBox>
