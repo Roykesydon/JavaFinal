@@ -150,11 +150,8 @@ public class ManagePostController implements Initializable {
 
         for(String tmp:postData)
         {
-            VBox postVBox = new VBox();//put one post in this VBox
-            VBox checkBoxVBox = new VBox();
             deleteStatusLabel = new Label("");
             choosePeopleStatusLabel = new Label("");
-            String tmpData = "";
             String[] dataArr = tmp.split(",");
 
 
