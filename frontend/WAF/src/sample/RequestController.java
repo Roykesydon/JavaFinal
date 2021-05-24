@@ -20,7 +20,7 @@ public class RequestController {
         if(args != null)
             for(String[] i:args)
                 nameValuePairs.add(new BasicNameValuePair(i[0],i[1] ));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 
         HttpResponse response = appacheHttp.execute(httpPost);
         return response;

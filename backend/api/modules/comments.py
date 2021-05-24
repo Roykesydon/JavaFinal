@@ -1,4 +1,4 @@
-from flask import Blueprint,request,jsonify
+from flask import Blueprint,request,jsonify,json
 import pymysql
 import yaml
 import traceback
@@ -21,11 +21,10 @@ def index():
 def createComment():
     info = dict()
     errors = []
-
     accessKey = request.values.get('accessKey')
     userID = request.values.get('userID')
     message = request.values.get('message')
-
+    print(message)
     timestamp = str(int(datetime.now().timestamp()))
 
 

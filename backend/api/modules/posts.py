@@ -541,7 +541,7 @@ def completePost():
                     para = {'accessKey':userAccessKey,'message':'Match successfully\n'+postCategory+" NT$ "+price+"\nowner email:"+creatorEmail}
                     r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
                 else:
-                    para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" "+price+" NT\nowner ID:"+ownerID}
+                    para = {'accessKey':userAccessKey,'message':'Match failed\n'+postCategory+" NT$ "+price+"\nowner ID:"+ownerID}
                     r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
         para = {'accessKey':accessKey,'message':'Match successfully\nAlready send your email to people you chose\n'+postCategory+" "+price +" NT"}
         r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)

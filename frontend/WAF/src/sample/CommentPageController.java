@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +18,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
+import sample.postController.CommentController;
+import sample.postController.NotificationController;
 import sample.response.posts.GetCommentResponse;
 
 import java.io.IOException;
@@ -32,7 +35,7 @@ import java.util.logging.Logger;
 
 public class CommentPageController implements Initializable {
 
-    public TextField commentTextBox;
+    public TextArea commentTextBox;
     public Label sendStatusLabel;
     private GetCommentResponse classJsonResponse;
     public TextField toSendUserIDTextBox;
@@ -45,36 +48,16 @@ public class CommentPageController implements Initializable {
     private AnchorPane[] messageArr;
 
     public void initialize(URL url, ResourceBundle rb) {
-        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
-            if (GlobalVariable.isAdmin)
-                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
             drawer.setSidePane(box);
-            if (GlobalVariable.userEnterFirstTime) {
-                drawer.close();
-                GlobalVariable.userEnterFirstTime = false;
-                burgerTask2.setRate(-1);
-            } else {
-                burgerTask2.setRate(1);
-                burgerTask2.play();
-                drawer.open();
-            }
-            hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                burgerTask2.setRate(burgerTask2.getRate() * -1);
-                burgerTask2.play();
-
-                if (drawer.isOpened())
-                    drawer.close();
-                else
-                    drawer.open();
-            });
+            drawer.open();
         } catch (IOException ex) {
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE, null, ex);
         }
         /* catch relative post from method */
-        commentVBox.setPadding(new Insets(20, 20, 20, 20));
-        commentVBox.setSpacing(20);
+        commentVBox.setPadding(new Insets(20, 20, 20, 5));
+        commentVBox.setSpacing(5);
 
         try {
             getComments();
@@ -136,15 +119,22 @@ public class CommentPageController implements Initializable {
         //sender , message , timestamp
         for (String tmp : messageData) {
             String[] dataArr = tmp.split("=");
-            Long timeStamp = Long.valueOf(dataArr[2]);
-            /*
-            Timestamp ts = new Timestamp(1621824984);
-            System.out.println(ts.toLocalDateTime());
-            */
-            String comment = "Sender is : " + dataArr[0] + "\n" + "Message is : " + dataArr[1] + "\n" + "Send time is : " + timeStamp + "\n";
-            Label commentLabel = new Label(comment);
-            commentLabel.setStyle("-fx-font-size: 25;-fx-border-color: #444444;-fx-border-style: solid none none none;");
-            commentVBox.getChildren().add(commentLabel);
+//            Long timeStamp = Long.valueOf(dataArr[2]);
+//            /*
+//            Timestamp ts = new Timestamp(1621824984);
+//            System.out.println(ts.toLocalDateTime());
+//            */
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/Comment.fxml"));
+            AnchorPane anchorPane = fxmlLoader.load();
+
+            CommentController itemController = fxmlLoader.getController();
+            itemController.setData(dataArr[0],dataArr[1]);
+
+//            String comment = "Sender is : " + dataArr[0] + "\n" + "Message is : " + dataArr[1] + "\n" + "Send time is : " + timeStamp + "\n";
+//            Label commentLabel = new Label(comment);
+//            commentLabel.setStyle("-fx-font-size: 25;-fx-border-color: #444444;-fx-border-style: solid none none none;");
+            commentVBox.getChildren().add(anchorPane);
         }
     }
 
@@ -152,7 +142,6 @@ public class CommentPageController implements Initializable {
         message = commentTextBox.getText();
         toSendUserID = toSendUserIDTextBox.getText();
         boolean success = true;
-
         //表單格式皆合法
         if (success) {
             try {

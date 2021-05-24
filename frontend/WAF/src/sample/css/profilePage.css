@@ -1,10 +1,10 @@
-#searchButton{
+#searchButton,#leaveCommentButton{
     -fx-background-color: #3c3f41;
     -fx-text-fill: white;
     -fx-border-color:#ffffff;
     -fx-background-insets: 0;
 }
-#searchButton:hover{
+#searchButton:hover,#leaveCommentButton:hover{
     -fx-background-color: #27292a;
 }
 
@@ -62,4 +62,16 @@
 }
 .text-input:focused {
     -fx-background-color:#323232;
+}
+
+
+.text-area {
+    -fx-font-size: 15;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #323232;
+}
+
+.text-area .content {
+    -fx-background-color: #323232;
+    -fx-background-radius: 0 ;
 }
