@@ -25,7 +25,7 @@
             <JFXButton fx:id="CommentBut" onAction="#EnterCommentPage" prefHeight="79.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Comment" />
             <StackPane layoutX="195.0" layoutY="19.0" prefHeight="41.0" prefWidth="41.0">
                <children>
-                  <Circle fx:id="noticeCircle" radius="16.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="3" >
+                  <Circle fx:id="noticeCircle" radius="16.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="3" style="-fx-background-color: #323232; -fx-border-color: #323232;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);-fx-background: rgb(50,50,50);">
                      <fill>
                      </fill>
                   </Circle>
