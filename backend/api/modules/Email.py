@@ -10,8 +10,6 @@ import smtplib
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
-
 with open('GmailConfig.yml','r') as a:
     mailUserData=yaml.safe_load(a)
 
@@ -26,6 +24,7 @@ def index():
 
 @Email.route('/sendEmail',methods=['POST'])    
 def sendEmail():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     cursor = connection.cursor()
     userid = request.values.get('userid')

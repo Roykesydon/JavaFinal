@@ -9,8 +9,6 @@ import requests
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
-
 posts=Blueprint("posts",__name__)
 
 @posts.route('/')
@@ -21,7 +19,7 @@ def index():
 
 @posts.route('/createPost',methods=['POST'])
 def createPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -69,7 +67,7 @@ def createPost():
 
 @posts.route('/joinPost',methods=['POST'])
 def joinPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -154,7 +152,7 @@ def joinPost():
 
 @posts.route('/getProfileAndOwnPost',methods=['POST'])
 def getOwnPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -195,7 +193,7 @@ def getOwnPost():
 
 @posts.route('/getAllPost',methods=['POST'])
 def getAllPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
     info['posts'] = []
@@ -226,7 +224,7 @@ def getAllPost():
 
 @posts.route('/getOwnAndJoinPost',methods=['POST'])
 def getOwnAndJoinPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -297,6 +295,7 @@ def getOwnAndJoinPost():
 
 @posts.route('/removeUser',methods=['POST'])
 def removeUser():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -394,6 +393,7 @@ def removeUser():
 
 @posts.route('/deletePost',methods=['POST'])
 def deletePost():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -473,6 +473,7 @@ def deletePost():
 
 @posts.route('/completePost',methods=['POST'])
 def completePost():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -561,7 +562,7 @@ def completePost():
 
 @posts.route('/getFilteredPost',methods=['POST'])
 def getFilteredPost():
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
     info['posts'] = []

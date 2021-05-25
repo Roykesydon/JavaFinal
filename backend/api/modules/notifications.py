@@ -8,8 +8,6 @@ from datetime import datetime
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
-
 
 notifications=Blueprint("notifications",__name__)
 
@@ -19,6 +17,7 @@ def index():
 
 @notifications.route('/createNotice',methods=['POST'])
 def createNotice():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -59,6 +58,7 @@ def createNotice():
 
 @notifications.route('/getNewestTenNotice',methods=['POST'])
 def getNewestTenNotice():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
@@ -97,6 +97,7 @@ def getNewestTenNotice():
 #一次polling只會回傳最多一則還未讀的notification
 @notifications.route('/checkNotification',methods=['POST'])
 def checkNotification():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors = []
 
