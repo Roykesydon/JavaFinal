@@ -9,7 +9,7 @@ from datetime import datetime
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+
 
 
 comments=Blueprint("comments",__name__)
@@ -28,7 +28,7 @@ def createComment():
     print(message)
     timestamp = str(int(datetime.now().timestamp()))
 
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     sender = ""
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
@@ -80,7 +80,7 @@ def getComments():
     accessKey = request.values.get('accessKey')
 
     userID = ""
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
     rows = cursor.fetchall()
@@ -116,7 +116,7 @@ def getUnreadCommentCount():
     accessKey = request.values.get('accessKey')
 
     userID = ""
-
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     cursor = connection.cursor()
     cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
     rows = cursor.fetchall()
@@ -148,5 +148,6 @@ def getUnreadCommentCount():
 
 
     info['errors'] = errors
+    cursor.close()
 
     return jsonify(info)

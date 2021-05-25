@@ -52,7 +52,7 @@ public class SidePanelController {
 
         Timer timer = new Timer();
         TimerTask task = new Polling();
-        timer.schedule(task, 1000, 1000);
+        timer.schedule(task, 1000, 1005);
     }
 
 
