@@ -3,4 +3,8 @@
 }
 .button:hover{
     -fx-background-color: #b0c4de;
+    -fx-background-radius: 0 ;
+}
+.circle{
+    -fx-border-style: dashed;
 }

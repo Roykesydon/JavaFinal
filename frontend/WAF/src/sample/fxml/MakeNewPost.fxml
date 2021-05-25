@@ -11,7 +11,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #3c3f41;" stylesheets="@../css/makeNewPost.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MakeNewPostController">
     <children>
-        <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />
+<!--        <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />-->
         <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <Label layoutX="433.0" layoutY="71.0" style="-fx-text-fill: white;" text="MakeNewPost">
             <font>
@@ -28,7 +28,7 @@
          <font>
             <Font size="20.0" />
          </font></TextField>
-      <Label layoutX="433.0" layoutY="270.0" prefHeight="60.0" prefWidth="322.0" style="-fx-text-fill: white;" text="價格">
+      <Label layoutX="433.0" layoutY="270.0" prefHeight="60.0" prefWidth="322.0" style="-fx-text-fill: white;" text="價格 NT$">
          <font>
             <Font size="31.0" />
          </font>

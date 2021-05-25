@@ -10,11 +10,14 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import sample.global.GlobalVariable;
+import sample.postController.NotificationController;
+import sample.postController.PublicPostController;
 import sample.response.notice.getNewestTenNoticeResponse;
 
 import java.awt.*;
@@ -34,7 +37,6 @@ public class RenderNotificationPageController implements Initializable {
     private JFXDrawer drawer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
         VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
         if(GlobalVariable.isAdmin != false) {
@@ -42,26 +44,11 @@ public class RenderNotificationPageController implements Initializable {
             System.out.println("admin");
         }
 
-        drawer.setSidePane(box);
-        if(GlobalVariable.userEnterFirstTime) {
-            drawer.close();
-            GlobalVariable.userEnterFirstTime = false;
-            burgerTask2.setRate(-1);
-        }
-        else {
-            burgerTask2.setRate(1);
-            burgerTask2.play();
-            drawer.open();
-        }
-        hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            burgerTask2.setRate(burgerTask2.getRate() * -1);
-            burgerTask2.play();
+        notificationVbox.setPadding(new Insets(20, 20, 20, 20));
+        notificationVbox.setSpacing(20);
 
-            if (drawer.isOpened())
-                drawer.close();
-            else
-                drawer.open();
-        });
+        drawer.setSidePane(box);
+        drawer.open();
     }catch (IOException ex){
         Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
     }
@@ -76,11 +63,13 @@ public class RenderNotificationPageController implements Initializable {
                 getNewestTenNoticeResponse gsonResponse = gson.fromJson(responseString, getNewestTenNoticeResponse.class);
                 if (Arrays.toString(gsonResponse.errors).equals("[]")) {
                     for (String text: gsonResponse.Notices) {
-                        System.out.println(text);
-                        notification=new Label(text);
-                        notification.setVisible(true);
-                        notification.setStyle("-fx-background-color: blue");
-                        notificationVbox.getChildren().add(notification);
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/sample/fxml/posts/Notification.fxml"));
+                        AnchorPane anchorPane = fxmlLoader.load();
+
+                        NotificationController itemController = fxmlLoader.getController();
+                        itemController.setData(text);
+                        notificationVbox.getChildren().add(anchorPane);
                     }
                 }
                 else {

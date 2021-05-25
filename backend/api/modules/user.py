@@ -112,6 +112,7 @@ def index():
 
 @user.route('/register',methods=['POST'])
 def register():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     cursor = connection.cursor()
     info['name'] = request.values.get('name')
@@ -145,6 +146,7 @@ def register():
 
 @user.route('/login',methods=['POST'])
 def login():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     userid = request.values.get('userid')
     passwd = request.values.get('passwd')
@@ -201,6 +203,7 @@ class CheckEmail():
 
 @user.route('/setIdentityCode',methods=['POST'])
 def setIdentityCode():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     cursor = connection.cursor()
     userid = request.values.get('userid')
@@ -241,6 +244,7 @@ def checkPassWord(data):
 
 @user.route('/checkIdentityCode',methods=['POST'])
 def checkIdentityCode():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors=[]
     cursor = connection.cursor()
@@ -263,6 +267,7 @@ def checkIdentityCode():
 
 @user.route('/resetPassword',methods=['POST'])
 def resetPassword():
+    connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
     info = dict()
     errors=[]
     cursor=connection.cursor()

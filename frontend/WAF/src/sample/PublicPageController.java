@@ -41,7 +41,6 @@ public class PublicPageController implements Initializable {
     public ComboBox categoryComboBox;
 
     public void initialize(URL url, ResourceBundle rb) {
-        HamburgerBackArrowBasicTransition burgerTask2 = new HamburgerBackArrowBasicTransition(hamburger);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin != false) {
@@ -50,25 +49,9 @@ public class PublicPageController implements Initializable {
             }
 
             drawer.setSidePane(box);
-            if(GlobalVariable.userEnterFirstTime) {
-                drawer.close();
-                GlobalVariable.userEnterFirstTime = false;
-                burgerTask2.setRate(-1);
-            }
-            else {
-                burgerTask2.setRate(1);
-                burgerTask2.play();
-                drawer.open();
-            }
-            hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                burgerTask2.setRate(burgerTask2.getRate() * -1);
-                burgerTask2.play();
+            drawer.open();
 
-                if (drawer.isOpened())
-                    drawer.close();
-                else
-                    drawer.open();
-            });
+
         }catch (IOException ex){
             Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
         }
