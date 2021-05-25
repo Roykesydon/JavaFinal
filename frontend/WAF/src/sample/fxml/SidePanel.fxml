@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
       <JFXButton fx:id="spaceBut" prefHeight="0.1" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="" />
       <ImageView fx:id="img" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
@@ -15,7 +20,24 @@
       </ImageView>
       <JFXButton fx:id="NotificationBut" onAction="#EnterNotification" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Notification" />
       <JFXButton fx:id="ProfileBut" onAction="#EnterProfile" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Profile" />
-      <JFXButton fx:id="CommentBut" onAction="#EnterCommentPage" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Comment" />
+      <AnchorPane maxHeight="80.0" prefHeight="48.0" prefWidth="250.0">
+         <children>
+            <JFXButton fx:id="CommentBut" onAction="#EnterCommentPage" prefHeight="79.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Comment" />
+            <StackPane layoutX="195.0" layoutY="19.0" prefHeight="41.0" prefWidth="41.0">
+               <children>
+                  <Circle fx:id="noticeCircle" radius="16.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="3" >
+                     <fill>
+                     </fill>
+                  </Circle>
+                  <Label fx:id="noticeCircleLabel" alignment="CENTER" prefHeight="33.0" prefWidth="33.0" text="9" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font></Label>
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+      
       <JFXButton fx:id="PublicPostBut" onAction="#EnterPublicPost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Public Post" />
       <JFXButton fx:id="ManagePostBut" onAction="#EnterManagePost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Manage Post" />
       <JFXButton fx:id="MakeNewPostBut" onAction="#EnterMakeNewPost" prefHeight="143.0" prefWidth="250.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="Make New Post" />

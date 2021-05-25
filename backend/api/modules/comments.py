@@ -1,3 +1,4 @@
+from click import command
 from flask import Blueprint,request,jsonify,json
 import pymysql
 import yaml
@@ -91,7 +92,7 @@ def getComments():
         row = rows[0]
         userID = row[1]
 
-        cursor.execute("SELECT * from Comments WHERE receiver = %s ORDER BY timestamp DESC",userID)
+        cursor.execute("SELECT * from Comments WHERE receiver = %s ORDER BY timestamp DESC, _ID DESC",userID)
         rows = cursor.fetchall()
         connection.commit()
 
@@ -99,6 +100,52 @@ def getComments():
         info['Notices'] = []
         for row in rows:
             info['Notices'].append(""+row[1]+"="+row[3]+"="+row[4])
+
+        cursor.execute("UPDATE Users SET lastReadComment = %s WHERE accessKey = %s",(rows[0][0],accessKey))
+        connection.commit()
+
+    info['errors'] = errors
+
+    return jsonify(info)
+
+@comments.route('/getUnreadCommentCount',methods=['POST'])
+def getUnreadCommentCount():
+    info = dict()
+    errors = []
+
+    accessKey = request.values.get('accessKey')
+
+    userID = ""
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    rows = cursor.fetchall()
+    connection.commit()
+
+    if len(rows) == 0:
+        errors.append("accessKey doesn't exist!")
+    else:
+        row = rows[0]
+        userID = row[1]
+        lastReadComment = row[15]
+
+        cursor.execute("SELECT _ID from Comments WHERE receiver = %s ORDER BY timestamp DESC, _ID DESC",userID)
+        rows = cursor.fetchall()
+        connection.commit()
+
+        idlist = []
+
+        for row in rows:
+            idlist.append(row[0])
+        print(idlist)
+        print(lastReadComment)
+        info['count'] = 0
+        if(lastReadComment == None):
+            info['count'] = len(idlist)
+        else:
+            info['count'] = idlist.index(lastReadComment)
+
+
 
     info['errors'] = errors
 
