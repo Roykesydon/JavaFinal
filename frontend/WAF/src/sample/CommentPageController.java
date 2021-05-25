@@ -169,15 +169,22 @@ public class CommentPageController implements Initializable {
                         errorsResult += error;
                         errorsResultCount++;
                         System.out.print(',' + error);
+                        ToastCaller toast;
+                        if (error.equals("message too long"))
+                            toast = new ToastCaller("訊息過長",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if (error.equals("userID doesn't exist!"))
+                            toast = new ToastCaller("user ID 不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if (error.equals("don't send yourself"))
+                            toast = new ToastCaller("請勿發給自己",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        if (error.equals("createNotice fail"))
+                            toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
                     }
 
                     System.out.println();
                     ToastCaller toast;
                     if (jsonResponse.errors.length == 0) {
-                        toast = new ToastCaller("Send message success!",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                        toast = new ToastCaller("發送成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
-                    else
-                        toast = new ToastCaller("Send message failed!",GlobalVariable.mainStage,ToastCaller.ERROR);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

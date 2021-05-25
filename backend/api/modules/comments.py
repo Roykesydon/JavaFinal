@@ -48,11 +48,12 @@ def createComment():
     cursor.execute("SELECT * from Users WHERE userID = %s",userID)
     rows = cursor.fetchall()
     connection.commit()
-    if len(rows) == 0:
-        errors.append("userID doesn't exist!")
+    if(len(errors)==0):
+        if len(rows) == 0:
+            errors.append("userID doesn't exist!")
 
-    if sender == userID:
-        errors.append("don't send yourself")
+        if sender == userID:
+            errors.append("don't send yourself")
 
 
     info['errors'] = errors
