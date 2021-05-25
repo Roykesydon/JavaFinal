@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 import java.io.IOException;
 
 public class ForgotPasswordController {
-    public TextField userIdentityCode, userid;
+    public JFXTextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
     public void setIdentityCodeButtonListener(ActionEvent actionEvent){

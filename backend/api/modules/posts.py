@@ -28,7 +28,7 @@ def createPost():
     price = request.values.get('price')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -53,10 +53,10 @@ def createPost():
 
     if len(info['errors'])==0:
         try:
-            insertString = 'INSERT INTO Posts(creator,category,price,postID,joinPeopleCount)values(%s,%s,%s,%s,%s)'
-            cursor.execute(insertString, (creator,category,price, (creator+str(postsSpace+1)), 0))
+            insertString = 'INSERT INTO Posts(creator,category,price,postID,joinPeopleCount)values(%(creator)s,%(category)s,%(price)s,%(postID)s,%(joinPeopleCount)s)'
+            cursor.execute(insertString, {'creator':creator,'category':category,'price':price, 'postID':(creator+str(postsSpace+1)), 'joinPeopleCount':0})
             connection.commit()
-            cursor.execute("UPDATE Users SET createPost"+ str(postsSpace+1)+ " = %s WHERE accessKey = %s",((creator+str(postsSpace+1)),accessKey))
+            cursor.execute("UPDATE Users SET createPost"+ str(postsSpace+1)+ " = %(createPost)s WHERE accessKey = %(accessKey)s",{'createPost':(creator+str(postsSpace+1)),'accessKey':accessKey})
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -80,7 +80,7 @@ def joinPost():
     joinedPeople=-1
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -107,7 +107,7 @@ def joinPost():
             errors.append("can't join more Post")
 
 
-    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    cursor.execute("SELECT * from Posts WHERE postID = %(postID)s",{'postID':postID})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -129,9 +129,9 @@ def joinPost():
 
     if len(info['errors'])==0:
         try:
-            cursor.execute("UPDATE Users SET joinPost"+ str(joinPostsSpace+1)+ " = %sWHERE accessKey = %s",(postID,accessKey))
+            cursor.execute("UPDATE Users SET joinPost"+ str(joinPostsSpace+1)+ " = %(joinPost)sWHERE accessKey = %(accessKey)s",{'joinPost':postID,'accessKey':accessKey})
             connection.commit()
-            cursor.execute("UPDATE Posts SET joinPeopleCount = %s WHERE PostID = %s",(str(joinedPeople+1),postID))
+            cursor.execute("UPDATE Posts SET joinPeopleCount = %(joinPeopleCount)s WHERE PostID = %(PostID)s",{'joinPeopleCount':str(joinedPeople+1),'PostID':postID})
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -140,7 +140,7 @@ def joinPost():
 
     #send notice
     if joinedPeople == 9:
-        cursor.execute("SELECT * from Users WHERE userID = %s",creator)
+        cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':creator})
         rows = cursor.fetchall()
         connection.commit()
         row = rows[0]
@@ -159,7 +159,7 @@ def getOwnPost():
     userID = request.values.get('userID')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE userID = %s",userID)
+    cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':userID})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -174,7 +174,7 @@ def getOwnPost():
         info['email'] = email = row[3]
         info['lastAccessTime'] = lastAccessTime = row[6]
 
-        cursor.execute("SELECT * from Posts WHERE creator = %s",info['userID'])
+        cursor.execute("SELECT * from Posts WHERE creator = %(creator)s",{'creator':info['userID']})
         rows = cursor.fetchall()
         connection.commit()
 
@@ -231,7 +231,7 @@ def getOwnAndJoinPost():
     accessKey = request.values.get('accessKey')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -246,7 +246,7 @@ def getOwnAndJoinPost():
         for i in range(3):
             joinPost.append(row[i+8])
 
-        cursor.execute("SELECT * from Posts WHERE creator = %s",info['userID'])
+        cursor.execute("SELECT * from Posts WHERE creator = %(creator)s",{'creator':info['userID']})
         rows = cursor.fetchall()
         connection.commit()
 
@@ -259,7 +259,7 @@ def getOwnAndJoinPost():
             joinPeopleCount = row[5]
             postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
             for i in range(3):
-                cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %(joinPost)s",{'joinPost':postID})
                 rows = cursor.fetchall()
                 connection.commit()
                 for row in rows:
@@ -269,7 +269,7 @@ def getOwnAndJoinPost():
         info['joinPost'] = []
         for postID in joinPost:
             if postID != None:
-                cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+                cursor.execute("SELECT * from Posts WHERE postID = %(postID)s",{'postID':postID})
                 rows = cursor.fetchall()
                 connection.commit()
 
@@ -282,7 +282,7 @@ def getOwnAndJoinPost():
                     joinPeopleCount = row[5]
                     postDetail = ""+creator+","+category+","+str(price)+","+postID+","+str(joinPeopleCount)
                     for i in range(3):
-                        cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %s",postID)
+                        cursor.execute("SELECT * from Users WHERE joinPost"+str(i+1)+" = %(joinPost)s",{'joinPost':postID})
                         rows = cursor.fetchall()
                         connection.commit()
                         for row in rows:
@@ -304,7 +304,7 @@ def removeUser():
     removeUserID = request.values.get('removeUserID')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -336,7 +336,7 @@ def removeUser():
         joinPeopleCount = -1
         
         #check if post exists
-        cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+        cursor.execute("SELECT * from Posts WHERE postID = %(postID)s",{'postID':postID})
         rows = cursor.fetchall()
         connection.commit()
         if len(rows) == 0:
@@ -346,7 +346,7 @@ def removeUser():
             joinPeopleCount = int(rows[0][5])
             
         #check if remove user joined the post
-        cursor.execute("SELECT * from Users WHERE userID = %s",removeUserID)
+        cursor.execute("SELECT * from Users WHERE userID = %(postID)s",{'postID':removeUserID})
         rows = cursor.fetchall()
         connection.commit()
         if len(rows) == 0:
@@ -373,9 +373,9 @@ def removeUser():
         if not errorChainFlag:
             try:  
                 print(removeUserPostIndex)
-                cursor.execute("UPDATE Users SET joinPost"+str(removeUserPostIndex)+" = %s WHERE userID = %s",(None,removeUserID))
+                cursor.execute("UPDATE Users SET joinPost"+str(removeUserPostIndex)+" = %(joinPost)s WHERE userID = %(userID)s",{'joinPost':None,'userID':removeUserID})
                 connection.commit() 
-                cursor.execute("UPDATE Posts SET joinPeopleCount = %s WHERE postID = %s",(str(joinPeopleCount-1),postID))
+                cursor.execute("UPDATE Posts SET joinPeopleCount = %(joinPeopleCount)s WHERE postID = %(postID)s",{'joinPeopleCount':str(joinPeopleCount-1),'postID':postID})
                 connection.commit()
             except Exception:
                 traceback.print_exc()
@@ -407,7 +407,7 @@ def deletePost():
 
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    cursor.execute("SELECT * from Posts WHERE postID = %(postID)s",{'postID':postID})
     rows = cursor.fetchall()
     connection.commit()
     if len(rows)==0:
@@ -417,7 +417,7 @@ def deletePost():
         postCategory = row[2]
         price = row[3]
 
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -446,7 +446,7 @@ def deletePost():
 
     if len(errors) == 0:
         for index in range(3):
-            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %s",postID)
+            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %(joinPost)s",{'joinPost':postID})
             rows = cursor.fetchall()
             connection.commit()
             for row in rows:
@@ -457,14 +457,14 @@ def deletePost():
 
     if len(errors) == 0:
         for index in range(3):
-            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
+            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %(joinPost)s WHERE joinPost"+str(index+1)+" = %(postID)s",{'joinPost':None,'postID':postID})
             connection.commit()
         for index in range(3):
-            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
+            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %(createPost)s WHERE createPost"+str(index+1)+" = %(postID)s",{'createPost':None,'postID':postID})
             connection.commit()
 
     if len(errors) == 0:
-        cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
+        cursor.execute("DELETE FROM Posts WHERE postID = %(postID)s",{'postID':postID})
         connection.commit()
 
     info['errors'] = errors
@@ -489,7 +489,7 @@ def completePost():
 
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * from Posts WHERE postID = %s",postID)
+    cursor.execute("SELECT * from Posts WHERE postID = %(postID)s",{'postID':postID})
     rows = cursor.fetchall()
     connection.commit()
     if len(rows)==0:
@@ -499,7 +499,7 @@ def completePost():
         postCategory = row[2]
         price = row[3]
 
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -515,7 +515,7 @@ def completePost():
 
     if len(errors)==0:
         for chooseUser in chooseList:
-            cursor.execute("SELECT * from Users WHERE userID = %s",chooseUser)
+            cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':chooseUser})
             rows = cursor.fetchall()
             connection.commit()
             if len(rows)==0:
@@ -532,7 +532,7 @@ def completePost():
 
     if len(errors) == 0:
         for index in range(3):
-            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %s",postID)
+            cursor.execute("SELECT * from Users WHERE joinPost"+str(index+1)+" = %(postID)s",{'postID':postID})
             rows = cursor.fetchall()
             connection.commit()
             for row in rows:
@@ -548,12 +548,12 @@ def completePost():
         r = requests.post('http://' + cfg['db']['host']  + ':13261/notifications/createNotice', data = para)
 
         for index in range(3):
-            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %s WHERE joinPost"+str(index+1)+" = %s",(None,postID))
+            cursor.execute("UPDATE Users SET joinPost"+str(index+1)+" = %(joinPost)s WHERE joinPost"+str(index+1)+" = %(postID)s",{'joinPost':None,'postID':postID})
             connection.commit()
         for index in range(3):
-            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %s WHERE createPost"+str(index+1)+" = %s",(None,postID))
+            cursor.execute("UPDATE Users SET createPost"+str(index+1)+" = %(createPost)s WHERE createPost"+str(index+1)+" = %(postID)s",{'createPost':None,'postID':postID})
             connection.commit()
-        cursor.execute("DELETE FROM Posts WHERE postID = %s",postID)
+        cursor.execute("DELETE FROM Posts WHERE postID = %(postID)s",{'postID':postID})
         connection.commit()
 
     info['errors'] = errors
@@ -572,7 +572,7 @@ def getFilteredPost():
     cursor = connection.cursor()
 
     try:
-        cursor.execute("SELECT * from Posts WHERE category = %s",category)
+        cursor.execute("SELECT * from Posts WHERE category = %(category)s",{'category':category})
         rows = cursor.fetchall()
         connection.commit()
     except Exception:

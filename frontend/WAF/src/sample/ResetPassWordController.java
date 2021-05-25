@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
 
 
 public class ResetPassWordController implements Initializable {
-    public TextField newPassWord, confirmPassWord;
+    public JFXTextField newPassWord, confirmPassWord;
     public Label userId,resetResponse;
 
     public void initialize(URL url, ResourceBundle rb) {
