@@ -184,7 +184,7 @@ public class CommentPageController implements Initializable {
 
                     System.out.println();
                     ToastCaller toast;
-                    if (jsonResponse.errors.length == 0) {
+                    if (jsonResponse.errors.length == 0 && checkMessageLegal(message)) {
                         toast = new ToastCaller("Send message success!",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
                     else
@@ -193,6 +193,21 @@ public class CommentPageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public boolean checkMessageLegal(String message)
+    {
+        if(!message.contains("\n"))
+            return false;
+        else
+        {
+            String[] checkReturn;
+            checkReturn = message.split("\n");
+            if(checkReturn.length < 5)
+                return true;
+            else
+                return false;
         }
     }
 }
