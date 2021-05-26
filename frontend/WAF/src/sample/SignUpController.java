@@ -1,13 +1,18 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import org.apache.http.HttpResponse;
@@ -15,15 +20,36 @@ import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import sample.global.GlobalVariable;
 import sample.response.RegisterResponse;
 
 
-public class SignUpController
+public class SignUpController implements Initializable
 {
-    public TextField userID,userPWConfirm,userMail,userPassword,userName;
+    //public TextField userID,userPWConfirm,userMail,userPassword,userName;
     public Label test,ckName,ckPassword,ckMail,ckID,ckPWConfirm,registerResult;
+    public Label primarySignLabel;
+    public Button submit;
+    public Button backBtn;
+    public JFXTextField userName;
+    public JFXTextField userID;
+    public JFXPasswordField userPassword;
+    public JFXPasswordField userPWConfirm;
+    public JFXTextField userMail;
+
+    public void initialize(URL url, ResourceBundle rb){
+        userID.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        userName.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        userPWConfirm.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        userMail.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        primarySignLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+    }
 
     public void checkInput(ActionEvent actionEvent) throws IOException
     {
