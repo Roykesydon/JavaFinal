@@ -8,6 +8,6 @@ public class GlobalVariable{
     public static boolean isAdmin = false;
     public static boolean userEnterFirstTime = true;
     public static Stage mainStage = null;
-    public static String primaryColor = "#0abab5";
-    public static String secondaryColor = "#6200ed";
+    public static String primaryColor = "#00E3E3";
+    public static String secondaryColor = "#B15BFF";
 }
