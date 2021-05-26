@@ -64,15 +64,16 @@ class CheckRepeat():
     def userid(self,str):
         connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
         self.__cursor = connection.cursor()
-        self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
+        self.__cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
         rows = self.__cursor.fetchall()
         if len(rows):
             self.__Errors.append('ID has been registered')
 
     def email(self,str):
+
         connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
         self.__cursor = connection.cursor()
-        self.__cursor.execute("SELECT * from Users WHERE email = %s",str)
+        self.__cursor.execute("SELECT * from Users WHERE email = %(userID)s",{'userID':str})
         rows = self.__cursor.fetchall()
         if len(rows):
             self.__Errors.append('email has been registered')
@@ -126,10 +127,10 @@ def register():
 
     if len(info['errors'])==0:
         try:
-            insertString = 'INSERT INTO Users(name,userid,password,email,isAdmin)values(%s,%s,%s,%s,%s)'
+            insertString = 'INSERT INTO Users(name,userid,password,email,isAdmin)values(%(Name)s,%(userId)s,%(password)s,%(email)s,%(isAdmin)s)'
             md5 = hashlib.md5()
             md5.update((request.values.get('passwd')).encode("utf8"))
-            cursor.execute(insertString, (info['name'], info['userid'], md5.hexdigest(),info['email'],False))
+            cursor.execute(insertString, {'Name':info['name'], 'userId':info['userid'],'password': md5.hexdigest(),'email':info['email'],'isAdmin':False})
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -150,14 +151,14 @@ def login():
     userid = request.values.get('userid')
     passwd = request.values.get('passwd')
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+    cursor.execute("SELECT * from Users WHERE userID = %(userId)s",{'userId':userid})
     rows = cursor.fetchall()
     connection.commit()
     Errors = []
     if not len(rows):
         Errors.append('userID doesn\'t exist')
     else:
-        cursor.execute("SELECT * from Users WHERE userID = %s",userid)
+        cursor.execute("SELECT * from Users WHERE userID = %(userId)s",{'userId':userid})
         rows = cursor.fetchall()
         connection.commit()
         row = rows[0]
@@ -171,7 +172,7 @@ def login():
 
             info['accessKey'] = accessKey
             try:
-                cursor.execute("UPDATE Users SET accessKey = %s, lastAccessTime = %s WHERE userID = %s",(accessKey,now,userid))
+                cursor.execute("UPDATE Users SET accessKey = %(accessKey)s, lastAccessTime = %(Now)s WHERE userID = %(userID)s",{'accessKey':accessKey,'Now':now,'userID':userid})
                 connection.commit()
             except:
                 Errors.append('login error')

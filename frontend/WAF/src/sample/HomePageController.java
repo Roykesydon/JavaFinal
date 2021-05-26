@@ -31,7 +31,7 @@ public class HomePageController extends Main implements Initializable {
     public Button labelForgot;
     public Button btnSignUp;
     public Label primaryWAFLabel;
-    public JFXTextField userID;
+    public TextField userID;
     public JFXPasswordField userPassword;
 
     public void initialize(URL url, ResourceBundle rb){
@@ -39,7 +39,6 @@ public class HomePageController extends Main implements Initializable {
         btnSignUp.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
         btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
         labelForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
-        userID.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
     }
 

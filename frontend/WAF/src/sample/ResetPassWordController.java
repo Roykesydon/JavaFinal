@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import java.util.ResourceBundle;
 
 
 public class ResetPassWordController implements Initializable {
+    public TextField newPassWord, confirmPassWord;
     public Label userId,resetResponse;
     public Label primaryUserIDLabel;
     public Label primaryResetLabel;
@@ -32,11 +34,11 @@ public class ResetPassWordController implements Initializable {
     public Button resetBtn;
     public Button backBtn;
     public Label secondaryUserId;
-    public JFXPasswordField newPassWord;
-    public JFXPasswordField confirmPassWord;
+    // public JFXPasswordField newPassWord;
+    // public JFXPasswordField confirmPassWord;
 
     public void initialize(URL url, ResourceBundle rb) {
-        userId.setText(GlobalVariable.userID);
+        secondaryUserId.setText(GlobalVariable.userID);
         primaryConfirmLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         primaryUserIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         primaryResetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
