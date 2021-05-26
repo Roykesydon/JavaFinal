@@ -1,13 +1,18 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -16,12 +21,26 @@ import sample.global.GlobalVariable;
 import sample.response.LoginResponse;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
-public class HomePageController extends Main {
+public class HomePageController extends Main implements Initializable {
 
-    public TextField userID,userPassword;
-    public Label loginResult;
+    public Button btnSignIn;
+    public Button labelForgot;
+    public Button btnSignUp;
+    public Label primaryWAFLabel;
+    public TextField userID;
+    public JFXPasswordField userPassword;
+
+    public void initialize(URL url, ResourceBundle rb){
+        primaryWAFLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        btnSignUp.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        labelForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+    }
 
     public void switchToSignup(ActionEvent actionEvent) throws IOException
     {

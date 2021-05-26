@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,11 +23,30 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class ForgotPasswordController {
-    public JFXTextField userIdentityCode, userid;
+    public TextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
+    public Label primaryIdentifyLabel;
+    public Label primaryForgetLabel;
+    public Button submit;
+    public Label primaryIDLabel;
+    public Button backBtn;
+    public Button resend;
+    public Button send;
+
+    public void initialize(URL url, ResourceBundle rb){
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        resend.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+    }
+
     public void setIdentityCodeButtonListener(ActionEvent actionEvent){
         setIdentityCode(0);
     }
@@ -44,12 +65,17 @@ public class ForgotPasswordController {
                         else tryCount=0;
                     }
                     else{
-                        userIdResponse.setText((Arrays.toString(gsonResponse.errors)));
+                        for(String error : gsonResponse.errors){
+                            ToastCaller toast;
+                            if(error.equals("ID has not found"))
+                                toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            if(error.equals("today has set Identify code"))
+                                toast = new ToastCaller("今天已設過驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        }
                     }
                 }
                 else{
                     System.out.println(response.getStatusLine().getStatusCode());
-                    userIdResponse.setText("回應錯誤");
                 }
             }
             catch (IOException e){
@@ -57,7 +83,8 @@ public class ForgotPasswordController {
             }
         }
         else{
-            userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);
         }
 
     }
@@ -67,11 +94,14 @@ public class ForgotPasswordController {
                 HttpResponse response=RequestController.post("http://localhost:13261/Email/sendEmail",
                     new String[]{"userid",userid.getText()}
                 );
+                ToastCaller toast;
                 if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                    if(status==0)userIdResponse.setText("Email寄送成功");
+                    if(status==0)
+                        toast = new ToastCaller("已送出Email",GlobalVariable.mainStage,ToastCaller.SUCCESS);;
                 }
                 else{
-                    if(status==0)userIdResponse.setText("Email回應錯誤");
+                    if(status==0)
+                        toast = new ToastCaller("回應錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                 }
             }
             catch (IOException e){
@@ -79,16 +109,19 @@ public class ForgotPasswordController {
             }
         }
         else{
-            if(status==0)userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            if(status==0)
+                toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);;
         }
     }
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
-            if(tryCount==4){
-                userIdResponse.setText("失敗次數過多驗證碼已改變\n請按重寄驗證碼");
-                setIdentityCode(1);
-            }
-            else {
+//            if(tryCount==4){
+//                ToastCaller toast;
+//                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
+//                setIdentityCode(1);
+//            }
+//            else {
                 try {
                     HttpResponse response = RequestController.post("http://localhost:13261/user/checkIdentityCode",
                             new String[]{"userid", userid.getText()},
@@ -111,19 +144,27 @@ public class ForgotPasswordController {
                             stage.show();
                         } else {
                             tryCount++;
-                            userIdResponse.setText(Arrays.toString(gsonResponse.errors));
+                            ToastCaller toast;
+                            for(String error: gsonResponse.errors) {
+                                if (error.equals("IdentityCode error"))
+                                    toast = new ToastCaller("驗證碼錯誤", GlobalVariable.mainStage, ToastCaller.ERROR);
+                                if (error.equals("already try 5 times"))
+                                    toast = new ToastCaller("本日已嘗試五次", GlobalVariable.mainStage, ToastCaller.ERROR);
+                            }
                         }
                     } else {
                         tryCount++;
-                        userIdResponse.setText("驗證碼錯誤");
+                        ToastCaller toast;
+                        toast = new ToastCaller("網路錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+//            }
         }
         else{
-            userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);;
         }
     }
     public void backHomePage(ActionEvent actionEvent) throws IOException {

@@ -12,10 +12,6 @@ import datetime
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'],charset='utf8')
-
-
-
 class CheckForm():
     global connection
 
@@ -61,18 +57,22 @@ class CheckForm():
 
 
 class CheckRepeat():
-    global connection
 
     def __init__(self):
         self.__Errors=[]
-        self.__cursor = connection.cursor()
+        self.__cursor = None
     def userid(self,str):
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        self.__cursor = connection.cursor()
         self.__cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
         rows = self.__cursor.fetchall()
         if len(rows):
             self.__Errors.append('ID has been registered')
 
     def email(self,str):
+
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        self.__cursor = connection.cursor()
         self.__cursor.execute("SELECT * from Users WHERE email = %(userID)s",{'userID':str})
         rows = self.__cursor.fetchall()
         if len(rows):
@@ -186,17 +186,22 @@ def login():
 
 
 class CheckEmail():
-    global connection
-
     def __init__(self):
         self.__Errors=[]
-        self.__cursor = connection.cursor()
 
     def userid(self,str):
-        self.__cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
-        rows = self.__cursor.fetchall()
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        cursor = connection.cursor()
+        cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
+        rows = cursor.fetchall()
         if not len(rows):
             self.__Errors.append('ID has not found')
+        else:
+            now = datetime.datetime.today()
+            now = now.strftime('%Y-%m-%d')
+            if(now==rows[0][16]):
+                self.__Errors.append('today has set Identify code')
+
     def getErrors(self):
         return self.__Errors
 
@@ -229,6 +234,12 @@ def setIdentityCode():
                     IdentityCode += chr(tmp)
             cursor.execute("UPDATE Users SET IdentityCode = %(IdentityCode)s WHERE userID = %(userID)s",{'IdentityCode':IdentityCode,'userID':userid})
             connection.commit()
+            now = datetime.datetime.today()
+            now = now.strftime('%Y-%m-%d')
+            cursor.execute("UPDATE Users SET lastSendIdentifyCodeTime = %(lastSendIdentifyCodeTime)s WHERE userID = %(userID)s",{'lastSendIdentifyCodeTime':now,'userID':userid})
+            connection.commit()
+            cursor.execute("UPDATE Users SET tryIdentifyCodeCount = %(tryIdentifyCodeCount)s WHERE userID = %(userID)s",{'tryIdentifyCodeCount':"0",'userID':userid})
+            connection.commit()
         except Exception:
             traceback.print_exc()
             connection.rollback()
@@ -250,18 +261,31 @@ def checkIdentityCode():
     cursor = connection.cursor()
     userid = request.values.get('userid')
     IdentityCode=request.values.get('IdentityCode')
-    cursor.execute("SELECT IdentityCode from Users WHERE userID = %(userID)s",{'userID':userid})
+
+    cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':userid})
     rows = cursor.fetchall()
     connection.commit()
-    if rows[0][0]!=IdentityCode:
-        errors.append('IdentityCode error')
-    else:
-        accessKey = ''.join(random.choices(string.ascii_letters + string.digits, k = 16))+'-'+userid
-        now = datetime.datetime.today()
-        now = now.strftime('%Y-%m-%d')
-        cursor.execute("UPDATE Users SET accessKey = %(accessKey)s, lastAccessTime = %(lastAccessTime)s WHERE userID = %(userID)s",{'accessKey':accessKey,'lastAccessTime':now,'userID':userid})
+    tryIdentifyCodeCount = rows[0][17]
+    if(tryIdentifyCodeCount == None):
+        tryIdentifyCodeCount = 0
+    if(tryIdentifyCodeCount == 5):
+        errors.append("already try 5 times")
+
+    if(len(errors)==0):
+        cursor.execute("SELECT IdentityCode from Users WHERE userID = %(userID)s",{'userID':userid})
+        rows = cursor.fetchall()
         connection.commit()
-        info['accessKey']=accessKey
+        cursor.execute("UPDATE Users SET tryIdentifyCodeCount = %(tryIdentifyCodeCount)s WHERE userID = %(userID)s",{'tryIdentifyCodeCount':str(tryIdentifyCodeCount+1),'userID':userid})
+        connection.commit()
+        if rows[0][0]!=IdentityCode:
+            errors.append('IdentityCode error')
+        else:
+            accessKey = ''.join(random.choices(string.ascii_letters + string.digits, k = 16))+'-'+userid
+            now = datetime.datetime.today()
+            now = now.strftime('%Y-%m-%d')
+            cursor.execute("UPDATE Users SET accessKey = %(accessKey)s, lastAccessTime = %(lastAccessTime)s WHERE userID = %(userID)s",{'accessKey':accessKey,'lastAccessTime':now,'userID':userid})
+            connection.commit()
+            info['accessKey']=accessKey
     info['errors']=errors
     return jsonify(info)
 

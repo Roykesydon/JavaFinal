@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 public class ManagePostController implements Initializable {
 
     public VBox managePostVBox;
+    public Label primaryLabel;
     @FXML
     private JFXHamburger hamburger;
 
@@ -48,6 +49,7 @@ public class ManagePostController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle rb) {
+        primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

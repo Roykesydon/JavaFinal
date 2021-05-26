@@ -22,8 +22,10 @@ public class CommentController {
     public Label senderIDLabel;
     public Label contentLabel;
     public AnchorPane anchorPane;
+    public Label secondaryFrom;
 
     public void setData(String sender, String detail){
+        secondaryFrom.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         senderIDLabel.setText(sender+" :");
         contentLabel.setText(detail);
         contentLabel.setMinHeight(Region.USE_PREF_SIZE);

@@ -37,6 +37,10 @@ public class ManagePostController {
 
     public Button completeBtn;
     public Button deleteBtn;
+    public Label secondaryIDLabel;
+    public Label secondaryCateLabel;
+    public Label secondaryPriceLabel;
+    public Label secondaryJoinLabel;
 
     private List<String> postData = new ArrayList<>();
     private GetProfileAndOwnPostResponse classJsonResponse;
@@ -50,16 +54,19 @@ public class ManagePostController {
         {
             completeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> choosePeopleFunction(postID));
+            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
         }
         else if(name.equals("DELETE"))
         {
             deleteBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> deletePeopleFunction(postID));
+            deleteBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
         }
         else if(name.equals("LEAVE")){
             completeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> leaveFunction(postID));
             completeBtn.setText("LEAVE");
+            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
         }
         else
             System.out.println("字串比對錯誤(ManagePostController makeButton method)");
@@ -179,6 +186,10 @@ public class ManagePostController {
     }
 
     public void setData(String ownerID, String category, String price, String postID, String joinPeople, ArrayList<String> joinList,VBox manageVBox){
+        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
         ownerIDLabel.setText(ownerID);
         categoryLabel.setText(category);
         priceLabel.setText("NT$ "+price);

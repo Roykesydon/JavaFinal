@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -37,6 +38,9 @@ public class CommentPageController implements Initializable {
 
     public TextArea commentTextBox;
     public Label sendStatusLabel;
+    public Button leaveCommentButton;
+    public Label primarySendTo;
+    public Label primaryCommentLabel;
     private GetCommentResponse classJsonResponse;
     public TextField toSendUserIDTextBox;
     public JFXDrawer drawer;
@@ -48,6 +52,9 @@ public class CommentPageController implements Initializable {
     private AnchorPane[] messageArr;
 
     public void initialize(URL url, ResourceBundle rb) {
+        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             drawer.setSidePane(box);
@@ -182,13 +189,31 @@ public class CommentPageController implements Initializable {
 
                     System.out.println();
                     ToastCaller toast;
-                    if (jsonResponse.errors.length == 0) {
-                        toast = new ToastCaller("發送成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                    if (jsonResponse.errors.length == 0 && checkMessageLegal(message)) {
+                        toast = new ToastCaller("Send message success!",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                    }
+                    else if(!checkMessageLegal(message)){
+                        toast = new ToastCaller("訊息不可超過六行!",GlobalVariable.mainStage,ToastCaller.ERROR);
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public boolean checkMessageLegal(String message)
+    {
+        if(!message.contains("\n"))
+            return true;
+        else
+        {
+            String[] checkReturn;
+            checkReturn = message.split("\n");
+            if(checkReturn.length <= 6)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -2,12 +2,14 @@ package sample;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXPasswordField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,11 +25,29 @@ import java.util.ResourceBundle;
 
 
 public class ResetPassWordController implements Initializable {
-    public JFXTextField newPassWord, confirmPassWord;
+    public TextField newPassWord, confirmPassWord;
     public Label userId,resetResponse;
+    public Label primaryUserIDLabel;
+    public Label primaryResetLabel;
+    public Label primaryConfirmLabel;
+    public Label primaryNewLabel;
+    public Button resetBtn;
+    public Button backBtn;
+    public Label secondaryUserId;
+    // public JFXPasswordField newPassWord;
+    // public JFXPasswordField confirmPassWord;
 
     public void initialize(URL url, ResourceBundle rb) {
-        userId.setText(GlobalVariable.userID);
+        secondaryUserId.setText(GlobalVariable.userID);
+        primaryConfirmLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryUserIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryResetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryNewLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        resetBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        secondaryUserId.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        newPassWord.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        newPassWord.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
     }
     public void resetPassword(ActionEvent actionEvent){
         if(!newPassWord.getText().isEmpty()&&!confirmPassWord.getText().isEmpty()) {
@@ -43,7 +63,7 @@ public class ResetPassWordController implements Initializable {
                     ResetPassWordResponse gsonResponse = gson.fromJson(responseString, ResetPassWordResponse.class);
                     CheckSignUp checkPassWord = new CheckSignUp(newPassWord.getText());
                     if(Arrays.toString(gsonResponse.errors)=="[]"&&checkPassWord.checkPassWord()==true){
-                        resetResponse.setText("修改成功");
+                        ToastCaller toast = new ToastCaller("修改成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                         Parent page = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
                         Scene tmp = new Scene(page);
                         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -53,17 +73,17 @@ public class ResetPassWordController implements Initializable {
                     }
                     else{
                         if(!checkPassWord.checkPassWord()){
-                            resetResponse.setText("需有大小寫英文以及數字");
+                            ToastCaller toast = new ToastCaller("需有大小寫英文以及數字",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                         if(!newPassWord.getText().equals(confirmPassWord.getText())){
-                            resetResponse.setText("與密碼不同");
+                            ToastCaller toast = new ToastCaller("確認密碼不同",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                         System.out.println(Arrays.toString(gsonResponse.errors));
                     }
                 }
                 else{
                     System.out.println(response.getStatusLine().getStatusCode());
-                    resetResponse.setText("回應錯誤");
+                    ToastCaller toast = new ToastCaller("回應錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
                 }
             }
             catch (IOException e){
@@ -71,7 +91,7 @@ public class ResetPassWordController implements Initializable {
             }
         }
         else{
-            resetResponse.setText("輸入不可為空");
+            ToastCaller toast = new ToastCaller("輸入不可為空",GlobalVariable.mainStage,ToastCaller.ERROR);
         }
     }
 

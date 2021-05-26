@@ -39,9 +39,11 @@ public class SidePanelController {
     public Circle noticeCircle;
     @FXML
     public  Label noticeCircleLabel;
+    public VBox primaryVBox;
 
     @FXML
     public void initialize() {
+        primaryVBox.setStyle("-fx-background-color: "+GlobalVariable.primaryColor);
         spaceBut.setDisable(false);
         spaceBut.setMaxHeight(0.1);
 

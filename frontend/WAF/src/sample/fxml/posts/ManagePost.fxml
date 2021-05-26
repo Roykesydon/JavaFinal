@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="252.0" prefWidth="834.0" style="-fx-background-color: #3c3f41;-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 10, 0, 0, 0);" stylesheets="/sample/css/posts/managePost.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.postController.ManagePostController">
     <children>
-        <Label layoutX="14.0" layoutY="12.0" prefHeight="56.0" prefWidth="161.0" text="OwnerID:">
+        <Label fx:id="secondaryIDLabel" layoutX="14.0" layoutY="12.0" prefHeight="56.0" prefWidth="161.0" text="OwnerID:">
             <font>
                 <Font size="26.0" />
             </font></Label>
@@ -16,7 +16,7 @@
             <font>
                 <Font size="25.0" />
             </font></Label>
-        <Label layoutX="14.0" layoutY="68.0" prefHeight="56.0" prefWidth="161.0" text="Category:">
+        <Label fx:id="secondaryCateLabel" layoutX="14.0" layoutY="68.0" prefHeight="56.0" prefWidth="161.0" text="Category:">
             <font>
                 <Font size="26.0" />
             </font></Label>
@@ -24,7 +24,7 @@
             <font>
                 <Font size="25.0" />
             </font></Label>
-        <Label layoutX="14.0" layoutY="119.0" prefHeight="56.0" prefWidth="161.0" text="Price:">
+        <Label fx:id="secondaryPriceLabel" layoutX="14.0" layoutY="119.0" prefHeight="56.0" prefWidth="161.0" text="Price:">
             <font>
                 <Font size="26.0" />
             </font></Label>
@@ -32,7 +32,7 @@
             <font>
                 <Font size="25.0" />
             </font></Label>
-        <Label layoutX="14.0" layoutY="175.0" prefHeight="56.0" prefWidth="161.0" text="JoinPeople:">
+        <Label fx:id="secondaryJoinLabel" layoutX="14.0" layoutY="175.0" prefHeight="56.0" prefWidth="161.0" text="JoinPeople:">
             <font>
                 <Font size="26.0" />
             </font></Label>
