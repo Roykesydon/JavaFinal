@@ -3,9 +3,11 @@ package sample;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -20,11 +22,30 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
-public class ForgotPasswordController {
+public class ForgotPasswordController implements Initializable {
     public TextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
+    public Label primaryIdentifyLabel;
+    public Label primaryForgetLabel;
+    public Button submit;
+    public Label primaryIDLabel;
+    public Button backBtn;
+    public Button resend;
+    public Button send;
+
+    public void initialize(URL url, ResourceBundle rb){
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        resend.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+    }
+
     public void setIdentityCodeButtonListener(ActionEvent actionEvent){
         setIdentityCode(0);
     }
