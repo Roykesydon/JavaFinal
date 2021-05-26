@@ -11,7 +11,7 @@
    <children>
       <Label fx:id="primaryWAFLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="136.0" prefHeight="317.0" prefWidth="1134.0" style="-fx-font-size:12em;" text="WeAreFamily" textFill="WHITE">
          <font>
-            <Font size="60.0" />
+            <Font name="System Bold" size="60.0" />
          </font>
       </Label>
 <!--      <Button fx:id="btnSignIn" layoutX="673.0" layoutY="608.0" mnemonicParsing="false" onAction="#loginRequest" prefHeight="96.0" prefWidth="212.0" text="登入" textFill="WHITE">-->

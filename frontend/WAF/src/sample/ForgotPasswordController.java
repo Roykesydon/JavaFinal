@@ -43,12 +43,15 @@ public class ForgotPasswordController {
                         else tryCount=0;
                     }
                     else{
-                        userIdResponse.setText((Arrays.toString(gsonResponse.errors)));
+                        for(String error : gsonResponse.errors){
+                            ToastCaller toast;
+                            if(error.equals("ID has not found"))
+                                toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                        }
                     }
                 }
                 else{
                     System.out.println(response.getStatusLine().getStatusCode());
-                    userIdResponse.setText("回應錯誤");
                 }
             }
             catch (IOException e){
@@ -56,7 +59,8 @@ public class ForgotPasswordController {
             }
         }
         else{
-            userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);
         }
 
     }
@@ -66,11 +70,14 @@ public class ForgotPasswordController {
                 HttpResponse response=RequestController.post("http://localhost:13261/Email/sendEmail",
                     new String[]{"userid",userid.getText()}
                 );
+                ToastCaller toast;
                 if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                    if(status==0)userIdResponse.setText("Email寄送成功");
+                    if(status==0)
+                        toast = new ToastCaller("已送出Email",GlobalVariable.mainStage,ToastCaller.SUCCESS);;
                 }
                 else{
-                    if(status==0)userIdResponse.setText("Email回應錯誤");
+                    if(status==0)
+                        toast = new ToastCaller("回應錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                 }
             }
             catch (IOException e){
@@ -78,13 +85,16 @@ public class ForgotPasswordController {
             }
         }
         else{
-            if(status==0)userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            if(status==0)
+                toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);;
         }
     }
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
             if(tryCount==4){
-                userIdResponse.setText("失敗次數過多驗證碼已改變\n請按重寄驗證碼");
+                ToastCaller toast;
+                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
                 setIdentityCode(1);
             }
             else {
@@ -110,11 +120,15 @@ public class ForgotPasswordController {
                             stage.show();
                         } else {
                             tryCount++;
-                            userIdResponse.setText(Arrays.toString(gsonResponse.errors));
+                            ToastCaller toast;
+                            for(String error: gsonResponse.errors)
+                                if(error.equals("IdentityCode error"))
+                                    toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                         }
                     } else {
                         tryCount++;
-                        userIdResponse.setText("驗證碼錯誤");
+                        ToastCaller toast;
+                        toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -122,7 +136,8 @@ public class ForgotPasswordController {
             }
         }
         else{
-            userIdResponse.setText("請輸入帳號");
+            ToastCaller toast;
+            toast = new ToastCaller("請輸入帳號",GlobalVariable.mainStage,ToastCaller.ERROR);;
         }
     }
     public void backHomePage(ActionEvent actionEvent) throws IOException {
