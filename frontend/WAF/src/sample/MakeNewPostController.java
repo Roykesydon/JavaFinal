@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -28,6 +29,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MakeNewPostController implements Initializable {
+    public Label primaryMakeLabel;
+    public Label secondaryCate;
+    public Label secondaryPrice;
+    public JFXButton primarySubmitButton;
     @FXML
     private JFXHamburger hamburger;
 
@@ -44,6 +49,10 @@ public class MakeNewPostController implements Initializable {
     private Matcher matcher;
 
     public void initialize(URL url, ResourceBundle rb) {
+        primaryMakeLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        secondaryPrice.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryCate.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        primarySubmitButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

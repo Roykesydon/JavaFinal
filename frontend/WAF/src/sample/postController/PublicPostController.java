@@ -23,8 +23,16 @@ public class PublicPostController {
     public Label joinPeopleLabel;
     public Button joinBtn;
     public AnchorPane anchorPane;
+    public Label secondaryPriceLabel;
+    public Label secondaryCateLabel;
+    public Label secondaryIDLabel;
+    public Label secondaryJoinLabel;
 
     public void setData(String ownerID,String category,String price,String joinPeople,String postID){
+        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
         ownerIDLabel.setText(ownerID);
         categoryLabel.setText(category);
         priceLabel.setText("NT$ "+price);
@@ -42,6 +50,7 @@ public class PublicPostController {
 //        this.joinBtn .setId(postID);
         this.joinBtn .addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> buttonFunction(postID));
+        this.joinBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
     }
     public void buttonFunction(String postID)
     {

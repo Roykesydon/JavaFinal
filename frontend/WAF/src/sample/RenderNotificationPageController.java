@@ -31,12 +31,14 @@ import java.util.logging.Logger;
 public class RenderNotificationPageController implements Initializable {
     public Label notification;
     public   VBox  notificationVbox;
+    public Label primaryNotificationLabel;
     @FXML
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer drawer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         try {
         VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
         if(GlobalVariable.isAdmin != false) {

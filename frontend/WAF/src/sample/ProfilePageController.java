@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -31,7 +32,12 @@ import java.util.logging.Logger;
 public class ProfilePageController implements Initializable {
 
     public VBox postVBox;
-    private Label[] postLabelArr;
+    public Button searchButton;
+    public Label primaryID;
+    public Label primaryLoginTime;
+    public Label primaryName;
+    public Label primaryEmail;
+    public Label primaryProfile;
     private AnchorPane[] postArr;
 
     @FXML
@@ -46,6 +52,12 @@ public class ProfilePageController implements Initializable {
     public ScrollPane postsScroll;
 
     public void initialize(URL url, ResourceBundle rb) {
+        primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryName.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryProfile.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        searchButton.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor + ";-fx-border-color: " + GlobalVariable.secondaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

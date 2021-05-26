@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -37,6 +38,9 @@ public class CommentPageController implements Initializable {
 
     public TextArea commentTextBox;
     public Label sendStatusLabel;
+    public Button leaveCommentButton;
+    public Label primarySendTo;
+    public Label primaryCommentLabel;
     private GetCommentResponse classJsonResponse;
     public TextField toSendUserIDTextBox;
     public JFXDrawer drawer;
@@ -48,6 +52,9 @@ public class CommentPageController implements Initializable {
     private AnchorPane[] messageArr;
 
     public void initialize(URL url, ResourceBundle rb) {
+        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             drawer.setSidePane(box);

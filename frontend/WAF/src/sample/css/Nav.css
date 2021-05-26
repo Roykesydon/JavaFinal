@@ -1,8 +1,8 @@
 .button{
-    -fx-background-color: #daf8ff;
+    -fx-background-color: #0abab5;
 }
 .button:hover{
-    -fx-background-color: #b0c4de;
+    -fx-background-color: #6200ed;
     -fx-background-radius: 0 ;
 }
 .circle{
