@@ -47,6 +47,8 @@ public class ForgotPasswordController {
                             ToastCaller toast;
                             if(error.equals("ID has not found"))
                                 toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            if(error.equals("today has set Identify code"))
+                                toast = new ToastCaller("今天已設過驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                     }
                 }
@@ -92,12 +94,12 @@ public class ForgotPasswordController {
     }
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
-            if(tryCount==4){
-                ToastCaller toast;
-                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
-                setIdentityCode(1);
-            }
-            else {
+//            if(tryCount==4){
+//                ToastCaller toast;
+//                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
+//                setIdentityCode(1);
+//            }
+//            else {
                 try {
                     HttpResponse response = RequestController.post("http://localhost:13261/user/checkIdentityCode",
                             new String[]{"userid", userid.getText()},
@@ -121,19 +123,22 @@ public class ForgotPasswordController {
                         } else {
                             tryCount++;
                             ToastCaller toast;
-                            for(String error: gsonResponse.errors)
-                                if(error.equals("IdentityCode error"))
-                                    toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
+                            for(String error: gsonResponse.errors) {
+                                if (error.equals("IdentityCode error"))
+                                    toast = new ToastCaller("驗證碼錯誤", GlobalVariable.mainStage, ToastCaller.ERROR);
+                                if (error.equals("already try 5 times"))
+                                    toast = new ToastCaller("本日已嘗試五次", GlobalVariable.mainStage, ToastCaller.ERROR);
+                            }
                         }
                     } else {
                         tryCount++;
                         ToastCaller toast;
-                        toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
+                        toast = new ToastCaller("網路錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+//            }
         }
         else{
             ToastCaller toast;
