@@ -30,6 +30,8 @@ public class PublicPageController implements Initializable {
     public ScrollPane postsScroll;
     public AnchorPane anchorpane;
     public VBox postVBox;
+    public Button filterBtn;
+    public Label primaryPublicLabel;
     @FXML
     private JFXHamburger hamburger;
     @FXML
@@ -41,6 +43,8 @@ public class PublicPageController implements Initializable {
     public ComboBox categoryComboBox;
 
     public void initialize(URL url, ResourceBundle rb) {
+        filterBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor + ";-fx-border-color: " + GlobalVariable.primaryColor);
+        primaryPublicLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin != false) {

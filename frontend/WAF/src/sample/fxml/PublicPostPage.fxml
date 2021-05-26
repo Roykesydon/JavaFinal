@@ -16,7 +16,7 @@
     <children>
 <!--        <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />-->
         <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <Label layoutX="284.0" layoutY="69.0" style="-fx-text-fill: white;" text="PublicPostPage">
+        <Label fx:id="primaryPublicLabel" layoutX="284.0" layoutY="69.0" style="-fx-text-fill: white;" text="PublicPostPage">
             <font>
                 <Font size="53.0" />
             </font>
