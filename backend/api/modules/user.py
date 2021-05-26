@@ -12,10 +12,6 @@ import datetime
 with open('config.yml', 'r') as f:
     cfg = yaml.safe_load(f)
 
-connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'],charset='utf8')
-
-
-
 class CheckForm():
     global connection
 
@@ -61,18 +57,21 @@ class CheckForm():
 
 
 class CheckRepeat():
-    global connection
 
     def __init__(self):
         self.__Errors=[]
-        self.__cursor = connection.cursor()
+        self.__cursor = None
     def userid(self,str):
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        self.__cursor = connection.cursor()
         self.__cursor.execute("SELECT * from Users WHERE userID = %s",str)
         rows = self.__cursor.fetchall()
         if len(rows):
             self.__Errors.append('ID has been registered')
 
     def email(self,str):
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        self.__cursor = connection.cursor()
         self.__cursor.execute("SELECT * from Users WHERE email = %s",str)
         rows = self.__cursor.fetchall()
         if len(rows):
@@ -186,15 +185,14 @@ def login():
 
 
 class CheckEmail():
-    global connection
-
     def __init__(self):
         self.__Errors=[]
-        self.__cursor = connection.cursor()
 
     def userid(self,str):
-        self.__cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
-        rows = self.__cursor.fetchall()
+        connection = pymysql.connect(host=cfg['db']['host'],user=cfg['db']['user'],password=cfg['db']['password'],db=cfg['db']['database'])
+        cursor = connection.cursor()
+        cursor.execute("SELECT * from Users WHERE userID = %(userID)s",{'userID':str})
+        rows = cursor.fetchall()
         if not len(rows):
             self.__Errors.append('ID has not found')
     def getErrors(self):

@@ -42,7 +42,7 @@ public class ResetPassWordController implements Initializable {
                     ResetPassWordResponse gsonResponse = gson.fromJson(responseString, ResetPassWordResponse.class);
                     CheckSignUp checkPassWord = new CheckSignUp(newPassWord.getText());
                     if(Arrays.toString(gsonResponse.errors)=="[]"&&checkPassWord.checkPassWord()==true){
-                        resetResponse.setText("修改成功");
+                        ToastCaller toast = new ToastCaller("修改成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                         Parent page = FXMLLoader.load(getClass().getResource("fxml/HomePage.fxml"));
                         Scene tmp = new Scene(page);
                         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -52,17 +52,17 @@ public class ResetPassWordController implements Initializable {
                     }
                     else{
                         if(!checkPassWord.checkPassWord()){
-                            resetResponse.setText("需有大小寫英文以及數字");
+                            ToastCaller toast = new ToastCaller("需有大小寫英文以及數字",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                         if(!newPassWord.getText().equals(confirmPassWord.getText())){
-                            resetResponse.setText("與密碼不同");
+                            ToastCaller toast = new ToastCaller("確認密碼不同",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                         System.out.println(Arrays.toString(gsonResponse.errors));
                     }
                 }
                 else{
                     System.out.println(response.getStatusLine().getStatusCode());
-                    resetResponse.setText("回應錯誤");
+                    ToastCaller toast = new ToastCaller("回應錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
                 }
             }
             catch (IOException e){
@@ -70,7 +70,7 @@ public class ResetPassWordController implements Initializable {
             }
         }
         else{
-            resetResponse.setText("輸入不可為空");
+            ToastCaller toast = new ToastCaller("輸入不可為空",GlobalVariable.mainStage,ToastCaller.ERROR);
         }
     }
 
