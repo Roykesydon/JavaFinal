@@ -55,7 +55,6 @@ public class PublicPageController implements Initializable {
             drawer.setSidePane(box);
             drawer.open();
 
-
         }catch (IOException ex){
             Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
         }
