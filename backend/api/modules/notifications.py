@@ -28,7 +28,7 @@ def createNotice():
     owner = ""
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -46,8 +46,8 @@ def createNotice():
 
     if len(info['errors'])==0:
         try:
-            insertString = 'INSERT INTO Notifications(owner,message,isSent,timestamp)values(%s,%s,%s,%s)'
-            cursor.execute(insertString, (owner,message,str(int(isSent)),timestamp))
+            insertString = 'INSERT INTO Notifications(owner,message,isSent,timestamp)values(%(owner)s,%(message)s,%(isSent)s,%(timestamp)s)'
+            cursor.execute(insertString, {'owner':owner,'message':message,'isSent':str(int(isSent)),'timestamp':timestamp})
             connection.commit()
         except Exception:
             traceback.print_exc()
@@ -67,7 +67,7 @@ def getNewestTenNotice():
     userID = ""
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
 
@@ -77,7 +77,7 @@ def getNewestTenNotice():
         row = rows[0]
         userID = row[1]
 
-        cursor.execute("SELECT * from Notifications WHERE owner = %s ORDER BY timestamp DESC",userID)
+        cursor.execute("SELECT * from Notifications WHERE owner = %(userID)s ORDER BY timestamp DESC",{'userID':userID})
         rows = cursor.fetchall()
         connection.commit()
 
@@ -104,7 +104,7 @@ def checkNotification():
     accessKey = request.values.get('accessKey')
 
     cursor = connection.cursor()
-    cursor.execute("SELECT * from Users WHERE accessKey = %s",accessKey)
+    cursor.execute("SELECT * from Users WHERE accessKey = %(accessKey)s",{'accessKey':accessKey})
     rows = cursor.fetchall()
     connection.commit()
     message=""
@@ -114,7 +114,7 @@ def checkNotification():
         errors.append("accessKey doesn't exist!")
     else:
         row = rows[0]
-        cursor.execute("SELECT * from Notifications WHERE owner = %s",row[1])
+        cursor.execute("SELECT * from Notifications WHERE owner = %(owner)s",{'owner':row[1]})
         rows = cursor.fetchall()
         connection.commit()
 
@@ -124,7 +124,7 @@ def checkNotification():
             if int(isSent)==0:
                 findNoticeFlag = True
                 message = row[2]
-                cursor.execute("UPDATE Notifications SET isSent = %s WHERE _ID = %s",("1",noticeID))
+                cursor.execute("UPDATE Notifications SET isSent = %(isSent)s WHERE _ID = %(noticeID)s",{'isSent':"1",'noticeID':noticeID})
                 connection.commit()
                 break
 

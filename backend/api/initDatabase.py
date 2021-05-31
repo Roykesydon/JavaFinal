@@ -38,6 +38,8 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Users( \
     createPost3 varchar(60),\
     identityCode varchar(6),\
     lastReadComment int,\
+    lastSendIdentifyCodeTime varchar(100),\
+    tryIdentifyCodeCount int,\
     PRIMARY KEY (_ID) );")
 connection.commit()
 
