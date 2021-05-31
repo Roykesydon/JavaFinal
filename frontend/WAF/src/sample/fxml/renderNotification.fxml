@@ -11,7 +11,7 @@
    <children>
 <!--      <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />-->
       <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label fx:id="primaryNotificationLabel" layoutX="284.0" layoutY="61.0" prefHeight="100.0" prefWidth="311.0" text="Notification" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="primaryNotificationLabel" layoutX="284.0" layoutY="61.0" prefHeight="100.0" prefWidth="311.0" text="Notification" textAlignment="CENTER">
          <font>
             <Font size="56.0" />
          </font>

@@ -49,10 +49,10 @@ public class MakeNewPostController implements Initializable {
     private Matcher matcher;
 
     public void initialize(URL url, ResourceBundle rb) {
-        primaryMakeLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        secondaryPrice.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryCate.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        primarySubmitButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        primaryMakeLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
+        secondaryPrice.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:31;");
+        secondaryCate.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:31;");
+        primarySubmitButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:23;");
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

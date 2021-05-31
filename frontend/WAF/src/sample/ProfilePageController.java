@@ -52,12 +52,12 @@ public class ProfilePageController implements Initializable {
     public ScrollPane postsScroll;
 
     public void initialize(URL url, ResourceBundle rb) {
-        primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryName.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryProfile.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        searchButton.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor + ";-fx-border-color: " + GlobalVariable.secondaryColor);
+        primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryName.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryProfile.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
+        searchButton.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor + ";-fx-border-color: " + GlobalVariable.secondaryColor+";-fx-font-size:19;");
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

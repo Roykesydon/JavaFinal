@@ -25,7 +25,7 @@
             <Font size="19.0" />
          </font>
       </Button>
-      <Label fx:id="primarySendTo" layoutX="276.0" layoutY="173.0" prefHeight="42.0" prefWidth="131.0" text="Send to:" textFill="#fffdfd">
+      <Label fx:id="primarySendTo" layoutX="276.0" layoutY="173.0" prefHeight="42.0" prefWidth="131.0" text="Send to:">
          <font>
             <Font size="27.0" />
          </font>
@@ -35,7 +35,7 @@
             <Font size="45.0" />
          </font></TextArea>
       <Label fx:id="sendStatusLabel" layoutX="271.0" layoutY="736.0" prefHeight="42.0" prefWidth="378.0" />
-      <Label fx:id="primaryCommentLabel" layoutX="276.0" layoutY="54.0" prefHeight="75.0" prefWidth="400.0" text="Comment" textFill="WHITE">
+      <Label fx:id="primaryCommentLabel" layoutX="276.0" layoutY="54.0" prefHeight="75.0" prefWidth="400.0" text="Comment">
          <font>
             <Font size="49.0" />
          </font>

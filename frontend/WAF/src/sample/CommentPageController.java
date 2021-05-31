@@ -52,9 +52,9 @@ public class CommentPageController implements Initializable {
     private AnchorPane[] messageArr;
 
     public void initialize(URL url, ResourceBundle rb) {
-        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:19;");
+        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:27;");
+        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:49;");
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             drawer.setSidePane(box);

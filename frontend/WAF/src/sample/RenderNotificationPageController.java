@@ -38,7 +38,7 @@ public class RenderNotificationPageController implements Initializable {
     private JFXDrawer drawer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:56;");
         try {
         VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
         if(GlobalVariable.isAdmin != false) {

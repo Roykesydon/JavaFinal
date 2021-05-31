@@ -13,22 +13,22 @@
    <children>
 <!--      <JFXHamburger fx:id="hamburger" layoutX="1225.0" layoutY="21.0" style="-fx-background-color: #3c3f41;" />-->
       <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutX="6.0" layoutY="6.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #3c3f41;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label fx:id="primaryProfile" layoutX="307.0" layoutY="43.0" style="-fx-text-fill: white;" text="Profile">
+      <Label fx:id="primaryProfile" layoutX="307.0" layoutY="43.0" text="Profile">
          <font>
             <Font size="53.0" />
          </font>
       </Label>
-      <Label fx:id="primaryName" layoutX="283.0" layoutY="373.0" prefHeight="40.0" prefWidth="74.0" style="-fx-text-fill: white;" text="暱稱:">
+      <Label fx:id="primaryName" layoutX="283.0" layoutY="373.0" prefHeight="40.0" prefWidth="74.0" text="暱稱:">
          <font>
             <Font size="31.0" />
          </font>
       </Label>
-      <Label fx:id="primaryEmail" layoutX="283.0" layoutY="481.0" prefHeight="40.0" prefWidth="89.0" style="-fx-text-fill: white;" text="email:">
+      <Label fx:id="primaryEmail" layoutX="283.0" layoutY="481.0" prefHeight="40.0" prefWidth="89.0" text="email:">
          <font>
             <Font size="31.0" />
          </font>
       </Label>
-      <Label fx:id="primaryLoginTime" layoutX="283.0" layoutY="589.0" prefHeight="40.0" prefWidth="200.0" style="-fx-text-fill: white;" text="上次登入時間:">
+      <Label fx:id="primaryLoginTime" layoutX="283.0" layoutY="589.0" prefHeight="40.0" prefWidth="200.0" text="上次登入時間:">
          <font>
             <Font size="31.0" />
          </font>
@@ -53,7 +53,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="primaryID" layoutX="283.0" layoutY="265.0" prefHeight="40.0" prefWidth="50.0" style="-fx-text-fill: white;" text="ID :">
+      <Label fx:id="primaryID" layoutX="283.0" layoutY="265.0" prefHeight="40.0" prefWidth="50.0" text="ID :">
          <font>
             <Font size="31.0" />
          </font>

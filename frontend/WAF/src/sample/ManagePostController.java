@@ -49,7 +49,7 @@ public class ManagePostController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle rb) {
-        primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         try {
             VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
             if(GlobalVariable.isAdmin)

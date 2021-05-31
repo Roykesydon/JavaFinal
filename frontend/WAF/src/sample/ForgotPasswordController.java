@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,7 +25,7 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class ForgotPasswordController implements Initializable {
+public class ForgotPasswordController implements Initializable{
     public TextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
@@ -33,17 +34,15 @@ public class ForgotPasswordController implements Initializable {
     public Button submit;
     public Label primaryIDLabel;
     public Button backBtn;
-    public Button resend;
     public Button send;
 
     public void initialize(URL url, ResourceBundle rb){
-        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
-        resend.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:36;");
+        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:58;");
+        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:34;");
+        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:34;");
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:25;");
     }
 
     public void setIdentityCodeButtonListener(ActionEvent actionEvent){
@@ -68,6 +67,8 @@ public class ForgotPasswordController implements Initializable {
                             ToastCaller toast;
                             if(error.equals("ID has not found"))
                                 toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            if(error.equals("today has set Identify code"))
+                                toast = new ToastCaller("今天已設過驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);
                         }
                     }
                 }
@@ -113,12 +114,12 @@ public class ForgotPasswordController implements Initializable {
     }
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
-            if(tryCount==4){
-                ToastCaller toast;
-                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
-                setIdentityCode(1);
-            }
-            else {
+//            if(tryCount==4){
+//                ToastCaller toast;
+//                toast = new ToastCaller("失敗次數過多 請按重寄驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);;
+//                setIdentityCode(1);
+//            }
+//            else {
                 try {
                     HttpResponse response = RequestController.post("http://localhost:13261/user/checkIdentityCode",
                             new String[]{"userid", userid.getText()},
@@ -142,19 +143,22 @@ public class ForgotPasswordController implements Initializable {
                         } else {
                             tryCount++;
                             ToastCaller toast;
-                            for(String error: gsonResponse.errors)
-                                if(error.equals("IdentityCode error"))
-                                    toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
+                            for(String error: gsonResponse.errors) {
+                                if (error.equals("IdentityCode error"))
+                                    toast = new ToastCaller("驗證碼錯誤", GlobalVariable.mainStage, ToastCaller.ERROR);
+                                if (error.equals("already try 5 times"))
+                                    toast = new ToastCaller("本日已嘗試五次", GlobalVariable.mainStage, ToastCaller.ERROR);
+                            }
                         }
                     } else {
                         tryCount++;
                         ToastCaller toast;
-                        toast = new ToastCaller("驗證碼錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
+                        toast = new ToastCaller("網路錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+//            }
         }
         else{
             ToastCaller toast;
