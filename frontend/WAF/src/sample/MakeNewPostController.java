@@ -33,6 +33,7 @@ public class MakeNewPostController implements Initializable {
     public Label secondaryCate;
     public Label secondaryPrice;
     public JFXButton primarySubmitButton;
+    public VBox box;
     @FXML
     private JFXHamburger hamburger;
 
@@ -54,15 +55,9 @@ public class MakeNewPostController implements Initializable {
         secondaryCate.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:31;");
         primarySubmitButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:23;");
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
             if(GlobalVariable.isAdmin)
-                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
-            drawer.setSidePane(box);
-
-
-            drawer.open();
-
-
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
         }catch (IOException ex){
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }
