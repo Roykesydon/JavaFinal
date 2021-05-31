@@ -54,19 +54,19 @@ public class ManagePostController {
         {
             completeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> choosePeopleFunction(postID));
-            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:19;");
         }
         else if(name.equals("DELETE"))
         {
             deleteBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> deletePeopleFunction(postID));
-            deleteBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+            deleteBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:19;");
         }
         else if(name.equals("LEAVE")){
             completeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> leaveFunction(postID));
             completeBtn.setText("LEAVE");
-            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+            completeBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:19;");
         }
         else
             System.out.println("字串比對錯誤(ManagePostController makeButton method)");
@@ -186,10 +186,10 @@ public class ManagePostController {
     }
 
     public void setData(String ownerID, String category, String price, String postID, String joinPeople, ArrayList<String> joinList,VBox manageVBox){
-        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         ownerIDLabel.setText(ownerID);
         categoryLabel.setText(category);
         priceLabel.setText("NT$ "+price);

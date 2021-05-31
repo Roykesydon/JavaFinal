@@ -41,6 +41,7 @@ public class CommentPageController implements Initializable {
     public Button leaveCommentButton;
     public Label primarySendTo;
     public Label primaryCommentLabel;
+    public VBox box;
     private GetCommentResponse classJsonResponse;
     public TextField toSendUserIDTextBox;
     public JFXDrawer drawer;
@@ -52,13 +53,13 @@ public class CommentPageController implements Initializable {
     private AnchorPane[] messageArr;
 
     public void initialize(URL url, ResourceBundle rb) {
-        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:19;");
+        primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:27;");
+        primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:49;");
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
-            drawer.setSidePane(box);
-            drawer.open();
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
+            if(GlobalVariable.isAdmin)
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
         } catch (IOException ex) {
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE, null, ex);
         }

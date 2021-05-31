@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/sample.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
    <children>
-      <Label fx:id="primarySignLabel" alignment="CENTER" layoutX="222.0" layoutY="23.0" prefHeight="152.0" prefWidth="784.0" style="-fx-font-size: 50;" text="Sign Up " textAlignment="JUSTIFY" textFill="WHITE" textOverrun="CLIP" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="274.0" AnchorPane.topAnchor="23.0">
+      <Label fx:id="primarySignLabel" alignment="CENTER" layoutX="222.0" layoutY="23.0" prefHeight="152.0" prefWidth="784.0" text="Sign Up " textAlignment="JUSTIFY" textOverrun="CLIP" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="274.0" AnchorPane.topAnchor="23.0">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
@@ -73,12 +73,12 @@
                <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="392.0" prefHeight="47.0" prefWidth="587.0" promptText="Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
                <JFXPasswordField fx:id="userPWConfirm" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="489.0" prefHeight="47.0" prefWidth="587.0" promptText="Confirm Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
                <JFXTextField fx:id="userMail" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="595.0" prefHeight="47.0" prefWidth="587.0" promptText="User Email" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
-      <Button fx:id="submit" layoutX="544.0" layoutY="695.0" mnemonicParsing="false" onAction="#checkInput" prefHeight="78.0" prefWidth="194.0" text="Submmit" textFill="WHITE">
+      <Button fx:id="submit" layoutX="544.0" layoutY="695.0" mnemonicParsing="false" onAction="#checkInput" prefHeight="78.0" prefWidth="194.0" text="Submmit">
          <font>
             <Font name="Segoe UI Semibold" size="23.0" />
          </font>
       </Button>
-      <Button fx:id="backBtn" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back" textFill="WHITE">
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back">
          <font>
             <Font size="23.0" />
          </font>

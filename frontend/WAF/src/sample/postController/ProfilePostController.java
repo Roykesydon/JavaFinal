@@ -17,10 +17,10 @@ public class ProfilePostController {
     public Label secondaryIDLabel;
 
     public void setData(String ownerID,String category,String price,String joinPeople){
-        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
+        secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         ownerIDLabel.setText(ownerID);
         categoryLabel.setText(category);
         priceLabel.setText("NT$ "+price);

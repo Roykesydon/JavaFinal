@@ -32,7 +32,7 @@ public class NotificationController {
 
 
         titleLabel.setText(detailArr[0]);
-        titleLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        titleLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:38;");
         String tmp ="";
         for(int i=1;i<detailArr.length;i++)
         {

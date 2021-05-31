@@ -39,15 +39,15 @@ public class ResetPassWordController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
         secondaryUserId.setText(GlobalVariable.userID);
-        primaryConfirmLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryUserIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryResetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryNewLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        resetBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        secondaryUserId.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        primaryConfirmLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        primaryUserIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        primaryResetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:48;");
+        primaryNewLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        resetBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        secondaryUserId.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:36;");
         newPassWord.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        newPassWord.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        confirmPassWord.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:36;");
     }
     public void resetPassword(ActionEvent actionEvent){
         if(!newPassWord.getText().isEmpty()&&!confirmPassWord.getText().isEmpty()) {
