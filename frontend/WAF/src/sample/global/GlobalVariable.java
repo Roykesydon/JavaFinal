@@ -1,6 +1,7 @@
 package sample.global;
 
 import javafx.stage.Stage;
+import sample.controller.PollingController;
 
 public class GlobalVariable{
     public static String accessKey = "";
@@ -10,4 +11,5 @@ public class GlobalVariable{
     public static Stage mainStage = null;
     public static String primaryColor = "#00E3E3";
     public static String secondaryColor = "#B15BFF";
+    public static PollingController polling;
 }

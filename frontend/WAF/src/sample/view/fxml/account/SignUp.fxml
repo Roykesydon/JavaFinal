@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../../css/sample.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.account.SignUpController">
+   <children>
+      <Label fx:id="primarySignLabel" alignment="CENTER" layoutX="222.0" layoutY="23.0" prefHeight="152.0" prefWidth="784.0" text="Sign Up " textAlignment="JUSTIFY" textOverrun="CLIP" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="274.0" AnchorPane.topAnchor="23.0">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+<!--      <GridPane layoutX="85.0" layoutY="119.0" prefHeight="546.0" prefWidth="1037.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="129.0">-->
+<!--        <columnConstraints>-->
+<!--          <ColumnConstraints hgrow="SOMETIMES" maxWidth="514.0" minWidth="10.0" prefWidth="482.0" />-->
+<!--          <ColumnConstraints hgrow="SOMETIMES" maxWidth="510.0" minWidth="10.0" prefWidth="481.0" />-->
+<!--        </columnConstraints>-->
+<!--        <rowConstraints>-->
+<!--          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--        </rowConstraints>-->
+<!--         <children>-->
+            <Label fx:id="ckPassword" layoutX="943.0" layoutY="373.0" prefHeight="86.0" prefWidth="316.0" style="-fx-text-fill: #ea4141; -fx-font-size: 20;" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+<!--            <Label prefHeight="52.0" prefWidth="174.0" text="User Nickname" style="-fx-font-size:2em;">-->
+<!--               <font>-->
+<!--                  <Font size="96.0" />-->
+<!--               </font></Label>-->
+<!--            <Label text="Password" GridPane.rowIndex="4" style="-fx-font-size:2em;"/>-->
+<!--            <Label text="Email" GridPane.rowIndex="8" style="-fx-font-size:2em;"/>-->
+<!--            <Label text="User ID" GridPane.rowIndex="2" style="-fx-font-size:2em;"/>-->
+<!--            <Label text="Confirm Password" GridPane.rowIndex="6" style="-fx-font-size:2em;"/>-->
+<!--            <TextField fx:id="userName" prefHeight="23.0" prefWidth="587.0" GridPane.columnIndex="1" />-->
+<!--            <TextField fx:id="userID" GridPane.columnIndex="1" GridPane.rowIndex="2" />-->
+<!--            <PasswordField fx:id="userPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />-->
+<!--            <PasswordField fx:id="userPWConfirm" GridPane.columnIndex="1" GridPane.rowIndex="6" />-->
+<!--            <TextField fx:id="userMail" GridPane.columnIndex="1" GridPane.rowIndex="8" />-->
+            <Label fx:id="ckName" layoutX="943.0" layoutY="204.0" prefHeight="36.0" prefWidth="316.0" style="-fx-text-fill: #ea4141; -fx-font-size: 20;" wrapText="true">
+         <font>
+            <Font size="4.0" />
+         </font></Label>
+            <Label fx:id="ckID" layoutX="943.0" layoutY="293.0" prefHeight="47.0" prefWidth="316.0" style="-fx-text-fill: #ea4141; -fx-font-size: 20;" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+            <Label fx:id="ckMail" layoutX="943.0" layoutY="576.0" prefHeight="86.0" prefWidth="316.0" style="-fx-text-fill: #ea4141; -fx-font-size: 20;" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+            <Label fx:id="ckPWConfirm" layoutX="943.0" layoutY="470.0" prefHeight="86.0" prefWidth="316.0" style="-fx-text-fill: #ea4141; -fx-font-size: 20;" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+<!--         </children>-->
+<!--      </GridPane>-->
+
+               <JFXTextField fx:id="userName" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="198.0" prefHeight="23.0" prefWidth="587.0" promptText="User Name" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXTextField fx:id="userID" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="293.0" prefHeight="47.0" prefWidth="587.0" promptText="User ID" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXPasswordField fx:id="userPassword" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="392.0" prefHeight="47.0" prefWidth="587.0" promptText="Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXPasswordField fx:id="userPWConfirm" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="489.0" prefHeight="47.0" prefWidth="587.0" promptText="Confirm Password" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+               <JFXTextField fx:id="userMail" focusColor="#daf8ff" labelFloat="true" layoutX="347.0" layoutY="595.0" prefHeight="47.0" prefWidth="587.0" promptText="User Email" style=" -fx-prompt-text-fill:#888888" unFocusColor="#c9c9c9" />
+      <Button fx:id="submit" layoutX="544.0" layoutY="695.0" mnemonicParsing="false" onAction="#checkInput" prefHeight="78.0" prefWidth="194.0" text="Submmit">
+         <font>
+            <Font name="Segoe UI Semibold" size="23.0" />
+         </font>
+      </Button>
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#backHomePage" prefHeight="68.0" prefWidth="138.0" text="Back">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
