@@ -1,6 +1,7 @@
 package sample.controller.account;
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -138,10 +139,14 @@ public class ForgotPasswordController implements Initializable{
                                 URL url = new File("src/sample/view/fxml/account/ResetPassWord.fxml").toURI().toURL();
                                 Parent root = FXMLLoader.load(url);
                                 Scene tmp = new Scene(root);
-                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                                stage.hide();
-                                stage.setScene(tmp);
-                                stage.show();
+                                Platform.runLater(new Runnable() {
+                                    @Override public void run() {
+                                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                        stage.hide();
+                                        stage.setScene(tmp);
+                                        stage.show();
+                                    }
+                                });
                             } else {
                                 tryCount++;
                                 ToastCaller toast;
@@ -171,9 +176,13 @@ public class ForgotPasswordController implements Initializable{
     public void backHomePage(ActionEvent actionEvent) throws IOException {
         Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/HomePage.fxml"));
         Scene tmp = new Scene(page);
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();//switch smoothly
-        stage.setScene(tmp);
-        stage.show();
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.hide();//switch smoothly
+                stage.setScene(tmp);
+                stage.show();
+            }
+        });
     }
 }

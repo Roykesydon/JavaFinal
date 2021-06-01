@@ -63,15 +63,15 @@ public class CommentPageController implements Initializable {
         commentVBox.setPadding(new Insets(20, 20, 20, 5));
         commentVBox.setSpacing(5);
 
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
+        new Thread(new Runnable() {
+            public void run() {
                 try {
                     getComments();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }).start();
     }
 
     private void getComments() throws IOException {
@@ -113,8 +113,15 @@ public class CommentPageController implements Initializable {
                                     messageData.add(message);
                                 }
                             }).start();
-
-                        renderAllMessage(messageData, classJsonResponse.Notices.length);
+                        Platform.runLater(new Runnable() {
+                            @Override public void run() {
+                                try {
+                                    renderAllMessage(messageData, classJsonResponse.Notices.length);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
 
                 } else {
@@ -140,11 +147,7 @@ public class CommentPageController implements Initializable {
             itemController.setData(dataArr[0],dataArr[1]);
 
 
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    commentVBox.getChildren().add(anchorPane);
-                }
-            });
+            commentVBox.getChildren().add(anchorPane);
         }
     }
 
@@ -154,54 +157,58 @@ public class CommentPageController implements Initializable {
         boolean success = true;
         //表單格式皆合法
         if (success) {
-            try {
-                HttpResponse response = RequestController.post(GlobalVariable.server+"comments/createComment",
-                        new String[]{"accessKey", GlobalVariable.accessKey},
-                        new String[]{"userID", toSendUserID},
-                        new String[]{"message", message}
-                );
-                String responseString = EntityUtils.toString(response.getEntity());
-                String errorsResult = "";
-                int errorsResultCount = 0;
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        HttpResponse response = RequestController.post(GlobalVariable.server+"comments/createComment",
+                                new String[]{"accessKey", GlobalVariable.accessKey},
+                                new String[]{"userID", toSendUserID},
+                                new String[]{"message", message}
+                        );
+                        String responseString = EntityUtils.toString(response.getEntity());
+                        String errorsResult = "";
+                        int errorsResultCount = 0;
 
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    Gson gson = new Gson();
-                    GetCommentResponse jsonResponse = gson.fromJson(responseString, GetCommentResponse.class);
-                    //create class variable to use renderAllPost method in update scene
-                    classJsonResponse = jsonResponse;
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            Gson gson = new Gson();
+                            GetCommentResponse jsonResponse = gson.fromJson(responseString, GetCommentResponse.class);
+                            //create class variable to use renderAllPost method in update scene
+                            classJsonResponse = jsonResponse;
 
-                    errorsResult = "";
-                    errorsResultCount = 0;
-                    for (String error : jsonResponse.errors) {
-                        if (errorsResultCount != 0)
-                            errorsResult += " , ";
+                            errorsResult = "";
+                            errorsResultCount = 0;
+                            for (String error : jsonResponse.errors) {
+                                if (errorsResultCount != 0)
+                                    errorsResult += " , ";
 
-                        errorsResult += error;
-                        errorsResultCount++;
-                        System.out.print(',' + error);
-                        ToastCaller toast;
-                        if (error.equals("message too long"))
-                            toast = new ToastCaller("訊息過長",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if (error.equals("userID doesn't exist!"))
-                            toast = new ToastCaller("user ID 不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if (error.equals("don't send yourself"))
-                            toast = new ToastCaller("請勿發給自己",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if (error.equals("createNotice fail"))
-                            toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
-                    }
+                                errorsResult += error;
+                                errorsResultCount++;
+                                System.out.print(',' + error);
+                                ToastCaller toast;
+                                if (error.equals("message too long"))
+                                    toast = new ToastCaller("訊息過長",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if (error.equals("userID doesn't exist!"))
+                                    toast = new ToastCaller("user ID 不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if (error.equals("don't send yourself"))
+                                    toast = new ToastCaller("請勿發給自己",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if (error.equals("createNotice fail"))
+                                    toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            }
 
-                    System.out.println();
-                    ToastCaller toast;
-                    if (jsonResponse.errors.length == 0 && checkMessageLegal(message)) {
-                        toast = new ToastCaller("發送成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
-                    }
-                    else if(!checkMessageLegal(message)){
-                        toast = new ToastCaller("訊息不可超過六行!",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            System.out.println();
+                            ToastCaller toast;
+                            if (jsonResponse.errors.length == 0 && checkMessageLegal(message)) {
+                                toast = new ToastCaller("發送成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                            }
+                            else if(!checkMessageLegal(message)){
+                                toast = new ToastCaller("訊息不可超過六行!",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            }).start();
         }
     }
 
