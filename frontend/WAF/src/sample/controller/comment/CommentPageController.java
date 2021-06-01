@@ -105,23 +105,24 @@ public class CommentPageController implements Initializable {
                     }
 
                     System.out.println();
-
+                    messageData = new ArrayList<String>();
                     if (jsonResponse.errors.length == 0) {
-                        for (String message : jsonResponse.Notices)
-                            new Thread(new Runnable() {
-                                public void run() {
-                                    messageData.add(message);
+                        for (String message : jsonResponse.Notices){
+                            String[] dataArr = message.split("=");
+
+                            FXMLLoader fxmlLoader = new FXMLLoader();
+                            fxmlLoader.setLocation(getClass().getResource("/sample/view/fxml/detailCard/Comment.fxml"));
+                            AnchorPane anchorPane = fxmlLoader.load();
+
+                            CommentController itemController = fxmlLoader.getController();
+                            itemController.setData(dataArr[0],dataArr[1]);
+
+                            Platform.runLater(new Runnable() {
+                                @Override public void run() {
+                                    commentVBox.getChildren().add(anchorPane);
                                 }
-                            }).start();
-                        Platform.runLater(new Runnable() {
-                            @Override public void run() {
-                                try {
-                                    renderAllMessage(messageData, classJsonResponse.Notices.length);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
 
                 } else {
@@ -130,24 +131,6 @@ public class CommentPageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void renderAllMessage(List<String> messageData, int messagesQuantity) throws IOException {
-        messageArr = new AnchorPane[messagesQuantity];
-
-        for (String tmp : messageData) {
-            String[] dataArr = tmp.split("=");
-
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/sample/view/fxml/detailCard/Comment.fxml"));
-            AnchorPane anchorPane = fxmlLoader.load();
-
-            CommentController itemController = fxmlLoader.getController();
-            itemController.setData(dataArr[0],dataArr[1]);
-
-
-            commentVBox.getChildren().add(anchorPane);
         }
     }
 
