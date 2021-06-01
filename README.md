@@ -1,5 +1,12 @@
 # JavaFinalProject
 
+## Switch Local/Network Server
+```
+更改sample.global.GlobalVariable.server
+Local: "http://127.0.0.1:13261/"
+Network: "https://java-waf-api.herokuapp.com/"
+```
+
 
 ## 需要填的config
 ```
@@ -10,9 +17,6 @@ backend/database/docker-compose.yml
 
 ## API
 先用pyenv把python版本切換到3.8
-
-
-
 
 
 前置作業
