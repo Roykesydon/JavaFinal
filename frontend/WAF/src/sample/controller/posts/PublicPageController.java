@@ -71,7 +71,7 @@ public class PublicPageController implements Initializable {
     public void getAllPost() throws IOException
     {
         try {
-            HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getOwnAndJoinPost",
+            HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getOwnAndJoinPost",
                     new String[]{"accessKey", GlobalVariable.accessKey}
             );
             String responseString = EntityUtils.toString(response.getEntity());
@@ -116,7 +116,7 @@ public class PublicPageController implements Initializable {
 
 
         try {
-            HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getAllPost",null
+            HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getAllPost",null
             );
             String responseString = EntityUtils.toString(response.getEntity());
 
@@ -196,7 +196,7 @@ public class PublicPageController implements Initializable {
                 return ;
             }
             postVBox.getChildren().clear();
-            HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getFilteredPost",
+            HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getFilteredPost",
                     new String[]{"category",categoryComboBox.getValue().toString()}
             );
             String responseString = EntityUtils.toString(response.getEntity());

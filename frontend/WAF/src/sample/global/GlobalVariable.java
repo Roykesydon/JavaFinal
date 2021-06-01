@@ -12,4 +12,5 @@ public class GlobalVariable{
     public static String primaryColor = "#00E3E3";
     public static String secondaryColor = "#B15BFF";
     public static PollingController polling;
+    public static String server = "https://java-waf-api.herokuapp.com/";
 }

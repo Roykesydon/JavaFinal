@@ -62,7 +62,7 @@ public class PublicPostController {
     {
         try {
             System.out.println("joinBtnclick");
-            HttpResponse response= RequestController.post("http://localhost:13261/posts/joinPost",
+            HttpResponse response= RequestController.post(GlobalVariable.server+"posts/joinPost",
                     new String[]{"accessKey", GlobalVariable.accessKey},
                     new String[]{"postID",postID}
             );

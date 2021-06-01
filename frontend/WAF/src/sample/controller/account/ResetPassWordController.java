@@ -52,7 +52,7 @@ public class ResetPassWordController implements Initializable {
     public void resetPassword(ActionEvent actionEvent){
         if(!newPassWord.getText().isEmpty()&&!confirmPassWord.getText().isEmpty()) {
             try {
-                HttpResponse response= RequestController.post("http://localhost:13261/user/resetPassword",
+                HttpResponse response= RequestController.post(GlobalVariable.server+"user/resetPassword",
                         new String[]{"accessKey",GlobalVariable.accessKey},
                         new String[]{"passwd",newPassWord.getText()},
                         new String[]{"passwdConfirm",confirmPassWord.getText()}

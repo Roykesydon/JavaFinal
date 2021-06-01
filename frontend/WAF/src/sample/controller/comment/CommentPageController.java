@@ -75,7 +75,7 @@ public class CommentPageController implements Initializable {
         //表單格式皆合法
         if (success) {
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/comments/getComments",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"comments/getComments",
                         new String[]{"accessKey", GlobalVariable.accessKey}
                 );
                 String responseString = EntityUtils.toString(response.getEntity());
@@ -140,7 +140,7 @@ public class CommentPageController implements Initializable {
         //表單格式皆合法
         if (success) {
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/comments/createComment",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"comments/createComment",
                         new String[]{"accessKey", GlobalVariable.accessKey},
                         new String[]{"userID", toSendUserID},
                         new String[]{"message", message}

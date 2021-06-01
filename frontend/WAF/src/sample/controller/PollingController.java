@@ -47,7 +47,7 @@ public class PollingController extends TimerTask {
     public void run()
     {
         try {
-            HttpResponse response = RequestController.post("http://127.0.0.1:13261/notifications/checkNotification",
+            HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/checkNotification",
                     new String[]{"accessKey", GlobalVariable.accessKey}
             );
             String responseString = EntityUtils.toString(response.getEntity());
@@ -74,7 +74,7 @@ public class PollingController extends TimerTask {
 
         if(noticeCircleLabel!=null && noticeCircle != null){
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/comments/getUnreadCommentCount",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"comments/getUnreadCommentCount",
                         new String[]{"accessKey", GlobalVariable.accessKey}
                 );
                 String responseString = EntityUtils.toString(response.getEntity());

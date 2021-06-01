@@ -114,7 +114,7 @@ public class SignUpController implements Initializable
         //表單格式皆合法
         if(success){
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/user/register",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"user/register",
                         new String[]{"name", userName.getText()},
                         new String[]{"userid", userID.getText()},
                         new String[]{"passwd", userPassword.getText()},

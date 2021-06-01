@@ -80,7 +80,7 @@ public class ManagePostController {
     public void leaveFunction(String postID)
     {
         try {
-            HttpResponse response= RequestController.post("http://localhost:13261/posts/removeUser",
+            HttpResponse response= RequestController.post(GlobalVariable.server+"posts/removeUser",
                     new String[]{"accessKey",GlobalVariable.accessKey},
                     new String[]{"postID",postID},
                     new String[]{"removeUserID",GlobalVariable.userID}
@@ -122,7 +122,7 @@ public class ManagePostController {
             if(tmpList.charAt(tmpList.length() - 1) == ',')
                 chooseList = tmpList.substring(0,tmpList.length() - 1);
             try {
-                HttpResponse response= RequestController.post("http://localhost:13261/posts/completePost",
+                HttpResponse response= RequestController.post(GlobalVariable.server+"posts/completePost",
                         new String[]{"accessKey",GlobalVariable.accessKey},
                         new String[]{"postID",postID},
                         new String[]{"chooseList",chooseList}
@@ -156,7 +156,7 @@ public class ManagePostController {
     public void deletePeopleFunction(String postID)
     {
         try {
-            HttpResponse response=RequestController.post("http://localhost:13261/posts/deletePost",
+            HttpResponse response=RequestController.post(GlobalVariable.server+"posts/deletePost",
                     new String[]{"accessKey",GlobalVariable.accessKey},
                     new String[]{"postID",postID}
             );

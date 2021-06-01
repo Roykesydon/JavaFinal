@@ -52,7 +52,7 @@ public class ForgotPasswordController implements Initializable{
     public void setIdentityCode(int status)  {
         if(!userid.getText().isEmpty()) {
             try {
-                HttpResponse response= RequestController.post("http://localhost:13261/user/setIdentityCode",
+                HttpResponse response= RequestController.post(GlobalVariable.server+"user/setIdentityCode",
                         new String[]{"userid",userid.getText()}
                 );
                 String responseString= EntityUtils.toString(response.getEntity());
@@ -90,7 +90,7 @@ public class ForgotPasswordController implements Initializable{
     public void sendIdentityCode(int status){
         if(!userid.getText().isEmpty()) {
             try {
-                HttpResponse response=RequestController.post("http://localhost:13261/Email/sendEmail",
+                HttpResponse response=RequestController.post(GlobalVariable.server+"Email/sendEmail",
                     new String[]{"userid",userid.getText()}
                 );
                 ToastCaller toast;
@@ -116,7 +116,7 @@ public class ForgotPasswordController implements Initializable{
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
             try {
-                HttpResponse response = RequestController.post("http://localhost:13261/user/checkIdentityCode",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"user/checkIdentityCode",
                         new String[]{"userid", userid.getText()},
                         new String[]{"IdentityCode", userIdentityCode.getText()}
                 );

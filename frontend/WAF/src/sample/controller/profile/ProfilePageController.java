@@ -74,7 +74,7 @@ public class ProfilePageController implements Initializable {
         //表單格式皆合法
         if(success){
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getProfileAndOwnPost",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getProfileAndOwnPost",
                         new String[]{"userID", userID}
                 );
                 String responseString = EntityUtils.toString(response.getEntity());

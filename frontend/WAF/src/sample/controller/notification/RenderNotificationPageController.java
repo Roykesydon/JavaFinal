@@ -48,7 +48,7 @@ public class RenderNotificationPageController implements Initializable {
     }
 
         try {
-            HttpResponse response = RequestController.post("http://localhost:13261/notifications/getNewestTenNotice",
+            HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/getNewestTenNotice",
                 new String[]{"accessKey", GlobalVariable.accessKey}
             );
             String responseString = EntityUtils.toString(response.getEntity());

@@ -67,7 +67,7 @@ public class ManagePostController implements Initializable {
         //表單格式皆合法
         if(success){
             try {
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/getOwnAndJoinPost",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getOwnAndJoinPost",
                         new String[]{"accessKey", GlobalVariable.accessKey}
                 );
                 String responseString = EntityUtils.toString(response.getEntity());

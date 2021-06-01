@@ -112,7 +112,7 @@ public class MakeNewPostController implements Initializable {
                 String category = categoryComboBox.getValue().toString();
                 String price = priceTextField.getText();
 
-                HttpResponse response = RequestController.post("http://127.0.0.1:13261/posts/createPost",
+                HttpResponse response = RequestController.post(GlobalVariable.server+"posts/createPost",
                         new String[]{"accessKey", GlobalVariable.accessKey},
                         new String[]{"category", category},
                         new String[]{"price", price}
