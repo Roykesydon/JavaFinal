@@ -22,7 +22,7 @@ public class Main extends Application {
         this.root = setRoot("view/fxml/HomePage.fxml");
         primaryStage.setScene(new Scene(getRoot(), 1280, 800));
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new javafx.scene.image.Image("/sample/resource/WAF.png"));
+        primaryStage.getIcons().add(new javafx.scene.image.Image("/sample/resource/WAF_primary.png"));
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
