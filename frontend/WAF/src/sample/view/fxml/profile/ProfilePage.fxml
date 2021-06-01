@@ -28,22 +28,22 @@
             <Font size="31.0" />
          </font>
       </Label>
-      <Label fx:id="useridLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="305.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="null" wrapText="true">
+      <Label fx:id="useridLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="305.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="nameLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="413.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="null" wrapText="true">
+      <Label fx:id="nameLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="413.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="emailLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="521.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="null" wrapText="true">
+      <Label fx:id="emailLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="521.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="lastAccessTimeLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="629.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="null" wrapText="true">
+      <Label fx:id="lastAccessTimeLabel" alignment="TOP_LEFT" layoutX="324.0" layoutY="629.0" prefHeight="68.0" prefWidth="351.0" style="-fx-text-fill: white;" text="" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>

@@ -3,6 +3,7 @@ package sample.controller.notification;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,38 +44,47 @@ public class RenderNotificationPageController implements Initializable {
 
         notificationVbox.setPadding(new Insets(20, 20, 20, 20));
         notificationVbox.setSpacing(20);
-    }catch (IOException ex){
-        Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
-    }
-
-        try {
-            HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/getNewestTenNotice",
-                new String[]{"accessKey", GlobalVariable.accessKey}
-            );
-            String responseString = EntityUtils.toString(response.getEntity());
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                Gson gson = new Gson();
-                getNewestTenNoticeResponse gsonResponse = gson.fromJson(responseString, getNewestTenNoticeResponse.class);
-                if (Arrays.toString(gsonResponse.errors).equals("[]")) {
-                    for (String text: gsonResponse.Notices) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/sample/view/fxml/detailCard/Notification.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
-
-                        NotificationController itemController = fxmlLoader.getController();
-                        itemController.setData(text);
-                        notificationVbox.getChildren().add(anchorPane);
-                    }
-                }
-                else {
-                    System.out.println(Arrays.toString(gsonResponse.errors));
-                }
-            }
-            else {
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (IOException ex){
+            Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
         }
+
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/getNewestTenNotice",
+                            new String[]{"accessKey", GlobalVariable.accessKey}
+                    );
+                    String responseString = EntityUtils.toString(response.getEntity());
+                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        Gson gson = new Gson();
+                        getNewestTenNoticeResponse gsonResponse = gson.fromJson(responseString, getNewestTenNoticeResponse.class);
+                        if (Arrays.toString(gsonResponse.errors).equals("[]")) {
+                            for (String text: gsonResponse.Notices) {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/sample/view/fxml/detailCard/Notification.fxml"));
+                                AnchorPane anchorPane = fxmlLoader.load();
+
+                                NotificationController itemController = fxmlLoader.getController();
+                                itemController.setData(text);
+                                Platform.runLater(new Runnable() {
+                                    @Override public void run() {
+                                        notificationVbox.getChildren().add(anchorPane);
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            System.out.println(Arrays.toString(gsonResponse.errors));
+                        }
+                    }
+                    else {
+                        System.out.println(response.getStatusLine().getStatusCode());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

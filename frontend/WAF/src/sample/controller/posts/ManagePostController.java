@@ -4,6 +4,7 @@ package sample.controller.posts;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -52,11 +53,16 @@ public class ManagePostController implements Initializable {
         managePostVBox.setPadding(new Insets(20, 20, 20, 20));
         managePostVBox.setSpacing(20);
 
-        try {
-            getOwnAndJoinPost();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    getOwnAndJoinPost();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     public void getOwnAndJoinPost() throws IOException
@@ -138,8 +144,11 @@ public class ManagePostController implements Initializable {
 
             sample.view.detailCardController.ManagePostController itemController = fxmlLoader.getController();
             itemController.setData(dataArr[0],dataArr[1],dataArr[2],dataArr[3],dataArr[4],joinList,managePostVBox);
-
-            managePostVBox.getChildren().add(anchorPane);
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    managePostVBox.getChildren().add(anchorPane);
+                }
+            });
         }
     }
 }

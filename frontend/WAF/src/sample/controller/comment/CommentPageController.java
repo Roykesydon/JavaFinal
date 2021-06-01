@@ -3,6 +3,7 @@ package sample.controller.comment;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -62,11 +63,15 @@ public class CommentPageController implements Initializable {
         commentVBox.setPadding(new Insets(20, 20, 20, 5));
         commentVBox.setSpacing(5);
 
-        try {
-            getComments();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                try {
+                    getComments();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void getComments() throws IOException {
@@ -103,7 +108,12 @@ public class CommentPageController implements Initializable {
 
                     if (jsonResponse.errors.length == 0) {
                         for (String message : jsonResponse.Notices)
-                            messageData.add(message);
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    messageData.add(message);
+                                }
+                            }).start();
+
                         renderAllMessage(messageData, classJsonResponse.Notices.length);
                     }
 
@@ -129,7 +139,12 @@ public class CommentPageController implements Initializable {
             CommentController itemController = fxmlLoader.getController();
             itemController.setData(dataArr[0],dataArr[1]);
 
-            commentVBox.getChildren().add(anchorPane);
+
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    commentVBox.getChildren().add(anchorPane);
+                }
+            });
         }
     }
 
@@ -178,7 +193,7 @@ public class CommentPageController implements Initializable {
                     System.out.println();
                     ToastCaller toast;
                     if (jsonResponse.errors.length == 0 && checkMessageLegal(message)) {
-                        toast = new ToastCaller("Send message success!",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                        toast = new ToastCaller("發送成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
                     }
                     else if(!checkMessageLegal(message)){
                         toast = new ToastCaller("訊息不可超過六行!",GlobalVariable.mainStage,ToastCaller.ERROR);

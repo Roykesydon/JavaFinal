@@ -2,6 +2,7 @@ package sample.controller.profile;
 
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -58,11 +59,15 @@ public class ProfilePageController implements Initializable {
             Logger.getLogger(ProfilePageController.class.getName()).log(Level.SEVERE,null,ex);
         }
 
-        try {
-            getProfileAndOwnPost(GlobalVariable.userID);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    getProfileAndOwnPost(GlobalVariable.userID);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void getProfileAndOwnPost(String userID) throws IOException
@@ -102,11 +107,14 @@ public class ProfilePageController implements Initializable {
                     System.out.println();
 
                     if(jsonResponse.errors.length==0){
-                        useridLabel.setText(jsonResponse.userID);
-                        nameLabel.setText(jsonResponse.name);
-                        emailLabel.setText(jsonResponse.email);
-                        lastAccessTimeLabel.setText(jsonResponse.lastAccessTime);
-
+                        Platform.runLater(new Runnable() {
+                            @Override public void run() {
+                                useridLabel.setText(jsonResponse.userID);
+                                nameLabel.setText(jsonResponse.name);
+                                emailLabel.setText(jsonResponse.email);
+                                lastAccessTimeLabel.setText(jsonResponse.lastAccessTime);
+                            }
+                        });
                         String ownPosts = "";
                         for(String postInfo:jsonResponse.ownPost){
                             ownPosts += postInfo;
@@ -127,7 +135,12 @@ public class ProfilePageController implements Initializable {
     public void renderAllPost(String posts,int postsQuantity) throws IOException {
         try {
             System.out.println("posts: "+posts);
-            postVBox.getChildren().clear();
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    postVBox.getChildren().clear();
+                }
+            });
+
             if(postsQuantity!=0){
                 postArr = new AnchorPane[postsQuantity];
                 int postCount = 0;
@@ -146,7 +159,11 @@ public class ProfilePageController implements Initializable {
                     postArr[postCount++] = anchorPane;
                 }
                 for(AnchorPane aaa:postArr){
-                    postVBox.getChildren().add(aaa);
+                    Platform.runLater(new Runnable() {
+                        @Override public void run() {
+                            postVBox.getChildren().add(aaa);
+                        }
+                    });
                 }
             }
         }catch (IOException e) {

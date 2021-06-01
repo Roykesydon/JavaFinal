@@ -60,7 +60,12 @@ public class PollingController extends TimerTask {
                 }
 
             } else {
+                ToastCaller toast;
+                if(Main.connectErrorCount==0)
+                    toast = new ToastCaller("Heroku已達到每小時3600筆詢問的限制",GlobalVariable.mainStage,ToastCaller.ERROR,550);
                 System.out.println(response.getStatusLine());
+                Main.connectErrorCount++;
+                Main.connectErrorCount%=10;
             }
         }
         catch (IOException | AWTException e) {

@@ -108,53 +108,57 @@ public class MakeNewPostController implements Initializable {
 
         //表單格式皆合法
         if(success){
-            try {
-                String category = categoryComboBox.getValue().toString();
-                String price = priceTextField.getText();
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String category = categoryComboBox.getValue().toString();
+                        String price = priceTextField.getText();
 
-                HttpResponse response = RequestController.post(GlobalVariable.server+"posts/createPost",
-                        new String[]{"accessKey", GlobalVariable.accessKey},
-                        new String[]{"category", category},
-                        new String[]{"price", price}
-                );
-                String responseString = EntityUtils.toString(response.getEntity());
+                        HttpResponse response = RequestController.post(GlobalVariable.server+"posts/createPost",
+                                new String[]{"accessKey", GlobalVariable.accessKey},
+                                new String[]{"category", category},
+                                new String[]{"price", price}
+                        );
+                        String responseString = EntityUtils.toString(response.getEntity());
 
-                String errorsResult = "";
-                int errorsResultCount = 0;
+                        String errorsResult = "";
+                        int errorsResultCount = 0;
 
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    Gson gson = new Gson();
-                    MakeNewPostResponse jsonResponse = gson.fromJson(responseString, MakeNewPostResponse.class);
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            Gson gson = new Gson();
+                            MakeNewPostResponse jsonResponse = gson.fromJson(responseString, MakeNewPostResponse.class);
 
-                    errorsResult = "";
-                    errorsResultCount=0;
-                    for(String error:jsonResponse.errors){
-                        if(errorsResultCount != 0)
-                            errorsResult += " , ";
+                            errorsResult = "";
+                            errorsResultCount=0;
+                            for(String error:jsonResponse.errors){
+                                if(errorsResultCount != 0)
+                                    errorsResult += " , ";
 
-                        errorsResult += error;
-                        errorsResultCount++;
-                        System.out.print(',' + error);
-                        if(error.equals("can't create more Post")){
-                            ToastCaller toast = new ToastCaller("已達到創建貼文上限",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        }
-                        if(error.equals("createPost fail")){
-                            ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                errorsResult += error;
+                                errorsResultCount++;
+                                System.out.print(',' + error);
+                                if(error.equals("can't create more Post")){
+                                    ToastCaller toast = new ToastCaller("已達到創建貼文上限",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                }
+                                if(error.equals("createPost fail")){
+                                    ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                }
+                            }
+
+                            System.out.println();
+
+                            if(jsonResponse.errors.length==0){
+                                ToastCaller toast = new ToastCaller("創建成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                            }
+                        } else {
+                            System.out.println(response.getStatusLine());
                         }
                     }
-
-                    System.out.println();
-
-                    if(jsonResponse.errors.length==0){
-                        ToastCaller toast = new ToastCaller("創建成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                    catch (IOException  e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    System.out.println(response.getStatusLine());
                 }
-            }
-            catch (IOException  e) {
-                e.printStackTrace();
-            }
+            }).start();
         }
     }
 

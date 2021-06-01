@@ -2,6 +2,7 @@ package sample.controller;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXPasswordField;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -67,54 +68,58 @@ public class HomePageController extends Main implements Initializable {
 
         //表單格式皆合法
         if(success){
-            try {
-                HttpResponse response = RequestController.post(GlobalVariable.server+"user/login",
-                        new String[]{"userid", userID.getText()},
-                        new String[]{"passwd", userPassword.getText()}
-                );
-                String responseString = EntityUtils.toString(response.getEntity());
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        HttpResponse response = RequestController.post(GlobalVariable.server+"user/login",
+                                new String[]{"userid", userID.getText()},
+                                new String[]{"passwd", userPassword.getText()}
+                        );
+                        String responseString = EntityUtils.toString(response.getEntity());
 
-                String errorsResult = "";
-                int errorsResultCount = 0;
+                        String errorsResult = "";
+                        int errorsResultCount = 0;
 
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    Gson gson = new Gson();
-                    LoginResponse jsonResponse = gson.fromJson(responseString, LoginResponse.class);
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            Gson gson = new Gson();
+                            LoginResponse jsonResponse = gson.fromJson(responseString, LoginResponse.class);
 
-                    errorsResult = "";
-                    errorsResultCount=0;
-                    for(String error:jsonResponse.errors){
-                        if(errorsResultCount != 0)
-                            errorsResult += " , ";
+                            errorsResult = "";
+                            errorsResultCount=0;
+                            for(String error:jsonResponse.errors){
+                                if(errorsResultCount != 0)
+                                    errorsResult += " , ";
 
-                        errorsResult += error;
-                        errorsResultCount++;
+                                errorsResult += error;
+                                errorsResultCount++;
 
-                        ToastCaller toast;
-                        if(error.equals("password error"))
-                            toast = new ToastCaller("密碼輸入錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if(error.equals("userID doesn't exist"))
-                            toast = new ToastCaller("User ID不存在", GlobalVariable.mainStage,ToastCaller.ERROR);
-                        System.out.print(',' + error);
+                                ToastCaller toast;
+                                if(error.equals("password error"))
+                                    toast = new ToastCaller("密碼輸入錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if(error.equals("userID doesn't exist"))
+                                    toast = new ToastCaller("User ID不存在", GlobalVariable.mainStage,ToastCaller.ERROR);
+                                System.out.print(',' + error);
+                            }
+
+                            System.out.println();
+
+                            if(jsonResponse.errors.length==0){
+                                GlobalVariable.accessKey = jsonResponse.accessKey;
+                                GlobalVariable.userID = jsonResponse.userID;
+                                System.out.println(jsonResponse.isAdmin);
+                                if( ! jsonResponse.isAdmin.equals("0"))
+                                    GlobalVariable.isAdmin = true;
+                                switchToMainApp(actionEvent);
+                            }
+                        } else {
+                            System.out.println(response.getStatusLine());
+                        }
                     }
-
-                    System.out.println();
-
-                    if(jsonResponse.errors.length==0){
-                        GlobalVariable.accessKey = jsonResponse.accessKey;
-                        GlobalVariable.userID = jsonResponse.userID;
-                        System.out.println(jsonResponse.isAdmin);
-                        if( ! jsonResponse.isAdmin.equals("0"))
-                            GlobalVariable.isAdmin = true;
-                        switchToMainApp(actionEvent);
+                    catch (IOException  e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    System.out.println(response.getStatusLine());
                 }
-            }
-            catch (IOException  e) {
-                e.printStackTrace();
-            }
+            }).start();
         }
     }
 
@@ -130,9 +135,14 @@ public class HomePageController extends Main implements Initializable {
     public void switchToMainApp(ActionEvent actionEvent) throws IOException {
         Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/posts/PublicPostPage.fxml"));
         Scene tmp = new Scene(page);
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();//switch smoothly
-        stage.setScene(tmp);
-        stage.show();
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.hide();//switch smoothly
+                stage.setScene(tmp);
+                stage.show();
+            }
+        });
+
     }
 }

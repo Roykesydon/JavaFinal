@@ -3,6 +3,7 @@ package sample.controller.account;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -113,54 +114,62 @@ public class SignUpController implements Initializable
 
         //表單格式皆合法
         if(success){
-            try {
-                HttpResponse response = RequestController.post(GlobalVariable.server+"user/register",
-                        new String[]{"name", userName.getText()},
-                        new String[]{"userid", userID.getText()},
-                        new String[]{"passwd", userPassword.getText()},
-                        new String[]{"passwdConfirm", userPWConfirm.getText()},
-                        new String[]{"email", userMail.getText()}
-                );
-                String responseString = EntityUtils.toString(response.getEntity());
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        HttpResponse response = RequestController.post(GlobalVariable.server+"user/register",
+                                new String[]{"name", userName.getText()},
+                                new String[]{"userid", userID.getText()},
+                                new String[]{"passwd", userPassword.getText()},
+                                new String[]{"passwdConfirm", userPWConfirm.getText()},
+                                new String[]{"email", userMail.getText()}
+                        );
+                        String responseString = EntityUtils.toString(response.getEntity());
 
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    Gson gson = new Gson();
-                    RegisterResponse jsonResponse = gson.fromJson(responseString, RegisterResponse.class);
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            Gson gson = new Gson();
+                            RegisterResponse jsonResponse = gson.fromJson(responseString, RegisterResponse.class);
 
 
-                    for(String error:jsonResponse.errors){
-                        System.out.print(',' + error);
-                        ToastCaller toast;
-                        if(error.equals("ID has been registered"))
-                            toast = new ToastCaller("ID已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if(error.equals("email has been registered"))
-                            toast = new ToastCaller("信箱已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
-                        if(error.equals("register fail"))
-                            toast = new ToastCaller("伺服器錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
+                            for(String error:jsonResponse.errors){
+                                System.out.print(',' + error);
+                                ToastCaller toast;
+                                if(error.equals("ID has been registered"))
+                                    toast = new ToastCaller("ID已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if(error.equals("email has been registered"))
+                                    toast = new ToastCaller("信箱已被註冊過", GlobalVariable.mainStage,ToastCaller.ERROR);
+                                if(error.equals("register fail"))
+                                    toast = new ToastCaller("伺服器錯誤", GlobalVariable.mainStage,ToastCaller.ERROR);
+                            }
+
+                            System.out.println();
+                            if(jsonResponse.errors.length==0){
+                                backHomePage(actionEvent);
+                                ToastCaller toast = new ToastCaller("註冊成功", GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                            }
+                        } else {
+                            System.out.println(response.getStatusLine());
+                        }
                     }
-
-                    System.out.println();
-                    if(jsonResponse.errors.length==0){
-                        backHomePage(actionEvent);
-                        ToastCaller toast = new ToastCaller("Register Success!", GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                    catch (IOException  e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    System.out.println(response.getStatusLine());
                 }
-            }
-            catch (IOException  e) {
-                e.printStackTrace();
-            }
+            }).start();
         }
     }
 
     public void backHomePage(ActionEvent actionEvent) throws IOException {
         Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/HomePage.fxml"));
         Scene tmp = new Scene(page);
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.hide();//switch smoothly
-        stage.setScene(tmp);
-        stage.show();
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.hide();//switch smoothly
+                stage.setScene(tmp);
+                stage.show();
+            }
+        });
     }
 }
 

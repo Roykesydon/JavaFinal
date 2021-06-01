@@ -51,35 +51,39 @@ public class ForgotPasswordController implements Initializable{
     }
     public void setIdentityCode(int status)  {
         if(!userid.getText().isEmpty()) {
-            try {
-                HttpResponse response= RequestController.post(GlobalVariable.server+"user/setIdentityCode",
-                        new String[]{"userid",userid.getText()}
-                );
-                String responseString= EntityUtils.toString(response.getEntity());
-                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                    Gson gson =new Gson();
-                    SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
-                    if(Arrays.toString(gsonResponse.errors).equals("[]")){
-                        if(status==0)sendIdentityCode(status);
-                        else tryCount=0;
-                    }
-                    else{
-                        for(String error : gsonResponse.errors){
-                            ToastCaller toast;
-                            if(error.equals("ID has not found"))
-                                toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
-                            if(error.equals("today has set Identify code"))
-                                toast = new ToastCaller("今天已設過驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        HttpResponse response= RequestController.post(GlobalVariable.server+"user/setIdentityCode",
+                                new String[]{"userid",userid.getText()}
+                        );
+                        String responseString= EntityUtils.toString(response.getEntity());
+                        if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                            Gson gson =new Gson();
+                            SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
+                            if(Arrays.toString(gsonResponse.errors).equals("[]")){
+                                if(status==0)sendIdentityCode(status);
+                                else tryCount=0;
+                            }
+                            else{
+                                for(String error : gsonResponse.errors){
+                                    ToastCaller toast;
+                                    if(error.equals("ID has not found"))
+                                        toast = new ToastCaller("User ID不存在",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                    if(error.equals("today has set Identify code"))
+                                        toast = new ToastCaller("今天已設過驗證碼",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                }
+                            }
+                        }
+                        else{
+                            System.out.println(response.getStatusLine().getStatusCode());
                         }
                     }
+                    catch (IOException e){
+                        e.printStackTrace();
+                    }
                 }
-                else{
-                    System.out.println(response.getStatusLine().getStatusCode());
-                }
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
+            }).start();
         }
         else{
             ToastCaller toast;
@@ -115,44 +119,49 @@ public class ForgotPasswordController implements Initializable{
     }
     public void switchToResetPassWord(ActionEvent actionEvent) {
         if(!userid.getText().isEmpty()) {
-            try {
-                HttpResponse response = RequestController.post(GlobalVariable.server+"user/checkIdentityCode",
-                        new String[]{"userid", userid.getText()},
-                        new String[]{"IdentityCode", userIdentityCode.getText()}
-                );
-                String responseString = EntityUtils.toString(response.getEntity());
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    Gson gson = new Gson();
-                    CheckIdentityResponse gsonResponse = gson.fromJson(responseString, CheckIdentityResponse.class);
-                    if (Arrays.toString(gsonResponse.errors).equals("[]")) {
-                        GlobalVariable.userID = userid.getText();
-                        GlobalVariable.accessKey = gsonResponse.accessKey;
-                        tryCount = 0;
-                        URL url = new File("src/sample/view/fxml/account/ResetPassWord.fxml").toURI().toURL();
-                        Parent root = FXMLLoader.load(url);
-                        Scene tmp = new Scene(root);
-                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                        stage.hide();
-                        stage.setScene(tmp);
-                        stage.show();
-                    } else {
-                        tryCount++;
-                        ToastCaller toast;
-                        for(String error: gsonResponse.errors) {
-                            if (error.equals("IdentityCode error"))
-                                toast = new ToastCaller("驗證碼錯誤", GlobalVariable.mainStage, ToastCaller.ERROR);
-                            if (error.equals("already try 5 times"))
-                                toast = new ToastCaller("本日已嘗試五次", GlobalVariable.mainStage, ToastCaller.ERROR);
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+
+                        HttpResponse response = RequestController.post(GlobalVariable.server+"user/checkIdentityCode",
+                                new String[]{"userid", userid.getText()},
+                                new String[]{"IdentityCode", userIdentityCode.getText()}
+                        );
+                        String responseString = EntityUtils.toString(response.getEntity());
+                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                            Gson gson = new Gson();
+                            CheckIdentityResponse gsonResponse = gson.fromJson(responseString, CheckIdentityResponse.class);
+                            if (Arrays.toString(gsonResponse.errors).equals("[]")) {
+                                GlobalVariable.userID = userid.getText();
+                                GlobalVariable.accessKey = gsonResponse.accessKey;
+                                tryCount = 0;
+                                URL url = new File("src/sample/view/fxml/account/ResetPassWord.fxml").toURI().toURL();
+                                Parent root = FXMLLoader.load(url);
+                                Scene tmp = new Scene(root);
+                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                stage.hide();
+                                stage.setScene(tmp);
+                                stage.show();
+                            } else {
+                                tryCount++;
+                                ToastCaller toast;
+                                for(String error: gsonResponse.errors) {
+                                    if (error.equals("IdentityCode error"))
+                                        toast = new ToastCaller("驗證碼錯誤", GlobalVariable.mainStage, ToastCaller.ERROR);
+                                    if (error.equals("already try 5 times"))
+                                        toast = new ToastCaller("本日已嘗試五次", GlobalVariable.mainStage, ToastCaller.ERROR);
+                                }
+                            }
+                        } else {
+                            tryCount++;
+                            ToastCaller toast;
+                            toast = new ToastCaller("網路錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    tryCount++;
-                    ToastCaller toast;
-                    toast = new ToastCaller("網路錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            }).start();
         }
         else{
             ToastCaller toast;

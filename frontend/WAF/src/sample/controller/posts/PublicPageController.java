@@ -3,6 +3,7 @@ package sample.controller.posts;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -58,11 +59,15 @@ public class PublicPageController implements Initializable {
             Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
         }
 
-        try {
-            getAllPost();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    getAllPost();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         postVBox.setPadding(new Insets(20, 20, 20, 20));
         postVBox.setSpacing(20);
         categoryComboBox.getItems().addAll("Spotify","NintendoSwitchOnline","YoutubePremium","Netflix","AppleMusic");
@@ -181,7 +186,11 @@ public class PublicPageController implements Initializable {
                 postArr[postCount++] = anchorPane;
             }
             for(AnchorPane aaa:postArr){
-                postVBox.getChildren().add(aaa);
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        postVBox.getChildren().add(aaa);
+                    }
+                });
             }
         }
         catch (IOException e) {
