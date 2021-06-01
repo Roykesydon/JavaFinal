@@ -2,7 +2,8 @@
 
 ## Switch Local/Network Server
 ```
-更改sample.global.GlobalVariable.server
+更改sample.global.GlobalVariable.server'
+因為polling的關係，目前很容易超過每小時3600次的詢問次數限制
 Local: "http://127.0.0.1:13261/"
 Network: "https://java-waf-api.herokuapp.com/"
 ```
