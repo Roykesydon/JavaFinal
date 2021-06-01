@@ -1,9 +1,9 @@
 .button{
-    -fx-background-color: #0abab5;
+    -fx-background-color: #00E3E3;
     -fx-background-radius: 0 ;
 }
 .button:hover{
-    -fx-background-color: #6200ed;
+    -fx-background-color: #2b9a9a;
     -fx-background-radius: 0 ;
 }
 .circle{

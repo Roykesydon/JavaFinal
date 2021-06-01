@@ -12,7 +12,7 @@
 
 <VBox fx:id="primaryVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="250.0" stylesheets="@../css/Nav.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SidePanelController">
    <children>
-      <JFXButton fx:id="spaceBut" prefHeight="62.0" prefWidth="259.0" style="-fx-font-size:27px;-fx-text-fill: #3c3f41;" text="" />
+      <JFXButton fx:id="spaceBut" prefHeight="62.0" prefWidth="259.0"  text="" />
       <ImageView fx:id="img" fitHeight="252.0" fitWidth="251.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../css/square_logo.png" />

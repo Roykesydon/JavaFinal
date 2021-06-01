@@ -38,7 +38,7 @@ public class HomePageController extends Main implements Initializable {
         primaryWAFLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:12em;");
         btnSignUp.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:22;");
         btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:25;");
-        buttonForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:18;");
+        buttonForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:18;");
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
     }
 
