@@ -32,25 +32,21 @@ public class RenderNotificationPageController implements Initializable {
     public Label notification;
     public   VBox  notificationVbox;
     public Label primaryNotificationLabel;
+    public VBox box;
     @FXML
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer drawer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:56;");
         try {
-        VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
-        if(GlobalVariable.isAdmin != false) {
-            box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
-            System.out.println("admin");
-        }
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
+            if(GlobalVariable.isAdmin)
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
 
         notificationVbox.setPadding(new Insets(20, 20, 20, 20));
         notificationVbox.setSpacing(20);
-
-        drawer.setSidePane(box);
-        drawer.open();
     }catch (IOException ex){
         Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
     }

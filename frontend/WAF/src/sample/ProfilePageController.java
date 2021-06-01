@@ -38,32 +38,26 @@ public class ProfilePageController implements Initializable {
     public Label primaryName;
     public Label primaryEmail;
     public Label primaryProfile;
+    public VBox box;
     private AnchorPane[] postArr;
 
     @FXML
-    private JFXHamburger hamburger;
-
-    @FXML
-    private JFXDrawer drawer;
-
     public Label useridLabel,nameLabel,emailLabel,lastAccessTimeLabel,ownPostsLabel;
     public TextField searchTextField;
 
     public ScrollPane postsScroll;
 
     public void initialize(URL url, ResourceBundle rb) {
-        primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryName.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryProfile.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        searchButton.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor + ";-fx-border-color: " + GlobalVariable.secondaryColor);
+        primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryName.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
+        primaryProfile.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
+        searchButton.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor + ";-fx-border-color: " + GlobalVariable.secondaryColor+";-fx-font-size:19;");
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
             if(GlobalVariable.isAdmin)
-                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
-            drawer.setSidePane(box);
-            drawer.open();
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
 
 //            postsScroll.setStyle("-fx-background: rgb(50,50,50);-fx-background-color: rgb(50,50,50)");
 

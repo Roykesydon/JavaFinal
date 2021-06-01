@@ -41,20 +41,15 @@ public class PublicPageController implements Initializable {
     private AnchorPane[] postArr;
     public Label joinStatusLabel= new Label();
     public ComboBox categoryComboBox;
+    public VBox box;
 
     public void initialize(URL url, ResourceBundle rb) {
-        filterBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor + ";-fx-border-color: " + GlobalVariable.primaryColor);
-        primaryPublicLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        filterBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor + ";-fx-border-color: " + GlobalVariable.primaryColor+";-fx-font-size:20;");
+        primaryPublicLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
-            if(GlobalVariable.isAdmin != false) {
-                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
-                System.out.println("admin");
-            }
-
-            drawer.setSidePane(box);
-            drawer.open();
-
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
+            if(GlobalVariable.isAdmin)
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
         }catch (IOException ex){
             Logger.getLogger(PublicPageController.class.getName()).log(Level.SEVERE,null,ex);
         }

@@ -28,17 +28,17 @@ import java.util.ResourceBundle;
 public class HomePageController extends Main implements Initializable {
 
     public Button btnSignIn;
-    public Button labelForgot;
+    public Button buttonForgot;
     public Button btnSignUp;
     public Label primaryWAFLabel;
     public TextField userID;
     public JFXPasswordField userPassword;
 
     public void initialize(URL url, ResourceBundle rb){
-        primaryWAFLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        btnSignUp.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
-        btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        labelForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        primaryWAFLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:12em;");
+        btnSignUp.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:22;");
+        btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:25;");
+        buttonForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:18;");
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
     }
 

@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class ForgotPasswordController {
+public class ForgotPasswordController implements Initializable{
     public TextField userIdentityCode, userid;
     public Label userIdResponse;
     public int tryCount=0;
@@ -34,17 +34,15 @@ public class ForgotPasswordController {
     public Button submit;
     public Label primaryIDLabel;
     public Button backBtn;
-    public Button resend;
     public Button send;
 
     public void initialize(URL url, ResourceBundle rb){
-        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
-        resend.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor);
-        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:36;");
+        primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:58;");
+        primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:34;");
+        primaryIdentifyLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:34;");
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
+        send.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:25;");
     }
 
     public void setIdentityCodeButtonListener(ActionEvent actionEvent){

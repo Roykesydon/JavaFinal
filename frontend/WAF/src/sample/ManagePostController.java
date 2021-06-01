@@ -36,6 +36,7 @@ public class ManagePostController implements Initializable {
 
     public VBox managePostVBox;
     public Label primaryLabel;
+    public VBox box;
     @FXML
     private JFXHamburger hamburger;
 
@@ -49,14 +50,11 @@ public class ManagePostController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle rb) {
-        primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
+        primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml"));
+            box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/SidePanel.fxml")));
             if(GlobalVariable.isAdmin)
-                box = FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml"));
-            drawer.setSidePane(box);
-            drawer.open();
-
+                box.getChildren().add(FXMLLoader.load(getClass().getResource("fxml/AdminSidePanel.fxml")));
         }catch (IOException ex){
             Logger.getLogger(ManagePostController.class.getName()).log(Level.SEVERE,null,ex);
         }

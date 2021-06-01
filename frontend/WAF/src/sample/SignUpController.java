@@ -46,9 +46,9 @@ public class SignUpController implements Initializable
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
         userPWConfirm.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
         userMail.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
-        primarySignLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor);
-        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor);
-        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor);
+        primarySignLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:50;");
+        submit.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:23;");
+        backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:23;");
     }
 
     public void checkInput(ActionEvent actionEvent) throws IOException
