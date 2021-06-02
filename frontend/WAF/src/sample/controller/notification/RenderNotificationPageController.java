@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
@@ -32,12 +33,14 @@ public class RenderNotificationPageController implements Initializable {
     public   VBox  notificationVbox;
     public Label primaryNotificationLabel;
     public VBox box;
+    public ProgressIndicator loading;
     @FXML
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer drawer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loading.setVisible(false);
         primaryNotificationLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:56;");
         try {
             box.getChildren().add(FXMLLoader.load(getClass().getResource("/sample/view/fxml/sidePanel/SidePanel.fxml")));
@@ -51,6 +54,7 @@ public class RenderNotificationPageController implements Initializable {
 
         new Thread(new Runnable() {
             public void run() {
+                RenderNotificationPageController.this.loading.setVisible(true);
                 try {
                     HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/getNewestTenNotice",
                             new String[]{"accessKey", GlobalVariable.accessKey}
@@ -84,6 +88,7 @@ public class RenderNotificationPageController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                RenderNotificationPageController.this.loading.setVisible(false);
             }
         }).start();
     }

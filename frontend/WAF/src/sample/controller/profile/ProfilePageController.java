@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
@@ -29,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProfilePageController implements Initializable {
-
+    public ProgressIndicator loading;
     public VBox postVBox;
     public Button searchButton;
     public Label primaryID;
@@ -47,6 +44,7 @@ public class ProfilePageController implements Initializable {
     public ScrollPane postsScroll;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         primaryEmail.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
         primaryID.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
         primaryLoginTime.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:31;");
@@ -78,6 +76,7 @@ public class ProfilePageController implements Initializable {
         postVBox.setSpacing(20);
         //表單格式皆合法
         if(success){
+            loading.setVisible(true);
             try {
                 HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getProfileAndOwnPost",
                         new String[]{"userID", userID}
@@ -130,6 +129,7 @@ public class ProfilePageController implements Initializable {
             catch (IOException  e) {
                 e.printStackTrace();
             }
+            loading.setVisible(false);
         }
     }
     public void renderAllPost(String posts,int postsQuantity) throws IOException {

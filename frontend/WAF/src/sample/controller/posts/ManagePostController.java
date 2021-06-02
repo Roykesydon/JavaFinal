@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
@@ -41,8 +42,10 @@ public class ManagePostController implements Initializable {
     private List<String> postData = new ArrayList<>();
     private AnchorPane[] postArr;
 
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         primaryLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         try {
             box.getChildren().add(FXMLLoader.load(getClass().getResource("/sample/view/fxml/sidePanel/SidePanel.fxml")));
@@ -72,6 +75,7 @@ public class ManagePostController implements Initializable {
 
         //表單格式皆合法
         if(success){
+            loading.setVisible(true);
             try {
                 HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getOwnAndJoinPost",
                         new String[]{"accessKey", GlobalVariable.accessKey}
@@ -114,6 +118,7 @@ public class ManagePostController implements Initializable {
             catch (IOException  e) {
                 e.printStackTrace();
             }
+            loading.setVisible(false);
         }
     }
 

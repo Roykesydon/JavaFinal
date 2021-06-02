@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
@@ -49,8 +46,11 @@ public class CommentPageController implements Initializable {
     private String toSendUserID = "";
     private List<String> messageData = new ArrayList<>();
     private AnchorPane[] messageArr;
+    public  AnchorPane anchorpane;
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         leaveCommentButton.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:19;");
         primarySendTo.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:27;");
         primaryCommentLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:49;");
@@ -76,8 +76,10 @@ public class CommentPageController implements Initializable {
 
     private void getComments() throws IOException {
         boolean success = true;
-
+        final ProgressIndicator progress = new ProgressIndicator();
+        progress.setMaxSize(50, 50);
         //表單格式皆合法
+        loading.setVisible(true);
         if (success) {
             try {
                 HttpResponse response = RequestController.post(GlobalVariable.server+"comments/getComments",
@@ -132,6 +134,7 @@ public class CommentPageController implements Initializable {
                 e.printStackTrace();
             }
         }
+        loading.setVisible(false);
     }
 
     public void leaveComment(ActionEvent actionEvent) {
@@ -139,6 +142,7 @@ public class CommentPageController implements Initializable {
         toSendUserID = toSendUserIDTextBox.getText();
         boolean success = true;
         //表單格式皆合法
+        loading.setVisible(true);
         if (success) {
             new Thread(new Runnable() {
                 public void run() {
@@ -193,6 +197,7 @@ public class CommentPageController implements Initializable {
                 }
             }).start();
         }
+        loading.setVisible(false);
     }
 
     public boolean checkMessageLegal(String message)

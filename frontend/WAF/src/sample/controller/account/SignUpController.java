@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -41,8 +42,10 @@ public class SignUpController implements Initializable
     public JFXPasswordField userPassword;
     public JFXPasswordField userPWConfirm;
     public JFXTextField userMail;
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb){
+        loading.setVisible(false);
         userID.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
         userName.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
@@ -116,6 +119,7 @@ public class SignUpController implements Initializable
         if(success){
             new Thread(new Runnable() {
                 public void run() {
+                    SignUpController.this.loading.setVisible(true);
                     try {
                         HttpResponse response = RequestController.post(GlobalVariable.server+"user/register",
                                 new String[]{"name", userName.getText()},
@@ -154,6 +158,7 @@ public class SignUpController implements Initializable
                     catch (IOException  e) {
                         e.printStackTrace();
                     }
+                    SignUpController.this.loading.setVisible(false);
                 }
             }).start();
         }

@@ -1,6 +1,7 @@
 package sample.controller.account;
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
@@ -34,10 +36,12 @@ public class ResetPassWordController implements Initializable {
     public Button resetBtn;
     public Button backBtn;
     public Label secondaryUserId;
+    public ProgressIndicator loading;
     // public JFXPasswordField newPassWord;
     // public JFXPasswordField confirmPassWord;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         secondaryUserId.setText(GlobalVariable.userID);
         primaryConfirmLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
         primaryUserIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:36;");
@@ -53,6 +57,7 @@ public class ResetPassWordController implements Initializable {
         if(!newPassWord.getText().isEmpty()&&!confirmPassWord.getText().isEmpty()) {
             new Thread(new Runnable() {
                 public void run() {
+                    ResetPassWordController.this.loading.setVisible(true);
                     try {
                         HttpResponse response= RequestController.post(GlobalVariable.server+"user/resetPassword",
                                 new String[]{"accessKey",GlobalVariable.accessKey},
@@ -69,9 +74,15 @@ public class ResetPassWordController implements Initializable {
                                 Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/HomePage.fxml"));
                                 Scene tmp = new Scene(page);
                                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                                stage.hide();//switch smoothly
-                                stage.setScene(tmp);
-                                stage.show();
+                                Platform.runLater(new Runnable() {
+                                    @Override public void run() {
+                                        stage.hide();//switch smoothly
+                                        stage.setScene(tmp);
+                                        stage.show();
+                                    }
+                                });
+
+                                ResetPassWordController.this.loading.setVisible(false);
                             }
                             else{
                                 if(!checkPassWord.checkPassWord()){
@@ -91,6 +102,7 @@ public class ResetPassWordController implements Initializable {
                     catch (IOException e){
                         e.printStackTrace();
                     }
+                    ResetPassWordController.this.loading.setVisible(false);
                 }
             }).start();
         }

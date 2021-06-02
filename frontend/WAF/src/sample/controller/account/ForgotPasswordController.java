@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.skin.ProgressIndicatorSkin;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
@@ -37,8 +39,10 @@ public class ForgotPasswordController implements Initializable{
     public Label primaryIDLabel;
     public Button backBtn;
     public Button send;
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb){
+        loading.setVisible(false);
         backBtn.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-border-color: "+GlobalVariable.secondaryColor+";-fx-font-size:36;");
         primaryForgetLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:58;");
         primaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:34;");
@@ -52,6 +56,7 @@ public class ForgotPasswordController implements Initializable{
     }
     public void setIdentityCode(int status)  {
         if(!userid.getText().isEmpty()) {
+            loading.setVisible(true);
             new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -85,6 +90,7 @@ public class ForgotPasswordController implements Initializable{
                     }
                 }
             }).start();
+            loading.setVisible(false);
         }
         else{
             ToastCaller toast;
@@ -94,6 +100,7 @@ public class ForgotPasswordController implements Initializable{
     }
     public void sendIdentityCode(int status){
         if(!userid.getText().isEmpty()) {
+            loading.setVisible(true);
             try {
                 HttpResponse response=RequestController.post(GlobalVariable.server+"Email/sendEmail",
                     new String[]{"userid",userid.getText()}
@@ -111,6 +118,7 @@ public class ForgotPasswordController implements Initializable{
             catch (IOException e){
                 e.printStackTrace();
             }
+            loading.setVisible(false);
         }
         else{
             ToastCaller toast;
@@ -122,6 +130,7 @@ public class ForgotPasswordController implements Initializable{
         if(!userid.getText().isEmpty()) {
             new Thread(new Runnable() {
                 public void run() {
+                    ForgotPasswordController.this.loading.setVisible(true);
                     try {
 
                         HttpResponse response = RequestController.post(GlobalVariable.server+"user/checkIdentityCode",
@@ -165,8 +174,10 @@ public class ForgotPasswordController implements Initializable{
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    ForgotPasswordController.this.loading.setVisible(false);
                 }
             }).start();
+            loading.setVisible(false);
         }
         else{
             ToastCaller toast;

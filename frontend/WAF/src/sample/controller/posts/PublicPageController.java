@@ -49,8 +49,10 @@ public class PublicPageController implements Initializable {
     public ComboBox categoryComboBox;
     public VBox box;
     private List<String> joinPostData = new ArrayList<>();
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         filterBtn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor + ";-fx-border-color: " + GlobalVariable.primaryColor+";-fx-font-size:20;");
         primaryPublicLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         try {
@@ -75,6 +77,7 @@ public class PublicPageController implements Initializable {
 
     public void getAllPost() throws IOException
     {
+        loading.setVisible(true);
         try {
             HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getOwnAndJoinPost",
                     new String[]{"accessKey", GlobalVariable.accessKey}
@@ -117,9 +120,6 @@ public class PublicPageController implements Initializable {
         catch (IOException  e) {
             e.printStackTrace();
         }
-
-
-
         try {
             HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getAllPost",null
             );
@@ -159,6 +159,7 @@ public class PublicPageController implements Initializable {
         catch (IOException e) {
             e.printStackTrace();
         }
+        loading.setVisible(false);
     }
 
 
@@ -199,53 +200,63 @@ public class PublicPageController implements Initializable {
     }
 
     public void filterPost() {
-        try {
-            if(categoryComboBox.getValue()==null){
-                ToastCaller toast = new ToastCaller("請選擇分類",GlobalVariable.mainStage,ToastCaller.ERROR);
-                return ;
-            }
-            postVBox.getChildren().clear();
-            HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getFilteredPost",
-                    new String[]{"category",categoryComboBox.getValue().toString()}
-            );
-            String responseString = EntityUtils.toString(response.getEntity());
-
-            String errorsResult = "";
-            int errorsResultCount = 0;
-
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                Gson gson = new Gson();
-                GetAllPostResponse jsonResponse = gson.fromJson(responseString, GetAllPostResponse.class);
-                errorsResult = "";
-                errorsResultCount=0;
-                for(String error:jsonResponse.errors){
-                    if(errorsResultCount != 0)
-                        errorsResult += " , ";
-                    if(error.equals("getFilteredPost fail")){
-                        ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
-                    }
-                    errorsResult += error;
-                    errorsResultCount++;
-                    System.out.print(',' + error);
-                }
-                System.out.println();
-                if(jsonResponse.errors.length==0){
-                    int count = 0;//to split two responseString with comma
-                    String posts = "";
-                    for(String postInfo:jsonResponse.posts){
-                        if(count++!=0)
-                            posts+="=";
-                        posts += postInfo;
-                    }
-                    renderAllPost(posts,jsonResponse.posts.length);
-                }
-            } else {
-                System.out.println(response.getStatusLine());
-            }
-            getAllPostResult.setText(errorsResult);
+        if(categoryComboBox.getValue()==null){
+            ToastCaller toast = new ToastCaller("請選擇分類",GlobalVariable.mainStage,ToastCaller.ERROR);
+            return ;
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                PublicPageController.this.loading.setVisible(true);
+                try {
+                    Platform.runLater(new Runnable() {
+                        @Override public void run() {
+                            postVBox.getChildren().clear();
+                        }
+                    });
+                    HttpResponse response = RequestController.post(GlobalVariable.server+"posts/getFilteredPost",
+                            new String[]{"category",categoryComboBox.getValue().toString()}
+                    );
+                    String responseString = EntityUtils.toString(response.getEntity());
+
+                    String errorsResult = "";
+                    int errorsResultCount = 0;
+
+                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        Gson gson = new Gson();
+                        GetAllPostResponse jsonResponse = gson.fromJson(responseString, GetAllPostResponse.class);
+                        errorsResult = "";
+                        errorsResultCount=0;
+                        for(String error:jsonResponse.errors){
+                            if(errorsResultCount != 0)
+                                errorsResult += " , ";
+                            if(error.equals("getFilteredPost fail")){
+                                ToastCaller toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            }
+                            errorsResult += error;
+                            errorsResultCount++;
+                            System.out.print(',' + error);
+                        }
+                        System.out.println();
+                        if(jsonResponse.errors.length==0){
+                            int count = 0;//to split two responseString with comma
+                            String posts = "";
+                            for(String postInfo:jsonResponse.posts){
+                                if(count++!=0)
+                                    posts+="=";
+                                posts += postInfo;
+                            }
+                            renderAllPost(posts,jsonResponse.posts.length);
+                        }
+                    } else {
+                        System.out.println(response.getStatusLine());
+                    }
+                    getAllPostResult.setText(errorsResult);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                PublicPageController.this.loading.setVisible(false);
+            }
+        }).start();
     }
 }

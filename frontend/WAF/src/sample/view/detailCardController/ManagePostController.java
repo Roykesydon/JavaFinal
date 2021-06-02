@@ -2,10 +2,12 @@ package sample.view.detailCardController;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXCheckBox;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -33,6 +35,8 @@ public class ManagePostController {
     public AnchorPane anchorPane;
     public VBox listVBox;
     public VBox manageVBox;
+
+    public ProgressIndicator loading;
 
     public Button completeBtn;
     public Button deleteBtn;
@@ -79,112 +83,142 @@ public class ManagePostController {
 
     public void leaveFunction(String postID)
     {
-        try {
-            HttpResponse response= RequestController.post(GlobalVariable.server+"posts/removeUser",
-                    new String[]{"accessKey",GlobalVariable.accessKey},
-                    new String[]{"postID",postID},
-                    new String[]{"removeUserID",GlobalVariable.userID}
-            );
-            String responseString= EntityUtils.toString(response.getEntity());
-            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                Gson gson =new Gson();
-                JoinPostResponse gsonResponse = gson.fromJson(responseString,JoinPostResponse.class);
-                if(Arrays.toString(gsonResponse.errors).equals("[]")){
-                    manageVBox.getChildren().remove(anchorPane);
-                    ToastCaller toast = new ToastCaller("退出成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+        new Thread(new Runnable() {
+            public void run() {
+                loading.setVisible(true);
+                try {
+                    HttpResponse response= RequestController.post(GlobalVariable.server+"posts/removeUser",
+                            new String[]{"accessKey",GlobalVariable.accessKey},
+                            new String[]{"postID",postID},
+                            new String[]{"removeUserID",GlobalVariable.userID}
+                    );
+                    String responseString= EntityUtils.toString(response.getEntity());
+                    if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                        Gson gson =new Gson();
+                        JoinPostResponse gsonResponse = gson.fromJson(responseString,JoinPostResponse.class);
+                        if(Arrays.toString(gsonResponse.errors).equals("[]")){
+                            Platform.runLater(new Runnable() {
+                                @Override public void run() {
+                                    manageVBox.getChildren().remove(anchorPane);
+                                }
+                            });
+                            ToastCaller toast = new ToastCaller("退出成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                        }
+                        else{
+                            ToastCaller toast = new ToastCaller("退出失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            System.out.println("failed");
+                        }
+                    }
+                    else{
+                        System.out.println(response.getStatusLine().getStatusCode());
+                    }
                 }
-                else{
-                    ToastCaller toast = new ToastCaller("退出失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
-                    System.out.println("failed");
+                catch (IOException e){
+                    e.printStackTrace();
                 }
+                loading.setVisible(false);
             }
-            else{
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public void choosePeopleFunction(String postID)
     {
-        String tmpList = "";
-        String chooseList = "";
+        new Thread(new Runnable() {
+            public void run() {
+                String tmpList = "";
+                String chooseList = "";
 
-        for(Node checkBox :listVBox.getChildren())
-            if(((JFXCheckBox)checkBox).isSelected())
-                tmpList += ((JFXCheckBox) checkBox).getText()   +",";
-
-        if(!tmpList.equals(""))
-        {
-            /* remove last ',' */
-            if(tmpList.charAt(tmpList.length() - 1) == ',')
-                chooseList = tmpList.substring(0,tmpList.length() - 1);
-            try {
-                HttpResponse response= RequestController.post(GlobalVariable.server+"posts/completePost",
-                        new String[]{"accessKey",GlobalVariable.accessKey},
-                        new String[]{"postID",postID},
-                        new String[]{"chooseList",chooseList}
-                );
-                String responseString= EntityUtils.toString(response.getEntity());
-                if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                    Gson gson =new Gson();
-                    SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
-                    if(Arrays.toString(gsonResponse.errors).equals("[]")){
-                        manageVBox.getChildren().remove(anchorPane);
-                        ToastCaller toast = new ToastCaller("添加成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                for(Node checkBox :listVBox.getChildren())
+                    if(((JFXCheckBox)checkBox).isSelected())
+                        tmpList += ((JFXCheckBox) checkBox).getText()   +",";
+                if(!tmpList.equals(""))
+                {
+                    loading.setVisible(true);
+                    /* remove last ',' */
+                    if(tmpList.charAt(tmpList.length() - 1) == ',')
+                        chooseList = tmpList.substring(0,tmpList.length() - 1);
+                    try {
+                        HttpResponse response= RequestController.post(GlobalVariable.server+"posts/completePost",
+                                new String[]{"accessKey",GlobalVariable.accessKey},
+                                new String[]{"postID",postID},
+                                new String[]{"chooseList",chooseList}
+                        );
+                        String responseString= EntityUtils.toString(response.getEntity());
+                        if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                            Gson gson =new Gson();
+                            SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
+                            if(Arrays.toString(gsonResponse.errors).equals("[]")){
+                                Platform.runLater(new Runnable() {
+                                    @Override public void run() {
+                                        manageVBox.getChildren().remove(anchorPane);
+                                    }
+                                });
+                                ToastCaller toast = new ToastCaller("添加成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                            }
+                            else{
+                                ToastCaller toast = new ToastCaller("添加失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                System.out.println("failed");
+                            }
+                        }
+                        else{
+                            System.out.println(response.getStatusLine().getStatusCode());
+                        }
                     }
-                    else{
-                        ToastCaller toast = new ToastCaller("添加失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        System.out.println("failed");
+                    catch (IOException e){
+                        e.printStackTrace();
                     }
+                    loading.setVisible(false);
                 }
                 else{
-                    System.out.println(response.getStatusLine().getStatusCode());
+                    ToastCaller toast = new ToastCaller("必須選擇至少一人",GlobalVariable.mainStage,ToastCaller.ERROR);
                 }
             }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        else{
-            ToastCaller toast = new ToastCaller("必須選擇至少一人",GlobalVariable.mainStage,ToastCaller.ERROR);
-        }
+        }).start();
     }
 
     public void deletePeopleFunction(String postID)
     {
-        try {
-            HttpResponse response=RequestController.post(GlobalVariable.server+"posts/deletePost",
-                    new String[]{"accessKey",GlobalVariable.accessKey},
-                    new String[]{"postID",postID}
-            );
-            String responseString= EntityUtils.toString(response.getEntity());
-            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                Gson gson =new Gson();
-                SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
-                if(Arrays.toString(gsonResponse.errors)=="[]"){
-                    manageVBox.getChildren().remove(anchorPane);
-                    ToastCaller toast = new ToastCaller("刪除成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+        new Thread(new Runnable() {
+            public void run() {
+                loading.setVisible(true);
+                try {
+                    HttpResponse response=RequestController.post(GlobalVariable.server+"posts/deletePost",
+                            new String[]{"accessKey",GlobalVariable.accessKey},
+                            new String[]{"postID",postID}
+                    );
+                    String responseString= EntityUtils.toString(response.getEntity());
+                    if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                        Gson gson =new Gson();
+                        SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString,SetIdentityCodeResponse.class);
+                        if(Arrays.toString(gsonResponse.errors)=="[]"){
+                            Platform.runLater(new Runnable() {
+                                @Override public void run() {
+                                    manageVBox.getChildren().remove(anchorPane);
+                                }
+                            });
+                            ToastCaller toast = new ToastCaller("刪除成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
 //                    getOwnAndJoinPost();
-                }
-                else{
+                        }
+                        else{
 //                    deleteStatusLabel.setText("失敗!");
-                    ToastCaller toast = new ToastCaller("刪除失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
-                    System.out.println("failed");
+                            ToastCaller toast = new ToastCaller("刪除失敗",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            System.out.println("failed");
+                        }
+                    }
+                    else{
+                        System.out.println(response.getStatusLine().getStatusCode());
+                    }
                 }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+                loading.setVisible(false);
             }
-            else{
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public void setData(String ownerID, String category, String price, String postID, String joinPeople, ArrayList<String> joinList,VBox manageVBox){
+        loading.setVisible(false);
         secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         secondaryIDLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");

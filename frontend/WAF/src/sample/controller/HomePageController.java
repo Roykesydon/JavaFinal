@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
@@ -36,6 +37,7 @@ public class HomePageController extends Main implements Initializable {
     public Label primaryWAFLabel;
     public TextField userID;
     public JFXPasswordField userPassword;
+    public ProgressIndicator loading;
 
     public void initialize(URL url, ResourceBundle rb){
         primaryWAFLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:12em;");
@@ -43,6 +45,7 @@ public class HomePageController extends Main implements Initializable {
         btnSignIn.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-border-color: "+GlobalVariable.primaryColor+";-fx-font-size:25;");
         buttonForgot.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:18;");
         userPassword.setFocusColor(Paint.valueOf(GlobalVariable.primaryColor));
+        loading.setVisible(false);
     }
 
     public void switchToSignup(ActionEvent actionEvent) throws IOException
@@ -70,6 +73,7 @@ public class HomePageController extends Main implements Initializable {
         if(success){
             new Thread(new Runnable() {
                 public void run() {
+                    HomePageController.this.loading.setVisible(true);
                     try {
                         HttpResponse response = RequestController.post(GlobalVariable.server+"user/login",
                                 new String[]{"userid", userID.getText()},
@@ -118,8 +122,10 @@ public class HomePageController extends Main implements Initializable {
                     catch (IOException  e) {
                         e.printStackTrace();
                     }
+                    HomePageController.this.loading.setVisible(false);
                 }
             }).start();
+            loading.setVisible(false);
         }
     }
 

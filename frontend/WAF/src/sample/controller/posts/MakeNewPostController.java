@@ -10,11 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
+import sample.Main;
 import sample.global.GlobalVariable;
 import sample.tool.response.detailCard.MakeNewPostResponse;
 import sample.tool.RequestController;
@@ -44,12 +46,15 @@ public class MakeNewPostController implements Initializable {
     public ComboBox categoryComboBox;
     public Label makeNewPostResult;
 
+    public ProgressIndicator loading;
+
     private static final String regexPrice = "^[0-9]+.?[0-9]+$";
     private static  final String regexIntPrice="[0-9]+";
     private Pattern pattern;
     private Matcher matcher;
 
     public void initialize(URL url, ResourceBundle rb) {
+        loading.setVisible(false);
         primaryMakeLabel.setStyle("-fx-text-fill: "+GlobalVariable.primaryColor+";-fx-font-size:53;");
         secondaryPrice.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:31;");
         secondaryCate.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:31;");
@@ -110,6 +115,7 @@ public class MakeNewPostController implements Initializable {
         if(success){
             new Thread(new Runnable() {
                 public void run() {
+                    MakeNewPostController.this.loading.setVisible(true);
                     try {
                         String category = categoryComboBox.getValue().toString();
                         String price = priceTextField.getText();
@@ -157,6 +163,7 @@ public class MakeNewPostController implements Initializable {
                     catch (IOException  e) {
                         e.printStackTrace();
                     }
+                    MakeNewPostController.this.loading.setVisible(false);
                 }
             }).start();
         }

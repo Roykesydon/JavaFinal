@@ -1,8 +1,10 @@
 package sample.view.detailCardController;
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.apache.http.HttpResponse;
@@ -28,8 +30,10 @@ public class PublicPostController {
     public Label secondaryCateLabel;
     public Label secondaryIDLabel;
     public Label secondaryJoinLabel;
+    public ProgressIndicator loading;
 
     public void setData(String ownerID, String category, String price, String joinPeople, String postID, List<String> joinPostData){
+        loading.setVisible(false);
         secondaryCateLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         secondaryJoinLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
         secondaryPriceLabel.setStyle("-fx-text-fill: "+GlobalVariable.secondaryColor+";-fx-font-size:26;");
@@ -60,44 +64,54 @@ public class PublicPostController {
     }
     public void buttonFunction(String postID)
     {
-        try {
-            System.out.println("joinBtnclick");
-            HttpResponse response= RequestController.post(GlobalVariable.server+"posts/joinPost",
-                    new String[]{"accessKey", GlobalVariable.accessKey},
-                    new String[]{"postID",postID}
-            );
-            String responseString= EntityUtils.toString(response.getEntity());
-            if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
-                Gson gson =new Gson();
-                SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
-                if(Arrays.toString(gsonResponse.errors)=="[]"){
-                    ToastCaller toast = new ToastCaller("加入成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
-                    joinBtn.setDisable(true);
-                    joinBtn.setStyle("-fx-text-fill: #888888;-fx-border-color:#888888;");
-                }
-                else{
-                    ToastCaller toast;
-                    for(String error: gsonResponse.errors){
-                        if(error.equals("already join post"))
-                            toast = new ToastCaller("已加入貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        else if(error.equals("can't join more Post"))
-                            toast = new ToastCaller("不能加入更多貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        else if(error.equals("can't join user's own post"))
-                            toast = new ToastCaller("不能加入自己的貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        else if(error.equals("post already full"))
-                            toast = new ToastCaller("貼文人數已滿",GlobalVariable.mainStage,ToastCaller.ERROR);
-                        else if(error.equals("joinPost fail"))
-                            toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+        new Thread(new Runnable() {
+            public void run() {
+                loading.setVisible(true);
+                try {
+                    System.out.println("joinBtnclick");
+                    HttpResponse response= RequestController.post(GlobalVariable.server+"posts/joinPost",
+                            new String[]{"accessKey", GlobalVariable.accessKey},
+                            new String[]{"postID",postID}
+                    );
+                    String responseString= EntityUtils.toString(response.getEntity());
+                    if(response.getStatusLine().getStatusCode()== HttpStatus.SC_OK){
+                        Gson gson =new Gson();
+                        SetIdentityCodeResponse gsonResponse = gson.fromJson(responseString, SetIdentityCodeResponse.class);
+                        if(Arrays.toString(gsonResponse.errors)=="[]"){
+                            ToastCaller toast = new ToastCaller("加入成功",GlobalVariable.mainStage,ToastCaller.SUCCESS);
+                            Platform.runLater(new Runnable() {
+                                @Override public void run() {
+                                    joinBtn.setDisable(true);
+                                    joinBtn.setStyle("-fx-text-fill: #888888;-fx-border-color:#888888;");
+                                }
+                            });
+                        }
+                        else{
+                            ToastCaller toast;
+                            for(String error: gsonResponse.errors){
+                                if(error.equals("already join post"))
+                                    toast = new ToastCaller("已加入貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                else if(error.equals("can't join more Post"))
+                                    toast = new ToastCaller("不能加入更多貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                else if(error.equals("can't join user's own post"))
+                                    toast = new ToastCaller("不能加入自己的貼文",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                else if(error.equals("post already full"))
+                                    toast = new ToastCaller("貼文人數已滿",GlobalVariable.mainStage,ToastCaller.ERROR);
+                                else if(error.equals("joinPost fail"))
+                                    toast = new ToastCaller("伺服器錯誤",GlobalVariable.mainStage,ToastCaller.ERROR);
+                            }
+                        }
+                    }
+                    else{
+                        System.out.println(response.getStatusLine().getStatusCode());
                     }
                 }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+                loading.setVisible(false);
             }
-            else{
-                System.out.println(response.getStatusLine().getStatusCode());
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        }).start();
         //System.out.println("You Clicked " + tmp + " from PublicPage");
     }
 }
