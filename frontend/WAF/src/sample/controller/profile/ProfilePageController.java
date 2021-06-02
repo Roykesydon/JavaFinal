@@ -173,11 +173,15 @@ public class ProfilePageController implements Initializable {
     }
 
     public void searchUser(){
-        try {
-            getProfileAndOwnPost(searchTextField.getText());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    getProfileAndOwnPost(searchTextField.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }
