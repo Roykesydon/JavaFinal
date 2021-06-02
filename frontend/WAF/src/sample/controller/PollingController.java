@@ -29,7 +29,7 @@ public class PollingController extends TimerTask {
     public PollingController(){
         Timer timer = new Timer();
         TimerTask task = this;
-        timer.schedule(task, 1000, 1000);
+        timer.schedule(task, 1000, 3000);
     }
 
     private static void sendNotification(String title,String content) throws AWTException {
@@ -65,7 +65,7 @@ public class PollingController extends TimerTask {
                     toast = new ToastCaller("Heroku已達到每小時3600筆詢問的限制",GlobalVariable.mainStage,ToastCaller.ERROR,550);
                 System.out.println(response.getStatusLine());
                 Main.connectErrorCount++;
-                Main.connectErrorCount%=10;
+                Main.connectErrorCount%=2;
             }
         }
         catch (IOException | AWTException e) {
@@ -73,7 +73,7 @@ public class PollingController extends TimerTask {
             if(Main.connectErrorCount==0)
                 toast = new ToastCaller("無法與伺服器連線",GlobalVariable.mainStage,ToastCaller.ERROR);
             Main.connectErrorCount++;
-            Main.connectErrorCount%=10;
+            Main.connectErrorCount%=2;
             e.printStackTrace();
         }
 
