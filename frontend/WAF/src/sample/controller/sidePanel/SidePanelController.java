@@ -1,8 +1,6 @@
 package sample.controller.sidePanel;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,17 +12,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.util.EntityUtils;
 import sample.controller.PollingController;
 import sample.global.GlobalVariable;
-import sample.tool.response.comment.CommentNoticeResponse;
-import sample.tool.RequestController;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SidePanelController {
 
@@ -90,7 +81,7 @@ public class SidePanelController {
 
     public void EnterNotification(ActionEvent actionEvent) throws IOException {
         //use button to switch scene
-        Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/notification/renderNotification.fxml"));
+        Parent page = FXMLLoader.load(getClass().getResource("/sample/view/fxml/notification/Notification.fxml"));
         Scene tmp = new Scene(page);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         //stage.hide();//switch smoothly

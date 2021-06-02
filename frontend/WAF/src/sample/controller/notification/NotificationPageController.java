@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RenderNotificationPageController implements Initializable {
+public class NotificationPageController implements Initializable {
     public Label notification;
     public   VBox  notificationVbox;
     public Label primaryNotificationLabel;
@@ -54,7 +54,7 @@ public class RenderNotificationPageController implements Initializable {
 
         new Thread(new Runnable() {
             public void run() {
-                RenderNotificationPageController.this.loading.setVisible(true);
+                NotificationPageController.this.loading.setVisible(true);
                 try {
                     HttpResponse response = RequestController.post(GlobalVariable.server+"notifications/getNewestTenNotice",
                             new String[]{"accessKey", GlobalVariable.accessKey}
@@ -88,7 +88,7 @@ public class RenderNotificationPageController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                RenderNotificationPageController.this.loading.setVisible(false);
+                NotificationPageController.this.loading.setVisible(false);
             }
         }).start();
     }
