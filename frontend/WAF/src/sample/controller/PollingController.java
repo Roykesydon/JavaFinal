@@ -29,7 +29,7 @@ public class PollingController extends TimerTask {
     public PollingController(){
         Timer timer = new Timer();
         TimerTask task = this;
-        timer.schedule(task, 1000, 3000);
+        timer.schedule(task, 1000, 1000);
     }
 
     private static void sendNotification(String title,String content) throws AWTException {
