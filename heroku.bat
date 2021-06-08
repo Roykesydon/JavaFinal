@@ -1,0 +1,1 @@
+start java --module-path .\frontend\external_module\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml -jar WAF_herokuVersion.jar
