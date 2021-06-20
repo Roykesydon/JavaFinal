@@ -145,8 +145,8 @@ public class ForgotPasswordController implements Initializable{
                                 GlobalVariable.userID = userid.getText();
                                 GlobalVariable.accessKey = gsonResponse.accessKey;
                                 tryCount = 0;
-                                URL url = new File("src/sample/view/fxml/account/ResetPassWord.fxml").toURI().toURL();
-                                Parent root = FXMLLoader.load(url);
+                                //URL url = new File("/sample/view/fxml/account/ResetPassWord.fxml").toURI().toURL();
+                                Parent root = FXMLLoader.load(getClass().getResource("/sample/view/fxml/account/ResetPassWord.fxml"));
                                 Scene tmp = new Scene(root);
                                 Platform.runLater(new Runnable() {
                                     @Override public void run() {
