@@ -7,7 +7,7 @@ public class CheckSignUp
     //data field
     private static final String regexUserName = "[a-z0-9A-Z -]{5,50}";
     private static final String regexUserID = "[a-zA-Z0-9]{5,30}";
-    private static final String regexMail = "^[A-Za-z0-9]+@+[A-Za-z0-9]+[.-]+[A-Za-z0-9]+$";
+    private static final String regexMail = "^[A-Za-z0-9]+@+[A-Za-z0-9]+[.-]+[A-Za-z0-9.]+[A-Za-z0-9]$";
     private static final String regexPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{5,30}$";
     private String userPassWord;
     private String userMail;

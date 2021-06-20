@@ -13,6 +13,6 @@ public class GlobalVariable{
     public static String secondaryColor = "#B15BFF";
     public static PollingController polling;
     //heroku website "https://java-waf-api.herokuapp.com/"
-    public static String server = "http://127.0.0.1:13261/";
-    //public static String server = "https://java-waf-api.herokuapp.com/";
+    //public static String server = "http://127.0.0.1:13261/";
+    public static String server = "https://java-waf-api.herokuapp.com/";
 }
