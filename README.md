@@ -2,7 +2,7 @@
 
 A platform that meets the needs of people forming groups to buy family plans
 <br/><br/>
-[![video](https://user-images.githubusercontent.com/64363701/123120199-b2725980-d476-11eb-92ce-8c3cee218059.png)](https://youtu.be/4Lg8X0q9xzQ)
+[![video](https://user-images.githubusercontent.com/64363701/123120199-b2725980-d476-11eb-92ce-8c3cee218059.png)](https://youtu.be/tiin49l5I6Y)
 
 ## Switch Local/Network Server
 ```
